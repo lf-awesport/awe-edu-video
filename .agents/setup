@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_root"
+
+printf '[orb setup] repository: %s\n' "$repo_root"
+printf '[orb setup] no project dependencies or services are declared; nothing to install\n'
