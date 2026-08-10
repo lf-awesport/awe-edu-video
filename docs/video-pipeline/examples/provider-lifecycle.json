@@ -1,0 +1,19 @@
+{
+  "exampleId": "E02",
+  "nonNormative": true,
+  "valid": false,
+  "invalidBecause": [
+    "must-requote evidence cannot authorize Reservation or submit",
+    "per-Candidate QuoteBinding is missing"
+  ],
+  "schemaVersion": "0.9.0",
+  "candidateId": "candidate-synthetic-001",
+  "requestHash": "sha256:example-request-hash",
+  "capabilitySnapshotHash": "sha256:example-schema-hash",
+  "quote": {"model": "seedance_2_0_mini", "durationSeconds": 5, "resolution": "720p", "amount": 12.5, "unit": "credits", "status": "must-requote"},
+  "reservation": {"id": "reservation-example", "amount": 12.5, "state": "held"},
+  "submissionIntent": {"id": "intent-example", "persistedBeforeSubmit": true},
+  "job": {"providerRef": "redacted-example-ref", "state": "succeeded"},
+  "materialization": {"state": "verified", "blobHash": "sha256:example-output-hash", "temporaryUrlPersisted": false},
+  "crashPath": {"ifReceiptMissing": "reconciling", "automaticResubmit": false}
+}

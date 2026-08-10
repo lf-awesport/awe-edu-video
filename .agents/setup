@@ -5,4 +5,12 @@ repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
 printf '[orb setup] repository: %s\n' "$repo_root"
-printf '[orb setup] no project dependencies or services are declared; nothing to install\n'
+command -v node >/dev/null
+command -v npm >/dev/null
+command -v ffmpeg >/dev/null
+command -v ffprobe >/dev/null
+npm ci
+npx remotion browser ensure
+npm run typecheck
+npm run video -- validate --project examples/awe-project.yaml --json >/dev/null
+printf '[orb setup] dependencies and Remotion browser installed; Node, ffmpeg, ffprobe and project validation passed\n'

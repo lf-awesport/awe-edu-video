@@ -1,0 +1,59 @@
+# E01 — Example, non-normative; synthetic/public metadata only.
+schemaVersion: 0.9.0
+projectId: awe-pilot-example
+status: internal-preview-only
+locale: it-IT
+productionProfile: balanced
+requestedDurationSeconds: 85
+outputProfile:
+  status: proposed
+  width: 1920
+  height: 1080
+  fps: 30
+  codec: H.264
+  audio: AAC-48kHz-stereo
+  loudness: unknown
+  safeArea: unknown
+sources:
+  - id: SRC-AWE-01
+    url: https://awe-group.net/awe-sport-education/
+  - id: SRC-AWE-02
+    url: https://akto.awesporteducation.org/it/courses/
+claims:
+  - {id: claim-12-areas, text: "12 key areas", status: unverified, note: "12 courses do not prove 12 areas"}
+  - {id: claim-400-videos, text: "400+ English videos", status: unverified}
+  - {id: claim-1200-quizzes, text: "1200+ quizzes", status: unverified}
+  - {id: claim-certificate, text: "final certificate", status: unverified}
+  - {id: claim-two-months, text: "up to two months", status: unverified}
+  - {id: claim-licences-internships, text: "licences and internships", status: unverified}
+  - {id: claim-live, text: "live sessions", status: unverified}
+  - {id: claim-cta, text: "CTA placeholder", status: unverified}
+storyboard:
+  scenes:
+    - {id: scene-01, seconds: 5, technique: higgsfield-footage-plus-remotion, candidates: 2}
+    - {id: scene-02, seconds: 3, technique: remotion-transition}
+    - {id: scene-03, seconds: 6, technique: remotion-real-ui}
+    - {id: scene-04, seconds: 8, technique: remotion-source-bound-claims}
+    - {id: scene-05, seconds: 6, technique: remotion-real-ui}
+    - {id: scene-06, seconds: 8, technique: remotion-real-assets}
+    - {id: scene-07, seconds: 5, technique: remotion-real-certificate}
+    - {id: scene-08, seconds: 9, technique: remotion-brand-tokens}
+    - {id: scene-09, seconds: 8, technique: remotion-real-case-study}
+    - {id: scene-10, seconds: 5, technique: remotion-source-bound-claim}
+    - {id: scene-11, seconds: 9, technique: remotion-real-rewards}
+    - {id: scene-12, seconds: 5, technique: remotion-real-ui}
+    - {id: scene-13, seconds: 8, technique: higgsfield-5s-plus-remotion-3s, candidates: 2}
+preflight:
+  higgsfield:
+    model: seedance_2_0_mini
+    request: {durationSeconds: 5, resolution: 720p}
+    candidateCount: 4
+    expectedCreditsFormula: "sum of four fresh per-Candidate QuoteBinding amounts"
+    observedCreditsPerCandidate: 12.5
+    expectedCredits: 50
+    observedPriceEvidence: dated-price-observation-non-authorizing
+    quoteStatus: must-requote
+  remotionLicense: unknown
+  remotionCompute: unknown
+  ttsAndAlignment: unknown
+  storage: unknown

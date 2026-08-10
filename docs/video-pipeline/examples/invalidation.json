@@ -1,0 +1,11 @@
+{
+  "exampleId": "E03",
+  "nonNormative": true,
+  "event": "select-new-voice-candidate-scene-04",
+  "before": {"requestedDurationSeconds": 8, "resolvedDurationSeconds": 8},
+  "after": {"requestedDurationSeconds": 8, "resolvedDurationSeconds": 10},
+  "at30fps": {"followingBoundaryDeltaFrames": 60},
+  "stale": ["scene-04-timing", "scene-04-captions", "mix", "render-plan", "preview", "final-render"],
+  "current": ["scene-01-footage-candidate", "scene-13-footage-candidate"],
+  "historicalOutputsDeleted": false
+}

@@ -1,0 +1,7 @@
+# video pipeline generated/runtime state
+.video/
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo

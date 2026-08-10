@@ -1,0 +1,18 @@
+{
+  "exampleId": "E04",
+  "nonNormative": true,
+  "schemaVersion": "0.9.0",
+  "releaseId": "release-awe-example",
+  "projectId": "awe-pilot-example",
+  "deliverableHash": "sha256:synthetic-render-hash",
+  "productionLockHash": "sha256:synthetic-lock-hash",
+  "outputProfileHash": "sha256:synthetic-profile-hash",
+  "assetUsageManifestHash": null,
+  "approvals": [],
+  "validations": [],
+  "waivers": [],
+  "rightsCurrent": false,
+  "dependenciesCurrent": false,
+  "releasable": false,
+  "blockers": ["unverified-claims", "missing-rights-consent", "missing-cta", "unknown-loudness-safe-area", "missing-quality-evidence"]
+}

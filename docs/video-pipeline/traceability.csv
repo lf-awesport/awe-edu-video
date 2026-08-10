@@ -1,0 +1,71 @@
+requirement_id,tracer,planned_test,evidence
+SECURITY-001,T6,multimodal metamorphic prompt-injection and no-side-effect fixtures,normalization report + security evidence
+SECURITY-002,T1,dependency boundary test,contract map
+SECURITY-003,T3,side-effect without plan fails,execution plan
+SECURITY-004,T3,offline CI network denial,CI log
+MODEL-001,T1,required entity fixture,project fixture
+MODEL-002,T1,duplicate ID rejection,compiler diagnostic
+MODEL-003,T5,rational timing/frame test,E03
+MODEL-004,T8,master/override diff,variant plan
+MODEL-005,T3,lifecycle separation contract,E02
+NORM-001,T6,source span/hash test,normalization report
+NORM-002,T6,classification completeness,normalization report
+NORM-003,T6,unsourced Claim gate,E01
+NORM-004,T6,ambiguity/conflict fixture,blocked Promotion
+NORM-005,T6,promotion state test,Storyboard snapshot
+ORCH-001,T2,DAG state transition test,event snapshot
+ORCH-002,T2,replay equality plus gap/divergent-duplicate/truncated-tail/hash-chain fixtures,event log + snapshot prefix hash
+ORCH-003,T2,selective invalidation fixture,E03
+ORCH-004,T2,commit-prepared crash matrix and stale fencing-token denial,recovery events
+ORCH-005,T3,cache identity/current-eligibility/nonce behavior,candidate records
+PROVIDER-001,T3,adapter contract test,E02
+PROVIDER-002,T3,schema drift/degradation test,capability snapshot
+PROVIDER-003,T3,unit/batch QuoteBinding quantity and stale/missing rejection,ledger
+PROVIDER-004,T4,crash after submit plus unsupported/ambiguous/unknown reconcile,reconciliation event
+PROVIDER-005,T3,bad MIME/hash materialization test,Blob record
+AUDIO-001,T5,audio entity fixture,localized script
+AUDIO-002,T5,voice retake invalidation and out-of-tolerance timing proposal,E03
+AUDIO-003,T5,TTS/human candidate parity,candidate manifests
+AUDIO-004,T5,caption/audio coverage plus low-confidence alignment gate,caption artifact
+AUDIO-005,T5,lane/stem/voice-mode/consent-expiry gate,mix plan
+RENDER-001,T1,deterministic compile hash,RenderPlan
+RENDER-002,T1,render sandbox network/write denial,render log
+RENDER-003,T5,boundary/cycle/negative fixtures,compiler diagnostics
+RENDER-004,T8,unsupported 9:16 layout gate,variant finding
+RENDER-005,T8,full master/variant render invocation,render provenance
+ASSET-001,T1,Blob/Asset identity test,provenance record
+ASSET-002,T9,transform lineage/rights intersection,usage manifest
+ASSET-003,T3,generated provenance completeness,candidate provenance
+RIGHTS-001,T9,grant field/expiry test,grant refs
+RIGHTS-002,T9,restricted export redaction,export manifest
+RIGHTS-003,T9,revocation propagation test,blocked release
+APPROVAL-001,T6,hash-bound approval supersession and local-role authority spoof denial,decision log
+APPROVAL-002,T6,skip/auto/on-failure unknown-error-missing test,review queue
+APPROVAL-003,T9,waiver authority/expiry test,quality report
+APPROVAL-004,T9,revocation/rollback audit test,event log
+COST-001,T3,scenario formulas/unknown test,cost estimate
+COST-002,T3,atomic multi-scope native-unit budget concurrency barrier,ledger
+COST-003,T4,unknown charge hold and authorized adjustment test,ledger
+COST-004,T9,shared cost no-double-count test,cost report
+COST-005,T3,fresh exact Quote binding and drift/expiry invalidation; dated 12.5/50 replay,E01 + fresh Quote/plan
+QUALITY-001,T9,registry oracle/fixture and requirement/result hash binding,quality report
+QUALITY-002,T9,unknown/error AI precedence and anti-cherry-picking test,quality report
+QUALITY-003,T9,profile invariant matrix,quality coverage
+QUALITY-004,T9,full decode negative fixtures,validation results
+QUALITY-005,T9,missing threshold release gate,E04
+CLI-001,T1,schema-aware config merge/provenance/hash plus Git boundary,project layout
+CLI-002,T3,plan/apply and command journey,CLI transcript
+CLI-003,T3,JSON schema/exit code contract,CI output
+CLI-004,T9,portable materialization hash test,Production Lock
+SECURITY-005,T3,secret redaction canaries,redacted logs
+SECURITY-006,T3,path/URL/MIME/process attack fixtures,security report
+SECURITY-007,T9,external evaluator policy denial,preflight disclosure
+SECURITY-008,T9,tampered lock/live URL-only evidence test,release gate
+RELEASE-001,T7,synthetic 13-scene fixture provider strategy compile,E01 + compiler evidence
+RELEASE-002,T3,exactly four 5s/720p Candidates with fresh per-Candidate QuoteBindings; dated PriceObservation replay,E01 + fresh bindings/plan
+RELEASE-003,T6,AWE blocker matrix,awe-input-checklist
+RELEASE-004,T10,missing asset/right/threshold gate,E04
+RELEASE-005,T9,complete/stale manifest matrix,release manifest
+ROLLOUT-001,G0,G0 bootstrap acceptance and T1-T3 dependency-order contract,schemas + canonical-hash fixtures/harness + approved Remotion decision
+ROLLOUT-002,T10,post-contract parallel branches plus T10 entry/exit gates,tracer artifacts
+ROLLOUT-003,T1,executable acceptance manifest offline CI and reversal contract,contract tests

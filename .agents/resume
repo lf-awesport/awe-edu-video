@@ -4,4 +4,10 @@ set -euo pipefail
 repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
-printf '[orb resume] no project services require repair\n'
+if [[ ! -d node_modules ]]; then
+  npm ci
+fi
+command -v ffmpeg >/dev/null
+command -v ffprobe >/dev/null
+npm run video -- validate --project examples/awe-project.yaml --json >/dev/null
+printf '[orb resume] dependencies and video pipeline tools are ready\n'
