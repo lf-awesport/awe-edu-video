@@ -1,5 +1,23 @@
 # Handoff — AWE video-generation pipeline
 
+## Visual master update — 2026-08-17
+
+A complete 13-scene visual master now exists in native 1920×1080 resolution. All scenes use the supplied AWE BrandKit, local fonts, logos, UI mockups and subject artwork; generated footage, TTS and paid Higgsfield operations were intentionally excluded.
+
+```text
+RenderPlan       sha256:ac22aa2786de0afc0bdb3bebb8b07f27615517f607f82e33d7c60c7a21b4abf3
+Render identity  sha256:d9a16c177004e5fb20f57736fa289f2d8f27b74b3a60ba3d41513f583db95587
+MP4              sha256:b73439a9fde8ee7d661935dcb9316f7b431bc7c047a8184737af819d6f71590c
+Media            H.264, 1920×1080 native, 30 fps, 2550 frames, 85 seconds, no audio
+Path              .video/renders/sha256-d9a16c177004e5fb20f57736fa289f2d8f27b74b3a60ba3d41513f583db95587/awe-master.mp4
+```
+
+The render passed full decode and technical verification. A visual review of the complete 85-second proxy found all 13 scenes present in order with no blocking clipping, missing assets, broken fonts, flicker or unintended blank frames. It remains `internal-preview-only`: labels identify provisional UI, certificate, live-session, commercial-duration/reward claims and the unresolved CTA.
+
+Runtime-sized derivatives under `assets/ui/runtime/`, `assets/subjects/runtime/` and `assets/brand/backgrounds/runtime/` prevent Chromium memory failures while preserving the supplied originals. Render identity binds every source and derivative used by the composition. Native rendering uses one worker because the complete master exceeds a stable multi-worker memory budget on the current machine.
+
+The next production tracer remains audio: approve scripts/claims, select a TTS or human VoiceCandidate, make selected audio authoritative for timing, generate captions, and add music/mix. Scenes 1 and 13 currently use deterministic Remotion fallbacks; replace them with selected authorized footage only after a fresh cost preflight and explicit spend approval.
+
 ## Resume here
 
 Continue on branch `implementation/video-pipeline`. The repository now contains the reviewed bilingual specification, decision history, the full local Matt Pocock skill package, and an executable TypeScript/Remotion prototype. Generated media and runtime state are intentionally excluded from Git.

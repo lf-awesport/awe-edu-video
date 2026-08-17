@@ -6,11 +6,11 @@ import {canonicalHash, canonicalJson} from './compiler.js';
 import type {RenderPlan} from './schema.js';
 
 export const RENDER_MANIFEST_SCHEMA_VERSION = '1.0.0';
-export const INTERNAL_SCALE = 0.25;
+export const INTERNAL_SCALE = 1;
 export const DELIVERY_CODEC = 'h264';
 export const FFMPEG_TRANSFORM = {
   executable: 'ffmpeg',
-  arguments: ['-v', 'error', '-xerror', '-y', '-i', '$INPUT', '-map', '0:v:0', '-vf', 'scale=$WIDTH:$HEIGHT', '-c:v', 'libx264', '-an', '$OUTPUT'],
+  arguments: ['-v', 'error', '-xerror', '-y', '-i', '$INPUT', '-map', '0:v:0', '-c:v', 'copy', '-an', '$OUTPUT'],
 } as const;
 
 const sha256Bytes = (bytes: Uint8Array) => `sha256:${createHash('sha256').update(bytes).digest('hex')}`;
@@ -19,10 +19,10 @@ export interface RenderIdentityBody {
   schemaVersion: '1.0.0';
   renderPlanHash: string;
   compositionId: 'Scene03' | 'AweMaster';
-  sourceHashes: {'src/remotion.tsx': string; 'src/remotion-entry.tsx': string};
+  sourceHashes: Record<string, string>;
   remotionVersion: string;
   codec: 'h264';
-  internalScale: 0.25;
+  internalScale: 1;
   delivery: {width: number; height: number; fps: number; totalFrames: number};
   ffmpegTransform: typeof FFMPEG_TRANSFORM;
 }
@@ -52,10 +52,29 @@ export async function computeRenderIdentity(plan: RenderPlan, compositionId: 'Sc
   const packageJson = JSON.parse(await readFile(join(projectRoot, 'package.json'), 'utf8')) as {dependencies?: Record<string, string>};
   const remotionVersion = packageJson.dependencies?.remotion;
   if (!remotionVersion || !/^\d+\.\d+\.\d+$/.test(remotionVersion)) throw new Error('package.json must pin an exact Remotion version');
-  const [remotion, entry] = await Promise.all([readFile(join(projectRoot, 'src/remotion.tsx')), readFile(join(projectRoot, 'src/remotion-entry.tsx'))]);
+  const renderInputs = [
+    'src/remotion.tsx',
+    'src/remotion-entry.tsx',
+    'src/remotion-brand.ts',
+    'src/remotion-scene-03.tsx',
+    'src/remotion-scenes.tsx',
+    'assets/brand/backgrounds/runtime/magma-gradient.png',
+    'assets/brand/fonts/libre-franklin/LibreFranklin-Variable.ttf',
+    'assets/brand/fonts/poppins/Poppins-Medium.ttf',
+    'assets/brand/fonts/poppins/Poppins-ExtraBold.ttf',
+    'assets/brand/fonts/poppins/Poppins-Black.ttf',
+    'assets/brand/logos/awe-sport-education-horizontal-white.svg',
+    'assets/brand/logos/awe-sport-education-horizontal-color.svg',
+    'assets/ui/runtime/app-lesson.png',
+    'assets/ui/runtime/app-main-awe-edu.png',
+    'assets/ui/runtime/app-main-color-01.png',
+    'assets/ui/runtime/app-main-color-02.png',
+    ...['fan-experience', 'sports-marketing', 'sports-sponsorship', 'media', 'sports-finance', 'sports-law', 'sports-governance', 'sports-tourism', 'sports-equipment', 'event-management', 'esports', 'sport-for-good'].map((subject) => `assets/subjects/runtime/${subject}.png`),
+  ];
+  const sourceHashes = Object.fromEntries(await Promise.all(renderInputs.map(async (path) => [path, sha256Bytes(await readFile(join(projectRoot, path)))])));
   return renderIdentityFromInputs({
     renderPlanHash: plan.planHash, compositionId,
-    sourceHashes: {'src/remotion.tsx': sha256Bytes(remotion), 'src/remotion-entry.tsx': sha256Bytes(entry)},
+    sourceHashes,
     remotionVersion,
     delivery: {width: plan.outputProfile.width, height: plan.outputProfile.height, fps: plan.outputProfile.fps, totalFrames: plan.totalFrames},
   });

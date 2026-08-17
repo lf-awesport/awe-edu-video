@@ -17,7 +17,7 @@ describe('CLI public seam', () => {
 const fs = require('node:fs'); const args = process.argv.slice(2);
 fs.appendFileSync(${JSON.stringify(log)}, JSON.stringify(args) + '\\n');
 if (args[0] === '--version') console.log('higgsfield 1.1.20 (fake)');
-else if (args[0] === 'workspace') console.log(JSON.stringify({workspace:{id:'redacted-ready'}}));
+else if (args[0] === 'workspace') console.log(JSON.stringify({id:'redacted-ready',name:null,plan_type:'free',credits:10,is_selected:true,user_role:'owner'}));
 else if (args[0] === 'model') console.log(JSON.stringify({display_name:'Seedance 2.0 Mini',job_type:'seedance_2_0_mini',type:'video',rules:[],params:[{name:'prompt',type:'string',required:true},{name:'duration',type:'integer',default:5,required:false,enum:[5]},{name:'resolution',type:'string',default:'720p',required:false,enum:['720p']},{name:'aspect_ratio',type:'string',default:'16:9',required:false,enum:['16:9']},{name:'generate_audio',type:'boolean',default:true,required:false}]}));
 else if (args[0] === 'generate' && args[1] === 'cost') console.log(JSON.stringify({credits:12.5}));
 else process.exit(9);
@@ -83,6 +83,34 @@ if(args[0]==='--version') console.log('higgsfield 1.1.20'); else if(args[0]==='w
     expect(result.result.costs.localRender.status).toBe('unknown');
     expect(result.result.costs.remotionLicense.status).toBe('unknown');
   }, 30_000);
+
+  it('imports an immutable voice candidate and reports the authored timing delta', () => {
+    const root = mkdtempSync(join(tmpdir(), 'video-voice-candidate-'));
+    const source = join(root, 'source.mp3');
+    execFileSync('ffmpeg', ['-v','error','-f','lavfi','-i','sine=frequency=440:duration=6.648','-ar','24000','-ac','1',source]);
+    const result = run(
+      'candidate', 'import', '--kind', 'voice', '--scene', 'scene-01', '--file', source,
+      '--candidate-id', 'voice-s01-smoke-01', '--source-provider', 'higgsfield',
+      '--source-model', 'text2speech_v2:seed_speech', '--source-job-id', 'job-smoke-01',
+      '--voice-id', 'preset-smoke-01', '--runtime-root', join(root, 'runtime'),
+    );
+    expect(result.result).toMatchObject({
+      candidateId: 'voice-s01-smoke-01', sceneId: 'scene-01', authoredDurationSeconds: 5,
+      selectionStatus: 'blocked-timing-proposal-required', releaseStatus: 'internal-preview-only',
+    });
+    expect(result.result.durationSeconds).toBeCloseTo(6.696, 2);
+    expect(result.result.durationDeltaSeconds).toBeCloseTo(1.696, 2);
+    expect(result.result.audioSha256).toMatch(/^sha256:[a-f0-9]{64}$/);
+    expect(result.result.manifestPath).not.toContain(source);
+    const manifest = JSON.parse(readFileSync(join(root, 'runtime', result.result.manifestPath), 'utf8'));
+    expect(manifest).toMatchObject({
+      id: 'voice-s01-smoke-01', projectId: 'awe-pilot-example', sceneId: 'scene-01',
+      utteranceIds: ['utt-s01-01'], source: {provider: 'higgsfield', model: 'text2speech_v2:seed_speech'},
+      timing: {authoredDurationSeconds: 5, selectionStatus: 'blocked-timing-proposal-required'},
+    });
+    expect(manifest.audioAsset.path).toMatch(/^blobs\/sha256\/[a-f0-9]{64}\/audio\.mp3$/);
+  }, 30_000);
+
   it('records one materialization, reuses it, and reconstructs state', () => {
     const root = mkdtempSync(join(tmpdir(), 'video-state-'));
     const first = run('build', '--project', 'examples/awe-project.yaml', '--runtime-root', root);

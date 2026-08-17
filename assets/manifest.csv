@@ -1,0 +1,81 @@
+source_path,path,bytes,sha256
+GRADIENT/BG-MAGMA-EDU.png,brand/backgrounds/magma-gradient.png,7499712,bddfaf1aecc5352ba7665073bf88e03f1ca9c6bd3558b7a7e04ed46401e73fca
+COLORS/OverTime _MAIN COLOR AWE EDU.pdf,brand/colors/awe-edu-primary-colors.pdf,50989,aecd401db97e5d4fd6b4abfbebafb6aae573ee3991af4492992b6739db947c56
+COLORS/OverTime _MAIN COLOR AWE EDU.png,brand/colors/awe-edu-primary-colors.png,41657,138226dc6db09a7f8b52262c4fbbeb2e099c4c8301b7b7e16f40678d0d286b82
+COLORS/OverTime _MAIN COLOR AWE EDU.svg,brand/colors/awe-edu-primary-colors.svg,11577,b98c16496b25ae222a516dba076d5d3f76ec12cd4156dddd75c3361e34f67cfb
+RECAP.pdf,brand/guidelines/awe-edu-brand-guidelines.pdf,353928,2b4201e7caf121e5baa1464834651359969edf04c8de73fe288518a7ecefaa16
+FONT/OverTime _FONT.pdf,brand/typography/franklin-gothic-reference.pdf,71556,e88360d9f0dab4dec007a6e7f3d6ffb7b95b6e5f32dd85afb22703f9903c0c8c
+FONT/OverTime _FONT.png,brand/typography/franklin-gothic-reference.png,72569,517865d0722e153e25676a270c2dafebabc48c5826c6fbdd4df9ace01c66a8fe
+FONT/OverTime _FONT.svg,brand/typography/franklin-gothic-reference.svg,2856,29d8b3fd96cef947c07ccd7d09f68271b2b6b442c75af4dff56b8890e54379f0
+GFX/ARROWS/Arrow 1.pdf,components/arrows/arrow-01.pdf,7085,0c7b81860bd710236d0f3415b9c93bb1027c90c0e5b83849ff013fa7da40fa9b
+GFX/ARROWS/Arrow 1.svg,components/arrows/arrow-01.svg,2710,ed8760d35e4bb4fe4f46b81d40652289baa8ba17d9356854ba56cc72e884d741
+GFX/ARROWS/Arrow 1@3x.png,components/arrows/arrow-01@3x.png,18691,5577ed2fc827ab874f0392263672e539db4d5f79914e90790e1cec6f0baf51f9
+GFX/ARROWS/Arrow 2.pdf,components/arrows/arrow-02.pdf,7534,809e789ca71af831f7819df515f650bb58ace20b64e8bb03e6626a7f424dbda1
+GFX/ARROWS/Arrow 2.svg,components/arrows/arrow-02.svg,3372,9043707f32fe6401d0bb9a972fa315305c080d9f78c0226656b8a2fe5f177913
+GFX/ARROWS/Arrow 2@3x.png,components/arrows/arrow-02@3x.png,16750,3cc4d2ed4c64fe79631b5f89a751c312f253975eaa0065e02ee5a3fedb9da446
+GFX/ARROWS/Arrow 3.pdf,components/arrows/arrow-03.pdf,7905,c03e7bffaf4c27eaff4d2d953dacbc8487b7a6471872e99a19201071d8a6303f
+GFX/ARROWS/Arrow 3.svg,components/arrows/arrow-03.svg,3888,5797c913635b9b1f26de01cf31906053700af686c982e609a8a83de9e0aea178
+GFX/ARROWS/Arrow 3@3x.png,components/arrows/arrow-03@3x.png,17661,b9e06de71a9976311fa1d091e909cb6932720a62768f3bc7d1d863a3522d14ab
+GFX/ARROWS/Arrow 4.pdf,components/arrows/arrow-04.pdf,11344,21131d74501c31d52d47d7e2611657b640a8f801cd931ce6f04f4be8630d9208
+GFX/ARROWS/Arrow 4.svg,components/arrows/arrow-04.svg,8816,089e5601b1fe579422ffd5a6e98c4a07be30e9da5bd2f599da81c5824502bb3e
+GFX/ARROWS/Arrow 4@3x.png,components/arrows/arrow-04@3x.png,29456,f252a81e5ca6f0b5da8d57f1a037de07293cd9d825c5519f9bd4a457f6d94a6e
+GFX/ARROWS/Arrow 5.pdf,components/arrows/arrow-05.pdf,11550,f3d75457abec26f6292af58fb1dd35305fbc3bc1324d13455410f5691ac5825e
+GFX/ARROWS/Arrow 5.svg,components/arrows/arrow-05.svg,8972,ce26ddeadd0fa3719fb92dc0b4846965f0591650f31c003168f7749d4ad99e4b
+GFX/ARROWS/Arrow 5@3x.png,components/arrows/arrow-05@3x.png,29574,612ffed6da5c962d82f74cae5f3f6a564ddcb097f667e35dc777bd47a6459abb
+GFX/ARROWS/Arrow 6.pdf,components/arrows/arrow-06.pdf,11738,e0650b03f933a9d768dd3a9db9f02be981e71c4f2119ba47dd0d43275ef711fb
+GFX/ARROWS/Arrow 6.svg,components/arrows/arrow-06.svg,9175,b23b8a957687eac4f11327110c333508665f7a5679a48f2fd23acb78213e68f6
+GFX/ARROWS/Arrow 6@3x.png,components/arrows/arrow-06@3x.png,30298,05fb3cb43bec3347fb4cd96cdf07c9810d32f0803b054d54d01ee436121a0946
+GFX/ARROWS/Arrow 7.pdf,components/arrows/arrow-07.pdf,12276,597e1a1be70eb95987975c82e7736a981625e4507244f1a838639cc56a349742
+GFX/ARROWS/Arrow 7.svg,components/arrows/arrow-07.svg,9959,0bab7c88a75395b22ceaaecd2ea37331680fb4c16c193c350c5bf5571bba1621
+GFX/ARROWS/Arrow 7@3x.png,components/arrows/arrow-07@3x.png,39122,c36f8e9e9f362359aec28ce2e4a16cfa489ac9a96e61252eb8a44746ca345641
+GFX/ARROWS/Arrow 8.pdf,components/arrows/arrow-08.pdf,7053,0cd7462f2b712532c48f638a6e624ce74b5804f27099d5ca33b5cf1b6f2f2066
+GFX/ARROWS/Arrow 8.svg,components/arrows/arrow-08.svg,2707,370f703d843935541dfff0f514728c4e1310f0d1a9b7e134fc756fe16c0259e3
+GFX/ARROWS/Arrow 8@3x.png,components/arrows/arrow-08@3x.png,11985,58ec94fc937e294f7e1fdb35dc7388c8a93aeb99a2d7fb3f26e6f0dc752e4a63
+GFX/ARROWS/Arrow 9.pdf,components/arrows/arrow-09.pdf,13361,9153e743598db18c8e8d53a2031b91f59d53610e29f420577763f65916336467
+GFX/ARROWS/Arrow 9.svg,components/arrows/arrow-09.svg,11490,485c0cc36dd6a9961397415dbf604bde1d96a7d382f13bf234a1d0756e7af058
+GFX/ARROWS/Arrow 9@3x.png,components/arrows/arrow-09@3x.png,41700,7e2bea0663870c7ca623f6a141125a8e617c18275a093b45efd2e75272db501e
+GFX/QUOTE/Quote-Close.pdf,components/quotes/quote-close.pdf,17229,15b1bf639e50f7ba0f79e57e467b7cb8e48722179df5831ee60e8214b88b2ee3
+GFX/QUOTE/Quote-Close.svg,components/quotes/quote-close.svg,17040,30ca022dd9816fcb12ed9ce1fa5c8f0d72224ec6618394a7855930db0d659897
+GFX/QUOTE/Quote-Close@3x.png,components/quotes/quote-close@3x.png,84782,2465dec9c4e4066c3ace73d5ee163bbbb9fe532100207153fa1891bd58139da9
+GFX/QUOTE/Quote-Open.pdf,components/quotes/quote-open.pdf,17805,7fcc856249302d259b5f9196a5f4b58b4901c54cd86a3c2ab226d5f9170ec9b1
+GFX/QUOTE/Quote-Open.svg,components/quotes/quote-open.svg,17703,872c7da88e90c166cbc064b7f94741cdea5430a6b9dd88f8ffa444835143d2c7
+GFX/QUOTE/Quote-Open@3x.png,components/quotes/quote-open@3x.png,83778,8590af66d2eb4d5045f20db37c501ca54bd4b9cb186b658f2171ee99a22599c3
+MATERIE/COVER IMAGES/ESPORT-APP.png,subjects/covers/esports.png,1977516,744da9129709d964166b5a2ea048ff29284177ea3d5863e141c20d89f6d685b2
+MATERIE/COVER IMAGES/EVENT-MANAGEMENT-APP.png,subjects/covers/event-management.png,16469123,5d56a0ab19ada6585fb8531e64fa5eabddc39611dae14c6bd6f2635d8d4e613b
+MATERIE/COVER IMAGES/FAN-APP.png,subjects/covers/fan-experience.png,15903757,d90e9a0cfa3dbaed59a22c2c543c70c33744ae4ddbcbf04d0d061dcc230e64df
+MATERIE/COVER IMAGES/MEDIA-APP.png,subjects/covers/media.png,11836652,3b2c06724bb207a70b66f8275e7341df8455ef532925d2bf9b668f4c979fc48c
+MATERIE/COVER IMAGES/SPORT4GOOD.png,subjects/covers/sport-for-good.png,13772345,623b26912f7adf1b9383203cb60f1c1483e2f653485f1e8d98d4f9882c56daa9
+MATERIE/COVER IMAGES/EQUIPMENT-APP.png,subjects/covers/sports-equipment.png,4983502,13477aeffe7741edbbd72bb061028a66fb1dd1918061be8223c7936a7dc379ab
+MATERIE/COVER IMAGES/FINANCE-APP.png,subjects/covers/sports-finance.png,18361229,83dd2d5e13d25b2603ed47219e2a69c617527a962bd95c3e57d6f1ddc69a6356
+MATERIE/COVER IMAGES/GOVERNANCE-APP.png,subjects/covers/sports-governance.png,8750913,3f6bbd83a49c8bb850ceffdb85e631dc13650d009de267261b301d1e68f1d3b1
+MATERIE/COVER IMAGES/LAW-APP.png,subjects/covers/sports-law.png,25251136,259dbb14be212f7a96b1a06edd9f62f5dea6311f818b573caf1e7e390f56fe85
+MATERIE/COVER IMAGES/MARKETING-APP.png,subjects/covers/sports-marketing.png,3631737,e13445ea2c83fb26c3597f9e736be48783aab09341551d6e3797e3929928da24
+MATERIE/COVER IMAGES/SPONSORSHIP-APP.png,subjects/covers/sports-sponsorship.png,6542115,9ee384d491effc1dd1ec30be3d8163783b75f9c3dfd0c3700c24a85d81f928c9
+MATERIE/COVER IMAGES/TOURISM-APP.png,subjects/covers/sports-tourism.png,19508782,41ec79cdc54099c1027662a7d1ba785984f8459d1b4e0bdb008142b0bdc04236
+MATERIE/COLORI MATERIE/OverTime _COLORI MATERIE.pdf,subjects/palette/subject-colors.pdf,52652,217de59bed1b87d49652bf0f77df7c8ce12e6a916b69b7fd3a813f42b4232c87
+MATERIE/COLORI MATERIE/OverTime _COLORI MATERIE.png,subjects/palette/subject-colors.png,270354,b808382f21f7e132a8fe967f5e2abb692aedb53e8986745faaa16027083ae2d1
+MATERIE/COLORI MATERIE/OverTime _COLORI MATERIE.svg,subjects/palette/subject-colors.svg,3136,29150c41697dc97dacd8fc6cdc1475ef66f383403527f0d78930a5b9806d8b97
+MATERIE/THUMBNAILS/ESPORT.png,subjects/thumbnails/esports.png,1787337,301dbae5bcb5d0f8e26064aab673c4912eda4eb95ec10e14af04f26b5e663dfd
+MATERIE/THUMBNAILS/EVENT-MANAGEMENT.png,subjects/thumbnails/event-management.png,2123927,471cdfd764f9e65c54c3c53bfa734f3808ae2661dd4442682d9090bdf049ef51
+MATERIE/THUMBNAILS/FAN-EXPERIENCE.png,subjects/thumbnails/fan-experience.png,1960170,3c5d2c93666442ebdf51851506fab346403fa0506c7f98f2925ba1e49f94d2e4
+MATERIE/THUMBNAILS/MEDIA.png,subjects/thumbnails/media.png,1503182,52c54f0e33cb7bf8305cd4ad896b5129588daea0cc161b7b9232b286e1a8aa98
+MATERIE/THUMBNAILS/SPORT-FOR-GOOD.png,subjects/thumbnails/sport-for-good.png,2305316,253ee699f8f87ea0dd055c4753d4dfd34be1edf5de2f06cc0794487b97efe526
+MATERIE/THUMBNAILS/SPORTS-EQUIPMENT.png,subjects/thumbnails/sports-equipment.png,2748167,ab7024bb371e4e336d22f95dd9609f6d839511656902cd3a206f164af7c2b58f
+MATERIE/THUMBNAILS/SPORTS-FINANCE.png,subjects/thumbnails/sports-finance.png,3934933,8c49e549a05b371f9b05d5729d1ea7184c987b36930097cbb0d12523d7e2cf9c
+MATERIE/THUMBNAILS/SPORTS-GOVERNANCE.png,subjects/thumbnails/sports-governance.png,1806305,ddce9412282e2ca9cb1afefafefa886f88ecec57069d6c667eb7387bb3111d29
+MATERIE/THUMBNAILS/SPORTS-LAW.png,subjects/thumbnails/sports-law.png,2644745,0b0420f16606540c9e192ca38ff78e3ddd5b22fe18b0af5d35788bc353c543c6
+MATERIE/THUMBNAILS/SPORTS-MARKETING.png,subjects/thumbnails/sports-marketing.png,1583958,552fccecf9a9c7697626f53eb352a7802bf9fdab3fc9576f1ee4632e53cfc54a
+MATERIE/THUMBNAILS/SPORTS-SPONSORSHIP.png,subjects/thumbnails/sports-sponsorship.png,1151325,c5faa2b149566bb7995dd11b39243c2d6978054f189e8b9eb65ae79fe87b218d
+MATERIE/THUMBNAILS/SPORTS-TOURISM.png,subjects/thumbnails/sports-tourism.png,3143323,00a0720bc238a862f6203a6ad1926cd7d51d7cc2fd8478eaae85a50d82b2d654
+APP-MOCKUP/OverTime _APP-EDU-LESSON.pdf,ui/mockups/app-lesson.pdf,239012,524314e74daaa79be3d06485c4b0fee171b2bd53e873ae13a69190fa63336216
+APP-MOCKUP/OverTime _APP-EDU-LESSON.png,ui/mockups/app-lesson.png,13102646,9a774e41d6300c5fb984bb7cf10631f67b6efb8635e8ec22d5e929944504181f
+APP-MOCKUP/OverTime _APP-EDU-LESSON.svg,ui/mockups/app-lesson.svg,15586228,3fdac7e692a659ea00c0d845aced65fb98a45c02f33e46f23d68e1a7c6877fdb
+APP-MOCKUP/OverTime _APP-EDU-MAIN.pdf,ui/mockups/app-main-awe-edu.pdf,2565951,403e2f1be5ec1ba6a5b33e3797b9fdd7d226982d244f9991b9ff86d8d6993410
+APP-MOCKUP/OverTime _APP-EDU-MAIN.png,ui/mockups/app-main-awe-edu.png,8094550,a386b7288969ed63e66dced79120893e5d7fa98f21fdf20050fdf9a2806f82ab
+APP-MOCKUP/OverTime _APP-EDU-MAIN.svg,ui/mockups/app-main-awe-edu.svg,8395426,9ef7d319ec426a9549d92a8821168524dadb831a2c6e84010be832cd06b6e4fa
+APP-MOCKUP/OverTime _APP-COLOR-1-MAIN.pdf,ui/mockups/app-main-color-01.pdf,2570506,7af3228e6c5b134db48f0851992e8d871bf3c3431d5446e446d4cf13d0897c4f
+APP-MOCKUP/OverTime _APP-COLOR-1-MAIN.png,ui/mockups/app-main-color-01.png,8074430,6a7b9c40c09422a2204b72219de6bce499d66affa6df841e2982e2883fd40f5e
+APP-MOCKUP/OverTime _APP-COLOR-1-MAIN.svg,ui/mockups/app-main-color-01.svg,8389584,9331862ea05db0d25ac0948d4b1899fd3e7deedda18176ae67a5308380586afb
+APP-MOCKUP/OverTime _APP-COLOR-2-MAIN.pdf,ui/mockups/app-main-color-02.pdf,2570513,5efce3cddcf3bd809c18ea0a4a48ef2084954d2ea0a7f66ae8ea6e9fb63a86e6
+APP-MOCKUP/OverTime _APP-COLOR-2-MAIN.png,ui/mockups/app-main-color-02.png,8087472,9748c47dfef0d45d3d7803c780b2758158df09af204a9944fbb5612af3b69202
+APP-MOCKUP/OverTime _APP-COLOR-2-MAIN.svg,ui/mockups/app-main-color-02.svg,8389660,0dad76e6f6c0f52b7bb7d7ee39ec6a7cbba66bd58abccb06e6bf566b644e867f

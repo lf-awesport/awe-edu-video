@@ -32,6 +32,8 @@ const safeRelative = (root: string, path: string) => {
 const parseJson = (text: string, label: string): unknown => { try { return JSON.parse(text); } catch { throw new Error(`${label} returned invalid JSON (raw output redacted)`); } };
 
 const WorkspaceStatusSchema = z.object({
+  id: z.string().min(1).optional(),
+  is_selected: z.boolean().optional(),
   workspace: z.object({id: z.string().min(1).optional(), name: z.string().min(1).optional(), status: z.string().min(1).optional()}).passthrough().optional(),
   workspace_id: z.string().min(1).optional(),
   current_workspace: z.string().min(1).optional(),
@@ -68,7 +70,7 @@ export class HiggsfieldQuoteAdapter {
     const workspace = WorkspaceStatusSchema.parse(parseJson(workspaceResult.stdout, 'workspace status'));
     const status = workspace.status ?? workspace.workspace?.status;
     const selectedStatus = status && !/^(unknown|none|not[-_ ]?selected|unselected)$/i.test(status);
-    const selected = Boolean(workspace.workspace_id || workspace.current_workspace || workspace.workspace?.id || workspace.workspace?.name || selectedStatus);
+    const selected = Boolean((workspace.is_selected === true && workspace.id) || workspace.workspace_id || workspace.current_workspace || workspace.workspace?.id || workspace.workspace?.name || selectedStatus);
     if (!selected) return {provider: 'higgsfield', executable: true, version: versionMatch[1], workspace: 'unknown', model: 'blocked', ready: false, blocker: 'workspace response did not prove a selected workspace (identity redacted)', snapshotPath: null};
     const modelPayload = ModelPayloadSchema.parse(await this.invokeJson(['model', 'get', 'seedance_2_0_mini'], 'model discovery'));
     const param = (name: string) => modelPayload.params.find((item) => item.name === name);

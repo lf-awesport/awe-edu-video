@@ -1,0 +1,8 @@
+path,family,role,bytes,sha256,source
+libre-franklin/LibreFranklin-Italic-Variable.ttf,Libre Franklin,temporary-fallback-italic,206092,b8d2f40203bd4d90fe3e805953d9b79d62a6486db756d984b0d8ef4435b367ba,https://github.com/google/fonts/blob/e1118da94a8cb00cf6d06cdac9ef13eb1e5c6ab7/ofl/librefranklin/LibreFranklin-Italic%5Bwght%5D.ttf
+libre-franklin/LibreFranklin-Variable.ttf,Libre Franklin,temporary-fallback,187436,2329f394b10ed1c71107df20fddc11e2bb1b68c1ecbb385f975b36fd64a971f8,https://github.com/google/fonts/blob/e1118da94a8cb00cf6d06cdac9ef13eb1e5c6ab7/ofl/librefranklin/LibreFranklin%5Bwght%5D.ttf
+libre-franklin/OFL.txt,Libre Franklin,license,4495,2710268527181a27b8e938617551bae29e714e6525247be6679bf897a9942a60,https://github.com/google/fonts/blob/e1118da94a8cb00cf6d06cdac9ef13eb1e5c6ab7/ofl/librefranklin/OFL.txt
+poppins/Poppins-Black.ttf,Poppins,mockup-weight-900,153440,d82aaaf98a9283f9a8edd24e51173337d8eaf09e25cd3d98831f8ec8461748a1,https://github.com/google/fonts/blob/e1118da94a8cb00cf6d06cdac9ef13eb1e5c6ab7/ofl/poppins/Poppins-Black.ttf
+poppins/Poppins-ExtraBold.ttf,Poppins,mockup-weight-800,154836,f2ab17c1a63a0ecc12c2461848fc8a469395e3cd2d641803e889c643d9f958e1,https://github.com/google/fonts/blob/e1118da94a8cb00cf6d06cdac9ef13eb1e5c6ab7/ofl/poppins/Poppins-ExtraBold.ttf
+poppins/Poppins-Medium.ttf,Poppins,mockup-weight-500,158576,90373e7d838d32468438fc3e152dca0bdb12edcab99ea639f158790b1ba1fd05,https://github.com/google/fonts/blob/e1118da94a8cb00cf6d06cdac9ef13eb1e5c6ab7/ofl/poppins/Poppins-Medium.ttf
+poppins/OFL.txt,Poppins,license,4385,6be04893d770899a015649c7aa3b582f871b272f8747a92b78b17c3e5c8b2573,https://github.com/google/fonts/blob/e1118da94a8cb00cf6d06cdac9ef13eb1e5c6ab7/ofl/poppins/OFL.txt

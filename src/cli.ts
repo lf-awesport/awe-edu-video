@@ -8,7 +8,8 @@ import {CandidateCostObservationSchema, CostEstimateSchema, PriceObservationSche
 import {LocalRuntimeState} from './runtime-state.js';
 import {HiggsfieldQuoteAdapter} from './providers/higgsfield.js';
 import {CapabilitySnapshotSchema} from './schema.js';
-import {computeRenderIdentity, FFMPEG_TRANSFORM, prepareRenderEvidence, publishRenderEvidence, renderEvidencePaths, verifyRenderEvidence} from './render-evidence.js';
+import {computeRenderIdentity, FFMPEG_TRANSFORM, INTERNAL_SCALE, prepareRenderEvidence, publishRenderEvidence, renderEvidencePaths, verifyRenderEvidence} from './render-evidence.js';
+import {importVoiceCandidate} from './voice-candidate.js';
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -187,6 +188,18 @@ try {
         respond(project.projectId, {scope: scope === 'provider' ? {provider: 'higgsfield'} : {sceneId}, networkIntent: 'explicit-refresh', quoteStatus: 'missing', priceObservationStatus: 'current-non-authorizing', freshness, observations: parsedObservations, candidateCostObservations, quoteBindings: [], costEstimate, blockers: ['price observations are non-authorizing and lack contractual quote binding', 'explicit budget and an authorizing quote are required', 'submission is unavailable in this tracer']}, [{type: 'CapabilitySnapshot', path: doctor.snapshotPath}, ...observations.map((item) => ({type: 'PriceObservation', path: item.evidencePath}))]);
       }
     }
+  } else if (command === 'candidate' && args[1] === 'import') {
+    if (option('--kind') !== 'voice') throw new Error('Only voice candidate import is supported');
+    const file = option('--file'), candidateId = option('--candidate-id'), sourceProvider = option('--source-provider'), sourceModel = option('--source-model'), sourceJobId = option('--source-job-id'), voiceId = option('--voice-id');
+    if (!file || !candidateId || !sourceProvider || !sourceModel || !sourceJobId || !voiceId) throw new Error('Voice candidate import requires --file, --candidate-id, --source-provider, --source-model, --source-job-id and --voice-id');
+    const imported = await importVoiceCandidate({project,runtimeRoot,sceneId,file,candidateId,sourceProvider,sourceModel,sourceJobId,voiceId});
+    const {manifest} = imported;
+    respond(project.projectId, {
+      candidateId:manifest.id, sceneId:manifest.sceneId, audioSha256:manifest.audioAsset.sha256,
+      durationSeconds:manifest.audioAsset.durationSeconds, authoredDurationSeconds:manifest.timing.authoredDurationSeconds,
+      durationDeltaSeconds:manifest.timing.durationDeltaSeconds, selectionStatus:manifest.timing.selectionStatus,
+      releaseStatus:manifest.releaseStatus, manifestPath:imported.manifestPath, blockers:manifest.blockers,
+    }, [{type:'VoiceCandidate',path:imported.manifestPath,hash:manifest.manifestHash},{type:'AudioAsset',path:manifest.audioAsset.path,hash:manifest.audioAsset.sha256}]);
   } else if (command === 'render') {
     const {plan, path: materializedPlanPath} = await materializePlan(project, sceneId);
     const state = new LocalRuntimeState(runtimeRoot, project.projectId);
@@ -215,9 +228,23 @@ try {
       await rm(deliveryOutput, {force: true});
 
       try {
-        const serveUrl = await bundle({entryPoint: resolve('src/remotion-entry.tsx')});
-        const composition = await selectComposition({serveUrl, id: compositionId, inputProps: {plan}});
-        await renderMedia({serveUrl, composition, codec: 'h264', scale: 0.25, outputLocation: remotionOutput, inputProps: {plan}, overwrite: true});
+        const serveUrl = await bundle({
+          entryPoint: resolve('src/remotion-entry.tsx'),
+          publicDir: resolve('assets'),
+          symlinkPublicDir: true,
+        });
+        const composition = await selectComposition({serveUrl, id: compositionId, inputProps: {plan}, timeoutInMilliseconds: 120_000});
+        await renderMedia({
+          serveUrl,
+          composition,
+          codec: 'h264',
+          scale: INTERNAL_SCALE,
+          outputLocation: remotionOutput,
+          inputProps: {plan},
+          overwrite: true,
+          timeoutInMilliseconds: 120_000,
+          concurrency: 1,
+        });
         runChecked('ffmpeg', FFMPEG_TRANSFORM.arguments.map((argument) => argument
           .replace('$INPUT', remotionOutput)
           .replace('$WIDTH', String(plan.outputProfile.width))
@@ -243,8 +270,8 @@ try {
         planHash: plan.planHash,
         media: evidence.technicalProbe,
         releaseStatus: project.status,
-        renderScale: 0.25,
-        previewQuality: 'quarter-scale deterministic motion render, upscaled for internal review',
+        renderScale: INTERNAL_SCALE,
+        previewQuality: 'native 1920x1080 deterministic motion render for internal review',
         deliveryScale: `${plan.outputProfile.width}x${plan.outputProfile.height}`,
       },
       [{type: 'MP4', path: evidence.mediaPath, hash: evidence.mediaSha256}, {type:'RenderManifest',path:evidence.manifestPath}],
