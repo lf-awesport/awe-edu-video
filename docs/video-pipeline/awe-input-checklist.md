@@ -13,8 +13,8 @@ No row is production-approved by this document. `blocked` means required for rel
 | Licences and internships | blocked | offer/contract source; scope each Claim | owner/legal | T6/T10 |
 | Live sessions | blocked | product source; speaker consent if shown | owner/legal | T6/T10 |
 | CTA and payoff | blocked | approved final copy | owner/brand/legal | T10 |
-| Logo, fonts, BrandKit | blocked | files, hashes, use licences | brand/legal | T7/T10 |
-| UI screenshot/screencast | blocked | current captures, provenance, rights | product/rights | T7/T10 |
+| Logo, fonts, BrandKit | partial | files and hashes are present under `assets/`; production use licences remain required | brand/legal | T7/T10 |
+| UI screenshot/screencast | partial | supplied UI mockups are present; current authorized product captures, provenance and rights remain required | product/rights | T7/T10 |
 | Partner/case-study/reward assets | blocked | real synthetic-safe demo assets and grants | partner/legal | T7/T10 |
 | Protagonist/voice/music/SFX | blocked | assets, Rights/Consent Grants | legal/audio | T5/T10 |
 | Output profile | open | approved dimensions/fps/codec/caption mode | quality owner | T9 |

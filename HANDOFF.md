@@ -20,7 +20,9 @@ The next production tracer remains audio: approve scripts/claims, select a TTS o
 
 ## Resume here
 
-Continue on branch `implementation/video-pipeline`. The repository now contains the reviewed bilingual specification, decision history, the full local Matt Pocock skill package, and an executable TypeScript/Remotion prototype. Generated media and runtime state are intentionally excluded from Git.
+Continue on branch `main`. The repository now contains the reviewed bilingual specification, decision history, the full local Matt Pocock skill package, and an executable TypeScript/Remotion prototype. Generated media and runtime state are intentionally excluded from Git.
+
+GitHub Issues is the canonical active tracker. Start from [Completare e rendere rilasciabile il master audiovisivo AWE](https://github.com/lf-awesport/awe-edu-video/issues/1), then follow the dependency graph linked there. The 17 local tickets under `.scratch/video-generation-pipeline/issues/` are reconciled decision history, not open implementation tasks; see [`docs/agents/ticket-reconciliation.md`](docs/agents/ticket-reconciliation.md). `AGENTS.md` makes the Matt Pocock workflow mandatory for non-trivial work.
 
 Read in this order:
 
@@ -107,7 +109,7 @@ Then complete Higgsfield T3/T4 and integrate selected 5-second footage only for 
 
 ## Open production blockers
 
-- AWE Brand Kit, fonts, current authorized UI captures and screencasts.
+- Brand, font, logo, subject and UI mockup files are present; their production Rights Grants and current authorized UI captures/screencasts remain missing.
 - Sources/approval for 12 areas, 400+ videos, 1200+ quizzes, certificate, two-month duration, licensing, merchandise/internships, live sessions, CTA and payoff.
 - Rights and consent grants, output/safe-area policy, loudness/true-peak policy, music/SFX rights.
 - Remotion company category/headcount and any required licence approval. Current decision permits evaluation/internal prototype only.
