@@ -1,6 +1,6 @@
 # GitHub Issues tracker
 
-Repository: `lf-awesport/awe-edu-video`  
+Repository: `lf-awesport/awe-edu-video`
 Canonical map: [Completare e rendere rilasciabile il master audiovisivo AWE](https://github.com/lf-awesport/awe-edu-video/issues/1)
 
 GitHub Issues is the active tracker. Local Markdown under
