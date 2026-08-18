@@ -190,6 +190,14 @@ Immutable evidence from evaluating one Quality Requirement against one exact art
 
 A localized observation produced by a Validation Result, tied where possible to a Scene, Layer, time or frame range, measured value, expected condition, severity, and remediation guidance.
 
+### Motion Language
+
+A versioned visual grammar for how elements enter, move, transform, hand off between Scenes, and settle. A Motion Language defines reusable motion families, easing and pacing constraints, but does not change Storyboard narrative authority or make every Scene use the same animation.
+
+### Transition Anchor
+
+An identifiable visual state at a Scene boundary that both sides of a transition can reproduce or inherit, such as the same object, crop, color field, direction of travel, or layout geometry. A Transition Anchor enables continuity without fabricating an unrelated intermediate object.
+
 ### Review Package
 
 The minimal evidence bundle presented for one human decision, including the exact artifact, relevant source intent, localized findings, references or baselines, changes from the prior version, and the consequences of each available decision.
