@@ -135,3 +135,29 @@ and unobstructed.
 - Partner-section narrative and real-brand policy remain human decisions.
 - Music/SFX motion accents remain out of scope until audio lanes and rights are
   approved.
+
+## Implementation evidence — `awe-master@1.3.0`
+
+The approved executable boundary is implemented. The selected opening footage
+remains hash-bound as
+`sha256:e455ecec73107b6a6ea1f9867791da016d6536d24d1167bd6dc77829b5da009b`;
+its transition anchor is frozen at approximately 3.25 seconds and the crop
+expands from the real blue screen. No provider operation or credit spend was
+required.
+
+```text
+RenderPlan       sha256:180e381b71f66625cc1c0e4e9e5c2d141177fc638266b414b7a734a441f6627a
+Render identity  sha256:cdea63a13c449335f0778b589edd941f8f3bd487f2a9dc122fc083916de93b08
+Master MP4       sha256:258ad78a11554faccfe3f230a197c96092895a70852e1c518491778118dd85f0
+Opening clip     sha256:efcb0c0c1edd1e2ffa1ca76a0837cd734d56fb562002e89fdf72cb17279b2697
+Scene 4 clip     sha256:0cc44963bf0bd51b9ddeee542c476a1ba52f7c6f48d97031559962d34666f984
+Scene 6 clip     sha256:c62e80e441b344c23d6ffb03bf218dcdbccc665f3a62d02cfa9a2cced0e2408a
+```
+
+Localized reviews passed the exact acceptance beats: one footage phone and a
+continuous blue/magma/UI opening; one coherent scene-4 deck/fan settling into a
+4×3 grid; and scene-6 progress fill, depth handoff, cyan ranking entrance and
+one legible position change. Full audiovisual proxy review found all 13 scenes
+ordered and populated, continuous Italian voice/captions and no black, broken,
+frozen or clipped frames. The remaining uncertainty now belongs to #13 rather
+than these completed motion tracers.

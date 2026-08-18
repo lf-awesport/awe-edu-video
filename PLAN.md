@@ -3,6 +3,11 @@ in selected footage, then establish a non-repetitive AWE Motion Language on the
 stable app-section scenes 4 and 6. Do not animate designer-marked obsolete or
 blocked structure before a new Storyboard promotion.
 
+Status: Completed for `awe-master@1.3.0`. The exact native master and localized
+clips passed technical verification, full decode and creative review. The next
+work is the human-gated Storyboard promotion in #13, not additional autonomous
+polish on the blocked scenes.
+
 Context: The current master is a verified 3048-frame internal preview. Motion
 audit found a duplicated synthetic phone, broken portrait-to-desktop geometry,
 and repeated universal fades/reveal springs. The raw opening footage supplies a

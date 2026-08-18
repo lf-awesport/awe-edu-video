@@ -1,5 +1,5 @@
 import React, {type CSSProperties, type ReactNode} from 'react';
-import {AbsoluteFill, Easing, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig, Video} from 'remotion';
+import {AbsoluteFill, Easing, Freeze, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig, Video} from 'remotion';
 import type {RenderPlan} from './schema.js';
 import {brand, brandAsset} from './remotion-brand.ts';
 
@@ -41,49 +41,56 @@ const Browser = ({asset, style, scroll = 0}: {asset: string; style: CSSPropertie
   <div style={{position: 'absolute', left: 0, right: 0, top: 46, bottom: 0, overflow: 'hidden'}}><Img src={brandAsset(asset)} style={{width: '100%', height: 'auto', transform: `translateY(${scroll}px)`}} /></div>
 </div>;
 
-const PHONE_WIDTH = 430;
-const PHONE_HEIGHT = 860;
-const Phone = ({style}: {style?: CSSProperties}) => <div style={{position: 'absolute', left: '50%', top: '50%', width: PHONE_WIDTH, height: PHONE_HEIGHT, padding: 16, borderRadius: 68, background: '#07152F', boxShadow: '0 42px 110px rgba(0,8,35,.52)', transformOrigin: 'center', ...style}}>
-  <div style={{position: 'relative', width: '100%', height: '100%', overflow: 'hidden', borderRadius: 53, background: brand.colors.blue}}>
-    <Img src={brandAsset('brand/backgrounds/runtime/magma-gradient.png')} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover'}} />
-    <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(145deg,rgba(0,27,88,.82),rgba(0,51,154,.24))'}} />
-    <div style={{position: 'absolute', inset: 0, display: 'grid', placeItems: 'center'}}><Logo width={285} /></div>
-    <div style={{position: 'absolute', left: '50%', top: 12, width: 118, height: 28, borderRadius: 18, background: '#07152F', transform: 'translateX(-50%)'}} />
-  </div>
-</div>;
-
 const Scene01 = ({scene}: SceneProps) => {
   const frame = useCurrentFrame(); const {fps} = useVideoConfig();
   const intro = reveal(frame, fps, 0.15);
-  const phoneIn = interpolate(frame, [2.25 * fps, 4.65 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
-  const imageScale = interpolate(frame, [0, 5 * fps], [1.08, 1.02], clamp);
-  const copyOut = interpolate(frame, [2.1 * fps, 3.35 * fps], [1, 0], clamp);
+  const anchorFrame = Math.round(3.25 * fps);
+  const takeover = interpolate(frame, [anchorFrame, 5.25 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const copyOut = interpolate(frame, [1.85 * fps, 2.65 * fps], [1, 0], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const blueOpacity = interpolate(takeover, [.68, .88], [0, 1], clamp);
+  const magmaOpacity = interpolate(takeover, [.84, 1], [0, 1], clamp);
+  const footageStyle: CSSProperties = {position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',transformOrigin:'45% 45.8%',transform:`translate(${takeover*95}px, ${takeover*45}px) scale(${1+takeover*3.8})`};
   return <SceneShell scene={scene} accent={brand.colors.cyan} fadeOut={false}>
-    {scene.media?.footage
-      ? <Video src={staticFile(scene.media.footage.path)} muted style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',transform:`scale(${imageScale})`}}/>
-      : <Img src={brandAsset('subjects/runtime/sports-marketing.png')} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', transform: `scale(${imageScale})`}} />}
-    <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(4,16,49,.96) 0%, rgba(4,25,72,.72) 48%, rgba(4,25,72,.28) 100%)'}} />
-    <div style={{position: 'absolute', left: 0, bottom: 0, width: 1040, height: 270, background: 'linear-gradient(0deg,rgba(4,16,49,1),rgba(4,16,49,.96) 58%,rgba(4,16,49,0))'}} />
-    <div style={{position: 'absolute', left: 92, top: 72, opacity: copyOut}}><Logo width={280} /></div>
+    {scene.media?.footage ? frame < anchorFrame
+      ? <Video src={staticFile(scene.media.footage.path)} muted style={footageStyle}/>
+      : <Freeze frame={anchorFrame}><Video src={staticFile(scene.media.footage.path)} muted style={footageStyle}/></Freeze>
+      : <Img src={brandAsset('subjects/runtime/sports-marketing.png')} style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/>}
+    <div style={{position:'absolute',inset:0,background:'#1479E8',opacity:blueOpacity}}/>
+    <Img src={brandAsset('brand/backgrounds/runtime/magma-gradient.png')} style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',opacity:magmaOpacity}}/>
+    <div style={{position:'absolute',inset:0,background:'linear-gradient(90deg,rgba(4,16,49,.91) 0%,rgba(4,25,72,.52) 46%,rgba(4,25,72,.08) 78%)',opacity:copyOut}}/>
+    <div style={{position:'absolute',left:92,top:72,opacity:copyOut}}><Logo width={280}/></div>
     <div style={{position: 'absolute', left: 96, top: 338, width: 790, opacity: intro * copyOut, transform: `translateY(${(1 - intro) * 55}px)`}}><Eyebrow color={brand.colors.cyan}>Oltre il campo</Eyebrow><Title style={{fontSize: 88, marginTop: 27}}>Sai come funziona<br />davvero lo sport?</Title><div style={{marginTop: 30, fontFamily: brand.fonts.body, fontSize: 30, lineHeight: 1.25}}>Scopri l’industria, le competenze<br />e le persone che ci sono dietro.</div></div>
-    <Phone style={{opacity: phoneIn, transform: `translate(-50%, -50%) translateX(${(1 - phoneIn) * 520}px) scale(${0.58 + phoneIn * 0.42})`}} />
   </SceneShell>;
 };
 
 const Scene02 = ({scene}: SceneProps) => {
   const frame = useCurrentFrame(); const {fps} = useVideoConfig();
-  const p = interpolate(frame, [0, 2.8 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const logoIn = interpolate(frame, [0, .65 * fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+  const canvasDepth = interpolate(frame, [.4 * fps, 3 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
   return <SceneShell scene={scene} accent={brand.colors.cyan} fadeIn={false} fadeOut={false}>
-    <Img src={brandAsset('brand/backgrounds/runtime/magma-gradient.png')} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: .62}} />
-    <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(135deg,rgba(0,27,88,.92),rgba(0,51,154,.38))'}} />
-    <Phone style={{transform: `translate(-50%, -50%) scale(${1 + p * 4.25})`}} />
+    <Img src={brandAsset('brand/backgrounds/runtime/magma-gradient.png')} style={{position:'absolute',inset:-60,width:2040,height:1200,objectFit:'cover',transform:`scale(${1+canvasDepth*.035}) translateX(${-canvasDepth*20}px)`}}/>
+    <div style={{position:'absolute',inset:0,background:'linear-gradient(135deg,rgba(0,27,88,.48),rgba(0,51,154,.16))'}}/>
+    <div style={{position:'absolute',left:680,top:430,opacity:logoIn,transform:`scale(${.92+logoIn*.08})`,transformOrigin:'center'}}><Logo width={560}/></div>
   </SceneShell>;
 };
 
 const Scene04 = ({scene}: SceneProps) => {
-  const frame = useCurrentFrame(); const {fps} = useVideoConfig(); const head = reveal(frame, fps, 0.1);
-  return <SceneShell scene={scene} light accent="#FFC757"><div style={{position: 'absolute', left: 90, top: 68, opacity: head}}><Eyebrow color={brand.colors.blue}>Un percorso strutturato</Eyebrow><Title style={{fontSize: 58, marginTop: 15}}>Esplora il <span style={{color: brand.colors.blue}}>business dello sport</span></Title></div>
-    <div style={{position: 'absolute', left: 92, right: 92, top: 250, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16}}>{subjects.map((subject, i) => {const r = reveal(frame, fps, 0.45 + i * .08); return <div key={subject} style={{height: 200, borderRadius: 18, overflow: 'hidden', position: 'relative', boxShadow: '0 10px 28px rgba(11,42,91,.16)', opacity: r, transform: `translateY(${(1-r)*28}px)`}}><Img src={brandAsset(`subjects/runtime/${subject}.png`)} style={{width: '100%', height: '100%', objectFit: 'cover'}} /><div style={{position: 'absolute', left: 0, right: 0, bottom: 0, padding: '36px 17px 13px', background: 'linear-gradient(transparent,rgba(2,12,40,.9))', color: '#fff', fontSize: 18, fontWeight: 800}}>{subjectNames[i]}</div><div style={{position: 'absolute', left: 13, top: 13, width: 10, height: 35, borderRadius: 8, background: subjectColors[i]}} /></div>})}</div>
+  const frame = useCurrentFrame(); const {fps} = useVideoConfig();
+  const head = interpolate(frame, [.1 * fps, .75 * fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+  const deckOpacity = interpolate(frame, [.35 * fps, .9 * fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+  return <SceneShell scene={scene} light accent="#FFC757" fadeIn={false} fadeOut={false}><div style={{position: 'absolute', left: 90, top: 68, opacity: head, transform: `translateY(${(1-head)*24}px)`}}><Eyebrow color={brand.colors.blue}>Un percorso strutturato</Eyebrow><Title style={{fontSize: 58, marginTop: 15}}>Esplora il <span style={{color: brand.colors.blue}}>business dello sport</span></Title></div>
+    <div style={{position: 'absolute', left: 92, right: 92, top: 250, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, perspective: 1400}}>{subjects.map((subject, i) => {
+      const column = i % 4;
+      const row = Math.floor(i / 4);
+      const finalCenterX = 303 + column * 438;
+      const finalCenterY = 350 + row * 216;
+      const fanX = 960 + (i - 5.5) * 68;
+      const fanY = 510 + Math.abs(i - 5.5) * 8;
+      const x = interpolate(frame, [.45 * fps, 1.35 * fps, 3.15 * fps, 4.75 * fps], [960-finalCenterX, fanX-finalCenterX, fanX-finalCenterX, 0], {...clamp, easing: Easing.inOut(Easing.cubic)});
+      const y = interpolate(frame, [.45 * fps, 1.35 * fps, 3.15 * fps, 4.75 * fps], [510-finalCenterY, fanY-finalCenterY, fanY-finalCenterY, 0], {...clamp, easing: Easing.inOut(Easing.cubic)});
+      const rotation = interpolate(frame, [.45 * fps, 1.35 * fps, 3.15 * fps, 4.75 * fps], [(i-5.5)*.35, (i-5.5)*3.2, (i-5.5)*3.2, 0], {...clamp, easing: Easing.inOut(Easing.cubic)});
+      const scale = interpolate(frame, [.45 * fps, 1.35 * fps, 3.15 * fps, 4.75 * fps], [.88, .9, .9, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+      return <div key={subject} style={{height: 200, borderRadius: 18, overflow: 'hidden', position: 'relative', boxShadow: '0 10px 28px rgba(11,42,91,.16)', opacity: deckOpacity, zIndex: 20-Math.abs(i-5.5), transform: `translate3d(${x}px,${y}px,${-Math.abs(i-5.5)*7}px) rotateZ(${rotation}deg) scale(${scale})`, transformOrigin: 'center'}}><Img src={brandAsset(`subjects/runtime/${subject}.png`)} style={{width: '100%', height: '100%', objectFit: 'cover'}} /><div style={{position: 'absolute', left: 0, right: 0, bottom: 0, padding: '36px 17px 13px', background: 'linear-gradient(transparent,rgba(2,12,40,.9))', color: '#fff', fontSize: 18, fontWeight: 800}}>{subjectNames[i]}</div><div style={{position: 'absolute', left: 13, top: 13, width: 10, height: 35, borderRadius: 8, background: subjectColors[i]}} /></div>})}</div>
     <div style={{position: 'absolute', right: 88, top: 175, padding: '11px 18px', borderRadius: 12, background: '#E6F8FD', color: brand.colors.blue, fontSize: 16, fontWeight: 800}}>VIDEO · TEST · QUIZ</div></SceneShell>;
 };
 
@@ -96,11 +103,16 @@ const Scene05 = ({scene}: SceneProps) => {
 };
 
 const Scene06 = ({scene}: SceneProps) => {
-  const frame = useCurrentFrame(); const {fps} = useVideoConfig(); const p = reveal(frame, fps, .2); const score = Math.round(interpolate(frame, [.8*fps, 5*fps], [0, 78], clamp));
-  const ranks = [['01','Alex R.','Avanzato'],['02','Marta B.','In corso'],['03','Sam K.','In corso']];
-  return <SceneShell scene={scene} accent="#A2CD4B"><div style={{position: 'absolute', left: 94, top: 80}}><Eyebrow color="#A2CD4B">Gamification · concept UI</Eyebrow><Title style={{marginTop: 22}}>Impara. Avanza. <span style={{color: '#A2CD4B'}}>Sfida.</span></Title></div>
-    <div style={{position: 'absolute', left: 95, top: 310, width: 570, height: 535, borderRadius: 30, background: '#fff', color: brand.colors.ink, padding: 44, opacity: p, transform: `translateY(${(1-p)*50}px)`}}><div style={{fontSize: 23, fontWeight: 800, color: brand.colors.blue}}>PROGRESSO PERSONALE</div><div style={{display: 'flex', alignItems: 'center', gap: 42, marginTop: 45}}><div style={{width: 190, height: 190, borderRadius: '50%', display: 'grid', placeItems: 'center', background: `conic-gradient(#A2CD4B ${score}%, #E4EAF2 0)`}}><div style={{width: 145, height: 145, borderRadius: '50%', background: '#fff', display: 'grid', placeItems: 'center', fontSize: 42, fontWeight: 900}}>{score}%</div></div><div><div style={{fontSize: 20, color: '#62728D'}}>PROSSIMO OBIETTIVO</div><div style={{fontSize: 34, fontWeight: 900, marginTop: 10}}>Sports Marketing</div><div style={{marginTop: 26, color: '#58708F', fontFamily: brand.fonts.body, fontSize: 22}}>Completa il quiz per avanzare</div></div></div></div>
-    <div style={{position: 'absolute', left: 720, right: 95, top: 310, height: 535, borderRadius: 30, background: '#082358', padding: 42, opacity: reveal(frame,fps,.8)}}><div style={{fontSize: 23, fontWeight: 800, color: '#A2CD4B'}}>CLASSIFICA · ESEMPIO</div>{ranks.map((rank,i)=><div key={rank[0]} style={{marginTop: 24, height: 112, borderRadius: 18, display: 'grid', gridTemplateColumns: '90px 1fr 170px', alignItems: 'center', padding: '0 28px', background: i===0?'#A2CD4B':'#ffffff10', color: i===0?brand.colors.ink:'#fff', opacity: reveal(frame,fps,1.2+i*.25)}}><span style={{fontSize: 30, fontWeight: 900}}>{rank[0]}</span><span style={{fontSize: 28, fontWeight: 800}}>{rank[1]}</span><span style={{fontSize: 21, fontWeight: 900, textAlign: 'right'}}>{rank[2]}</span></div>)}</div>
+  const frame = useCurrentFrame(); const {fps} = useVideoConfig();
+  const progressIn = interpolate(frame, [.2*fps, 1*fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+  const depth = interpolate(frame, [3.15*fps, 4.65*fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const rankingIn = interpolate(frame, [3.75*fps, 5.2*fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+  const reorder = interpolate(frame, [6*fps, 7.25*fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const score = Math.round(interpolate(frame, [.8*fps, 3*fps], [0, 78], {...clamp, easing: Easing.out(Easing.cubic)}));
+  const ranks = [{name:'Alex R.',status:'Avanzato',from:1,to:0},{name:'Marta B.',status:'In corso',from:0,to:1},{name:'Sam K.',status:'In corso',from:2,to:2}];
+  return <SceneShell scene={scene} accent={brand.colors.cyan} fadeIn={false} fadeOut={false}><div style={{position: 'absolute', left: 94, top: 80}}><Eyebrow color={brand.colors.cyan}>Gamification · concept UI</Eyebrow><Title style={{marginTop: 22}}>Impara. Avanza. <span style={{color: brand.colors.cyan}}>Sfida.</span></Title></div>
+    <div style={{position: 'absolute', left: 95, top: 310, width: 570, height: 535, borderRadius: 30, background: '#fff', color: brand.colors.ink, padding: 44, opacity: progressIn*(1-depth*.32), transform: `perspective(1400px) translateX(${(1-depth)*280}px) translateZ(${-depth*180}px) rotateY(${depth*5}deg) scale(${1.08-depth*.08})`, transformOrigin: 'center'}}><div style={{fontSize: 23, fontWeight: 800, color: brand.colors.blue}}>PROGRESSO PERSONALE</div><div style={{display: 'flex', alignItems: 'center', gap: 42, marginTop: 45}}><div style={{width: 190, height: 190, borderRadius: '50%', display: 'grid', placeItems: 'center', background: `conic-gradient(${brand.colors.cyan} ${score}%, #E4EAF2 0)`}}><div style={{width: 145, height: 145, borderRadius: '50%', background: '#fff', display: 'grid', placeItems: 'center', fontSize: 42, fontWeight: 900}}>{score}%</div></div><div><div style={{fontSize: 20, color: '#62728D'}}>PROSSIMO OBIETTIVO</div><div style={{fontSize: 34, fontWeight: 900, marginTop: 10}}>Sports Marketing</div><div style={{marginTop: 26, color: '#58708F', fontFamily: brand.fonts.body, fontSize: 22}}>Completa il quiz per avanzare</div></div></div></div>
+    <div style={{position: 'absolute', left: 720, right: 95, top: 310, height: 535, borderRadius: 30, background: '#082358', padding: 42, opacity: rankingIn, transform: `perspective(1400px) translateX(${(1-rankingIn)*180}px) translateZ(${(1-rankingIn)*-220}px) scale(${.94+rankingIn*.06})`}}><div style={{fontSize: 23, fontWeight: 800, color: brand.colors.cyan}}>CLASSIFICA · ESEMPIO</div><div style={{position:'relative',marginTop:24,height:384}}>{ranks.map((rank)=>{const position=interpolate(reorder,[0,1],[rank.from,rank.to]);const place=Math.round(interpolate(reorder,[0,1],[rank.from+1,rank.to+1]));const leader=rank.to===0;return <div key={rank.name} style={{position:'absolute',left:0,right:0,top:position*128,height:112,borderRadius:18,display:'grid',gridTemplateColumns:'90px 1fr 170px',alignItems:'center',padding:'0 28px',background:leader?`rgba(51,197,243,${.16+reorder*.84})`:'#ffffff10',color:leader&&reorder>.55?brand.colors.ink:'#fff',transform:`scale(${1+(leader?reorder*.025:0)})`,boxShadow:leader?`0 ${Math.round(reorder*18)}px ${Math.round(reorder*45)}px rgba(0,12,50,.28)`:'none'}}><span style={{fontSize:30,fontWeight:900}}>{String(place).padStart(2,'0')}</span><span style={{fontSize:28,fontWeight:800}}>{rank.name}</span><span style={{fontSize:21,fontWeight:900,textAlign:'right'}}>{rank.status}</span></div>})}</div></div>
   </SceneShell>;
 };
 

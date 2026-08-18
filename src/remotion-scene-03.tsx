@@ -10,18 +10,14 @@ const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 export const Scene03BrandReveal = ({scene}: {scene: PlannedScene}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const logoSettle = interpolate(frame, [0, 0.55 * fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
-  const logoMove = interpolate(frame, [0.75 * fps, 2.1 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
-  const copyIn = spring({frame: frame - 1.95 * fps, fps, durationInFrames: 0.8 * fps, config: {damping: 200}});
-  const browserIn = spring({frame: frame - 2.05 * fps, fps, durationInFrames: 1 * fps, config: {damping: 200}});
-  const detailIn = spring({frame: frame - 3.15 * fps, fps, durationInFrames: 0.7 * fps, config: {damping: 200}});
+  const logoMove = interpolate(frame, [0.45 * fps, 1.7 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const copyIn = spring({frame: frame - 1.45 * fps, fps, durationInFrames: 0.8 * fps, config: {damping: 200}});
+  const browserIn = spring({frame: frame - 1.6 * fps, fps, durationInFrames: 1 * fps, config: {damping: 200}});
+  const detailIn = spring({frame: frame - 2.8 * fps, fps, durationInFrames: 0.7 * fps, config: {damping: 200}});
   const ambientShift = interpolate(frame, [0, 6 * fps], [0, -42], {...clamp, easing: Easing.inOut(Easing.sin)});
-  const settledLogoX = interpolate(logoSettle, [0, 1], [212, 680]);
-  const settledLogoY = interpolate(logoSettle, [0, 1], [405, 430]);
-  const settledLogoScale = interpolate(logoSettle, [0, 1], [2.67, 1]);
-  const logoX = interpolate(logoMove, [0, 1], [settledLogoX, brand.safeArea + 24]);
-  const logoY = interpolate(logoMove, [0, 1], [settledLogoY, 68]);
-  const logoScale = interpolate(logoMove, [0, 1], [settledLogoScale, 0.59]);
+  const logoX = interpolate(logoMove, [0, 1], [680, brand.safeArea + 24]);
+  const logoY = interpolate(logoMove, [0, 1], [430, 68]);
+  const logoScale = interpolate(logoMove, [0, 1], [1, 0.59]);
 
   return (
     <AbsoluteFill style={{backgroundColor: brand.colors.blue, color: brand.colors.white, overflow: 'hidden'}}>

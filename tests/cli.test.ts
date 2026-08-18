@@ -130,7 +130,7 @@ if(args[0]==='--version') console.log('higgsfield 1.1.20'); else if(args[0]==='w
     const second = run('build', '--to', 'preview', '--runtime-root', root);
     const scene = run('build', '--scene', 'scene-03', '--to', 'preview', '--runtime-root', root);
     const state = run('reconstruct', '--runtime-root', root);
-    expect(first.result).toMatchObject({cache:'miss',totalFrames:3048,planHash:'sha256:54cf44400f27009235e143c2d534dd4aa7b13f374e7e6ffd7224539d67d0709d'});
+    expect(first.result).toMatchObject({cache:'miss',totalFrames:3048,planHash:'sha256:180e381b71f66625cc1c0e4e9e5c2d141177fc638266b414b7a734a441f6627a'});
     expect(second.result.cache).toBe('hit');
     expect(scene.result).toMatchObject({cache:'miss',totalFrames:180});
     expect(state.result.planOutputs).toHaveLength(2);

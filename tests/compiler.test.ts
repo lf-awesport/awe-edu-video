@@ -11,7 +11,7 @@ describe('Storyboard -> RenderPlan public seam', () => {
     expect(a).toEqual(b);
     expect(a.totalFrames).toBe(180);
     expect(a.scenes[0].frameInterval).toEqual({start: 0, end: 180});
-    expect(a.planHash).toBe('sha256:232ebb8955992ff6a1776223b234b457667e2811c304cfdc583a2b9afe585aaa');
+    expect(a.planHash).toBe('sha256:464a7066f25e0420c1d339c74d6d3495aabbff78ef27b9f0ae0600dd61710ed4');
     expect(JSON.stringify(a)).not.toContain(process.cwd());
   });
 
@@ -26,14 +26,14 @@ describe('Storyboard -> RenderPlan public seam', () => {
       ['scene-10',{start:2130,end:2349}],['scene-11',{start:2349,end:2619}],['scene-12',{start:2619,end:2808}],
       ['scene-13',{start:2808,end:3048}],
     ]);
-    expect(plan.planHash).toBe('sha256:54cf44400f27009235e143c2d534dd4aa7b13f374e7e6ffd7224539d67d0709d');
+    expect(plan.planHash).toBe('sha256:180e381b71f66625cc1c0e4e9e5c2d141177fc638266b414b7a734a441f6627a');
     expect(plan.scenes.flatMap((scene) => scene.claims)).toEqual([]);
   });
 
   it('compiles the owner-approved copy lock without removed Claim dependencies', () => {
     const input = YAML.parse(readFileSync('examples/awe-project.yaml', 'utf8'));
     const plan = compileMaster(input);
-    expect(plan.storyboard.version).toBe('1.2.0');
+    expect(plan.storyboard.version).toBe('1.3.0');
     expect(plan.scenes.flatMap((scene) => scene.claims)).toEqual([]);
     expect(plan.blockers).not.toContain('claims are unverified');
     expect(plan.scenes.find(({id}) => id === 'scene-04')?.presentation.voiceOver).toBe(
@@ -44,12 +44,12 @@ describe('Storyboard -> RenderPlan public seam', () => {
     );
   });
 
-  it('compiles the approved phone opening without changing script or timing authority', () => {
+  it('compiles the approved footage-phone opening without changing script or timing authority', () => {
     const input = YAML.parse(readFileSync('examples/awe-project.yaml', 'utf8'));
     const plan = compileMaster(input);
     const opening = plan.scenes.slice(0, 3);
 
-    expect(plan.storyboard.version).toBe('1.2.0');
+    expect(plan.storyboard.version).toBe('1.3.0');
     expect(opening.map(({id, requestedDurationSeconds}) => [id, requestedDurationSeconds])).toEqual([
       ['scene-01', 5],
       ['scene-02', 3],
@@ -63,7 +63,7 @@ describe('Storyboard -> RenderPlan public seam', () => {
     });
     expect(opening[1]?.presentation).toMatchObject({
       kind: 'phone-push',
-      content: ['TELEFONO CENTRATO', 'INGRESSO NELLO SCHERMO', 'UI AWE REALE'],
+      content: ['SCHERMO BLU EREDITATO DAL FOOTAGE', 'TAKEOVER MAGMA', 'UI AWE REALE'],
       voiceOver: 'Lascia che ti faccia vedere.',
     });
     expect(opening[2]?.presentation).toMatchObject({
@@ -72,11 +72,27 @@ describe('Storyboard -> RenderPlan public seam', () => {
     });
   });
 
+  it('compiles distinct motion intents for the stable app-section tracers', () => {
+    const input = YAML.parse(readFileSync('examples/awe-project.yaml', 'utf8'));
+    const plan = compileMaster(input);
+
+    expect(plan.scenes.find(({id}) => id === 'scene-04')?.presentation.content).toEqual([
+      'MAZZO 3D DEI 12 TEMI',
+      'APERTURA CONTROLLATA',
+      'ASSESTAMENTO IN GRIGLIA',
+    ]);
+    expect(plan.scenes.find(({id}) => id === 'scene-06')?.presentation.content).toEqual([
+      'PROGRESSO IN PRIMO PIANO',
+      'PASSAGGIO IN PROFONDITÀ',
+      'CLASSIFICA DINAMICA',
+    ]);
+  });
+
   it('binds the approved balanced timing and selected audiovisual media into the master plan', () => {
     const input = YAML.parse(readFileSync('examples/awe-project.yaml', 'utf8'));
     const plan = compileMaster(input);
 
-    expect(plan.storyboard.version).toBe('1.2.0');
+    expect(plan.storyboard.version).toBe('1.3.0');
     expect(plan.totalFrames).toBe(3048);
     expect((plan as any).timing).toMatchObject({
       id: 'awe-livia-balanced',

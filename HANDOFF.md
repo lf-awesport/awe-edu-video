@@ -1,5 +1,40 @@
 # Handoff — AWE video-generation pipeline
 
+## Footage-anchor and motion-language master — 2026-08-18
+
+The owner-approved motion revision is complete at `awe-master@1.3.0`. Scenes
+1–3 now use the phone physically present in the selected footage as the sole
+Transition Anchor: the camera pushes into its blue screen, expands to the magma
+canvas, and introduces the AWE logo/UI without a second synthetic device.
+Scene 4 now transforms one 3D topic deck into the final 4×3 grid. Scene 6 uses
+the distinct progress → depth → cyan ranking → reorder choreography. Copy,
+Livia voice assets, captions, 3048-frame timing and release status are
+unchanged.
+
+```text
+RenderPlan       sha256:180e381b71f66625cc1c0e4e9e5c2d141177fc638266b414b7a734a441f6627a
+Render identity  sha256:cdea63a13c449335f0778b589edd941f8f3bd487f2a9dc122fc083916de93b08
+Master MP4       sha256:258ad78a11554faccfe3f230a197c96092895a70852e1c518491778118dd85f0
+Media            H.264 1920×1080, 30 fps, 3048 frames; AAC 48 kHz stereo
+Video duration   101.600 seconds (container 101.610667 s; AAC packet padding)
+Path             .video/renders/sha256-cdea63a13c449335f0778b589edd941f8f3bd487f2a9dc122fc083916de93b08/awe-master.mp4
+```
+
+The immutable verifier and an independent `ffmpeg -xerror` pass fully decoded
+the master. Localized opening, scene 4 and scene 6 reviews passed without
+duplicate phones, black frames, clipping, overlap or missing media. Full-proxy
+audiovisual review confirmed all 13 ordered scenes, continuous Italian
+narration/captions, the revised motion beats and the unchanged closing
+footage-to-CTA transition. Review evidence is under
+`.video/reviews/opening-1.3.0/`, `.video/reviews/motion-1.3.0/` and
+`.video/reviews/awe-motion-1.3.0/` and remains intentionally untracked.
+
+Issues #11 and #12 own the completed tracers. Issue #13 remains the next
+creative gate: do not remove/merge scene 5 or alter scenes 7–13 until the
+designer/owner provides the named assets, copy, Claim evidence and promoted
+Storyboard revision. This artifact remains `internal-preview-only`; successful
+motion review does not grant rights or release authority.
+
 ## Balanced audiovisual master — 2026-08-18
 
 The owner approved the balanced timing selection. The unchanged authored
