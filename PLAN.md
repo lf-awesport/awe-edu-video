@@ -5,8 +5,11 @@ blocked structure before a new Storyboard promotion.
 
 Status: Completed for `awe-master@1.3.0`. The exact native master and localized
 clips passed technical verification, full decode and creative review. The next
-work is the human-gated Storyboard promotion in #13, not additional autonomous
-polish on the blocked scenes.
+work is the human-gated Storyboard promotion in #13, followed by the
+cross-scene/voice-pacing tracer #14 and audio mix #6. Music/SFX selection #15
+can proceed in parallel. See
+`docs/video-pipeline/continuity-audio-grill-2026-08-18.md`; do not add
+autonomous polish to blocked scenes or unlicensed audio.
 
 Context: The current master is a verified 3048-frame internal preview. Motion
 audit found a duplicated synthetic phone, broken portrait-to-desktop geometry,

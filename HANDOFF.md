@@ -1,5 +1,35 @@
 # Handoff — AWE video-generation pipeline
 
+## Continuity and sound-design grill — 2026-08-18
+
+The owner reports that most scene boundaries remain too hard, principal scene
+motion often settles before the Italian voice ends, and the master needs music
+and sound design. A two-depth recursive grill against the exact render, WAV
+durations and Remotion code confirms the diagnosis. The selected voice almost
+fills every resolved scene; the defect is visual pacing, with current principal
+motion ending approximately 1.9–8.3 seconds early in several scenes. Apart from
+the opening, the renderer has adjacent scene Sequences rather than explicit
+cross-scene Transition Beats, and it has no global music, ambience or SFX lane.
+
+The adopted plan is documented in
+[`docs/video-pipeline/continuity-audio-grill-2026-08-18.md`](docs/video-pipeline/continuity-audio-grill-2026-08-18.md):
+
+1. #13 remains the human gate for stable structure, intervals, handoff intent
+   and section energy before polishing scenes known to be obsolete.
+2. #14 then owns all 12 Transition Beats, a voice-aware Motion Cue Sheet and
+   visual/audio timeline separation. During active narration, more than 1.5 s
+   without a meaningful visual beat requires an explicit Narrative Hold.
+3. #15 can run in parallel and owns selection/rights for 2–3 audio candidates.
+   Preferred direction is one continuous instrumental sport/technology bed
+   with hook/product/partner-CTA energy sections, sparse SFX and optional office
+   ambience—not unrelated music at every scene.
+4. #6 materializes lanes, waveform-aware ducking, stems and verified mix after
+   #4/#14/#15; #7 remains the exact downstream master review.
+
+No music was downloaded, generated, purchased or selected by this grill. Music
+and SFX require immutable files, provenance, license scope and owner selection;
+release loudness and true-peak policy remain open.
+
 ## Footage-anchor and motion-language master — 2026-08-18
 
 The owner-approved motion revision is complete at `awe-master@1.3.0`. Scenes
