@@ -43,10 +43,16 @@ authoritative merely because it appears here.
 
 Before full TTS synthesis, approve the spoken form of:
 
-- `AWE`: letter-by-letter English, Italianized spelling, or established brand pronunciation;
-- `AWE Sport Education`: English pronunciation or approved Italianized delivery;
+- `AWE`: approved as **“Aue” with Italian vowels**, ending in Italian `/e/`;
+  it MUST NOT sound like the English exclamation “awe” or end in `/i/` as “aui”;
+- `AWE Sport Education`: pronounce the brand token as “Aue”; review the English
+  words in the generated Candidate before selection;
 - any retained English terms. The recommended copy replaces `case studies`,
   `know-how` and `sport industry` with Italian wording to reduce ambiguity.
+
+The TTS normalization is `AWE → Aue`. This spelling is an implementation aid,
+not a brand-copy change, and the generated result still requires listening
+approval because providers may choose different stress or vowel transitions.
 
 ## Approval response format
 
