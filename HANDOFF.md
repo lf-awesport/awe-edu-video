@@ -1,5 +1,36 @@
 # Handoff — AWE video-generation pipeline
 
+## Voice-over standby — 2026-08-18
+
+The owner has paused all voice-over work. Do not submit, retry, or otherwise
+spend credits on TTS until the owner explicitly resumes this lane. The preserved
+creative direction is Higgsfield ElevenLabs preset `Livia` with
+`[confident] [upbeat]`: the voice and tone are approved, but the required
+cohesive Italian pronunciation `AWE → “Aue”` is not. The latest pronunciation
+attempt was rejected before returning a job ID with HTTP 403. Higgsfield status
+and job-list calls then also returned 403, so neither that attempt's billing nor
+the current account state is reconciled. The last verified balance is **6.6
+credits**, not a current quote.
+
+The useful local artifacts remain excluded from Git:
+
+```text
+Rejected Inworld master     job da6e2e66-5bbe-4ad4-ae81-eb1bd85c7e2a
+                            .video/tts/inworld-orietta-copy-1.1.0/master.wav
+Approved Livia tone smoke   job a88287fc-f278-413f-a9dc-7f9a17d4a7a3
+                            .video/tts/higgsfield-elevenlabs-livia-ipa-smoke/audition.mp3
+```
+
+The Inworld `Orietta (it)` master cost 2 credits and was rejected as too
+funereal. Three ElevenLabs-via-Higgsfield tone auditions cost 0.90 credits in
+total despite a 0.45-credit authorization ceiling; this operational error has
+already been disclosed and recorded in GitHub issue #3. The selected Livia
+smoke cost a further 0.30 credits. Qwen rejected Livia before job creation as an
+incompatible preset. See
+[`docs/video-pipeline/tts-provider-research.md`](docs/video-pipeline/tts-provider-research.md)
+and [issue #3](https://github.com/lf-awesport/awe-edu-video/issues/3) for the
+decision record.
+
 ## Copy lock update — 2026-08-18
 
 The owner approved the safer Italian copy package, CTA 1 and pronunciation
@@ -11,11 +42,8 @@ and live-session Claims were removed from the release copy and corresponding
 visuals. The affected scenes passed a 1920×1080 contact-sheet review without
 blocking clipping. See [`docs/video-pipeline/awe-copy-review.md`](docs/video-pipeline/awe-copy-review.md).
 
-The next authorized action is repository/tracker closure only. Paid TTS remains
-separately gated. The preferred cost-limited experiment is one Higgsfield
-Inworld job using `Orietta (it)`, all approved narration in one request, maximum
-2 credits and no automatic retry. Do not submit it until the owner explicitly
-authorizes that exact spend.
+Copy and CTA are no longer blockers for TTS, but voice-over is voluntarily on
+standby under the stricter gate above.
 
 ## Visual master update — 2026-08-17
 
@@ -33,7 +61,7 @@ The render passed full decode and technical verification. A visual review of the
 
 Runtime-sized derivatives under `assets/ui/runtime/`, `assets/subjects/runtime/` and `assets/brand/backgrounds/runtime/` prevent Chromium memory failures while preserving the supplied originals. Render identity binds every source and derivative used by the composition. Native rendering uses one worker because the complete master exceeds a stable multi-worker memory budget on the current machine.
 
-The next production tracer remains audio: approve scripts/claims, select a TTS or human VoiceCandidate, make selected audio authoritative for timing, generate captions, and add music/mix. Scenes 1 and 13 currently use deterministic Remotion fallbacks; replace them with selected authorized footage only after a fresh cost preflight and explicit spend approval.
+The next production tracer remains audio when the owner resumes that lane: resolve pronunciation, select a VoiceCandidate, make selected audio authoritative for timing, generate captions, and add music/mix. Other independent work may proceed meanwhile. Scenes 1 and 13 currently use deterministic Remotion fallbacks; replace them with selected authorized footage only after a fresh cost preflight and explicit spend approval.
 
 ## Resume here
 
@@ -91,27 +119,28 @@ The render uses quarter-scale internal Remotion rendering followed by determinis
 
 ## Immediate blocker requiring the user
 
-Higgsfield authentication and workspace selection are complete. The last observed
-free-plan balance was 9.8 credits; refresh it before relying on that number. The
-live schema exposes Italian Inworld voices `Orietta (it)` and `Gianni (it)`, and
-the complete approved narration was observed at 2 credits in one request.
-
-No paid TTS request has been submitted. Before doing so, obtain explicit owner
-authorization for the exact voice, approved text, maximum 2-credit spend and
-no-retry policy. Never retry a potentially charged submission automatically and
-do not capture or commit account identity, tokens, workspace IDs or billing data.
+Voice-over is paused by owner decision. Resumption requires explicit owner
+authorization, restored Higgsfield access, reconciliation of the 403 attempt and
+balance, and one approved way to pronounce `AWE` cohesively as Italian “Aue”
+with Livia. No new spend is authorized. Never retry a potentially charged
+submission automatically, and do not capture or commit account identity,
+tokens, workspace IDs or billing data.
 
 ## Recommended next tracer
 
-Implement T5 audio/captions before paid footage:
+While voice-over is paused, choose an independent open lane from the canonical
+issue map and run it through the mandatory Matt Pocock workflow. When the owner
+resumes T5 audio/captions:
 
-1. After explicit spend authorization, synthesize one Inworld `Orietta (it)`
-   Candidate from the approved narration; normalize only spoken `AWE` to `Aue`.
-2. Model immutable VoiceCandidates separately from Script selection.
-3. Make selected audio the build timing authority; report duration deltas instead of silently mutating the storyboard.
-4. Derive captions from selected audio/alignment and mix voice/music lanes explicitly.
-5. Bind audio/caption hashes into RenderPlan and render identity.
-6. Produce a new internal master and verify audio stream, duration, caption timing and full decode.
+1. Reconcile Higgsfield authentication, jobs and balance without submitting a
+   generation.
+2. Run only an explicitly authorized, capped Livia pronunciation experiment;
+   do not regenerate the full script until cohesive “Aue” is approved.
+3. Model immutable VoiceCandidates separately from Script selection.
+4. Make selected audio the build timing authority; report duration deltas instead of silently mutating the storyboard.
+5. Derive captions from selected audio/alignment and mix voice/music lanes explicitly.
+6. Bind audio/caption hashes into RenderPlan and render identity.
+7. Produce a new internal master and verify audio stream, duration, caption timing and full decode.
 
 Then complete Higgsfield T3/T4 and integrate selected 5-second footage only for scenes 1 and 13 after the user approves a displayed fresh preflight. The current balanced declaration requests two candidates per scene, but no credits have been spent.
 

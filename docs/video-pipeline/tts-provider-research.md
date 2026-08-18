@@ -2,6 +2,39 @@
 
 **Observed 2026-08-11; decision scope:** the 13-scene, Italian, `internal-preview-only` fixture. This is implementation research, not a quote or legal opinion. Only provider-operated documentation, pricing and terms were used. Voice cloning, voice design and uploaded reference voices are out of scope.
 
+## Operational decision — voice-over on standby, 2026-08-18
+
+The owner paused all TTS work. **No provider call, retry, or additional spend is
+authorized.** The creative direction preserved for a later resumption is
+Higgsfield `text2speech_v2`, variant `elevenlabs`, preset `Livia`, with
+`[confident] [upbeat]`. Livia and that tone are approved; pronunciation is not.
+The attempted IPA `/ˈa.u.e/` was spoken as separate letters rather than the
+required cohesive Italian “Aue”.
+
+The selected tone smoke is job `a88287fc-f278-413f-a9dc-7f9a17d4a7a3`, local
+artifact `.video/tts/higgsfield-elevenlabs-livia-ipa-smoke/audition.mp3`, SHA-256
+`10a8076163b1cb7910eb46e16357f394b9a14ab9899287810415c2f532038b1a`, duration
+4.362449 s, and observed cost 0.30 credits. These runtime artifacts are not
+committed.
+
+The last authorized spelling test received HTTP 403 without returning a job ID;
+subsequent workspace-status and job-list calls also received 403. Its billing
+state is therefore unknown. The last verified balance was **6.6 credits** before
+that attempt and must not be presented as current. Before resuming, restore
+read-only access and reconcile job history and balance without generation.
+
+The earlier Inworld `Orietta (it)` master (job
+`da6e2e66-5bbe-4ad4-ae81-eb1bd85c7e2a`) cost 2 credits and was rejected by the
+owner as too funereal. Three comparative ElevenLabs-via-Higgsfield auditions
+(`Livia`, `Gia`, `Isabella`) consumed 0.90 credits against an authorized ceiling
+of 0.45 credits. That execution error was disclosed to the owner and is retained
+in the canonical tracker. The owner selected Livia over the automated review's
+preference for Gia.
+
+The historical research and recommendations below remain useful technical
+context, but this operational decision supersedes their provider defaults for
+the current AWE preview.
+
 ## Fresh cost-only preflight — 2026-08-18
 
 Authenticated CLI `1.1.20` discovery still exposes `text2speech_v2`,
