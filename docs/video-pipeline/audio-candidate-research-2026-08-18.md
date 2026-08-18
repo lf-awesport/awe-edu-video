@@ -6,13 +6,14 @@ below: these exact files were downloaded, decoded and auditioned against the
 same voice-over master. They remain **Candidates**, not Selected Assets or a
 Rights Grant.
 
-## Recommendation
+## Owner selection
 
-Recommend **B — Uplifting Bass by Lily J**. It is instrumental, modern,
-optimistic and tech-forward, while leaving materially more space for Italian
-speech than the alternates. Its full-master audition passed as a strong
-candidate. Owner selection of A/B/C is still required before promotion into the
-production asset manifest or Remotion composition.
+The owner selected **B — Uplifting Bass by Lily J** on 2026-08-18. It is
+instrumental, modern, optimistic and tech-forward, while leaving materially
+more space for Italian speech than the alternates. The selected source is bound
+to SHA-256
+`6cdd3514fb6ce919f7b9e8984d9c11c3e2a7de9b39ec0e2658be0c64e69fd5e0`.
+This selects the music source, not the final mix or release Rights Grant.
 
 Use one continuous bed with restrained section edits for hook, product and CTA.
 Do not switch songs merely at scene cuts. Keep SFX sparse and motivated by a
@@ -47,12 +48,19 @@ claimed.
 | --- | --- | --- |
 | A | `.video/reviews/audio-auditions-1.0.0/a-digital-clouds.mp4` | `0f81803d65417a8fc7f9a9fe6228c1d1fe3c2e7a4372d3d935bf921b2fd17819` |
 | B | `.video/reviews/audio-auditions-1.0.0/b-uplifting-bass.mp4` | `d4851d9bb13276a380f6539a25862e6b3bb6d6634119588af088fd03d117b977` |
+| B low v2 | `.video/reviews/audio-auditions-1.0.0/b-uplifting-bass-low-v2.mp4` | `f74f52d72d6e7f7ddeb732adbb73fb4b5c756dbe8b0fc0af264e97084bb5e389` |
 | C | `.video/reviews/audio-auditions-1.0.0/c-new-bass-01.mp4` | `8c4ea5207665c8f58695d6548203c255c51a5bb397cf5cc3e753444bc88ab3b7` |
 
 Source loudness measurements were -13.1 LUFS / +0.7 dBTP for A, -11.8 LUFS /
 +0.6 dBTP for B and -18.1 LUFS / +0.3 dBTP for C. The existing voice-only
 review proxy measured -15.6 LUFS / -3.5 dBTP. These measurements explain why
 source gain cannot be used directly; they are not final targets.
+
+After owner feedback that the first B audition was too loud, B low v2 moved the
+music target from approximately -25 to -30 LUFS while leaving voice gain
+unchanged. The resulting combined proxy measures -15.1 LUFS integrated and
+-2.2 dBTP. It fully decoded and passed an intelligibility review with no
+observed speech masking. Final ducking and release targets remain owned by #6.
 
 ## Minimal SFX Candidate palette
 
@@ -91,19 +99,18 @@ Primary sources reviewed on 2026-08-18:
 
 ## Selection and release gates
 
-1. Owner listens to A/B/C and selects the exact music Candidate/hash.
-2. Record the selected source and edited derivative separately in the Asset
+1. Record the selected source and edited derivative separately in the Asset
    Usage Manifest; preserve catalogue, download and license evidence.
-3. Keep Music, SFX and optional Ambience as distinct Audio Lanes. Deliver only
+2. Keep Music, SFX and optional Ambience as distinct Audio Lanes. Deliver only
    synchronized rendered outputs to the client; raw Mixkit files stay internal.
-4. Issue #14 supplies the Transition Beats before final SFX placement. Issue #6
+3. Issue #14 supplies the Transition Beats before final SFX placement. Issue #6
    owns final ducking, mix, loudness/true-peak policy and release evidence.
-5. Owner/legal approves the exact Rights Grant and channels. Candidate research
+4. Owner/legal approves the exact Rights Grant and channels. Candidate research
    is not release authorization.
 
 ## Open decisions
 
-- Owner choice: A, **B recommended**, or C.
+- Owner approval of the quieter B mix balance and three-section edit direction.
 - Whether the optional soft impact survives a real Transition Beat audition.
 - Whether opening office ambience is needed after music and transitions are in
   place; no ambience Candidate is justified yet.
