@@ -66,10 +66,11 @@ if(args[0]==='--version') console.log('higgsfield 1.1.20'); else if(args[0]==='w
     expect(result.result.sceneCount).toBe(13);
     expect(result.result.releaseStatus).toBe('internal-preview-only');
     expect(result.result.blockers.length).toBeGreaterThan(0);
+    expect(result.result.blockers.every((blocker: string) => !blocker.endsWith(':unverified'))).toBe(true);
   }, 30_000);
   it.each([
     ['fractional frame durations', (project: any) => { project.storyboard.scenes[0].seconds += 0.01; project.storyboard.scenes[1].seconds -= 0.01; }],
-    ['duplicate claim IDs', (project: any) => { project.claims[1].id = project.claims[0].id; }],
+    ['duplicate claim IDs', (project: any) => { project.claims = [{id:'duplicate',status:'unverified'},{id:'duplicate',status:'unverified'}]; }],
   ])('rejects %s during CLI validation', (_label, mutate) => {
     const root = mkdtempSync(join(tmpdir(), 'video-project-invalid-'));
     const path = join(root, 'project.yaml');
@@ -129,7 +130,7 @@ if(args[0]==='--version') console.log('higgsfield 1.1.20'); else if(args[0]==='w
     const second = run('build', '--to', 'preview', '--runtime-root', root);
     const scene = run('build', '--scene', 'scene-03', '--to', 'preview', '--runtime-root', root);
     const state = run('reconstruct', '--runtime-root', root);
-    expect(first.result).toMatchObject({cache:'miss',totalFrames:2550,planHash:'sha256:ac22aa2786de0afc0bdb3bebb8b07f27615517f607f82e33d7c60c7a21b4abf3'});
+    expect(first.result).toMatchObject({cache:'miss',totalFrames:2550,planHash:'sha256:4c1b775b6f97fa61e41bc478b462760158afbc00d3ad286422a3d196d134fd2d'});
     expect(second.result.cache).toBe('hit');
     expect(scene.result).toMatchObject({cache:'miss',totalFrames:180});
     expect(state.result.planOutputs).toHaveLength(2);

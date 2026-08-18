@@ -5,7 +5,7 @@ productionProfile: balanced
 outputProfile: {id: awe-hd, version: 1.0.0, width: 1920, height: 1080, fps: 30, codec: h264}
 storyboard:
   id: awe-master
-  version: 1.0.0
+  version: 1.1.0
   scenes:
     - id: scene-01
       seconds: 5
@@ -21,66 +21,58 @@ storyboard:
       seconds: 6
       status: provisional
       technique: remotion-placeholder
-      presentation: {kind: logo-ui, title: "AWE Sport Education", content: ["Piattaforma web", "Sport business", "UI dimostrativa"], voiceOver: "AWE Sport Education presenta una piattaforma web dedicata alla formazione nel mondo dello sport business.", claimIds: []}
+      presentation: {kind: logo-ui, title: "AWE Sport Education", content: ["Piattaforma web", "Business dello sport", "UI dimostrativa"], voiceOver: "AWE Sport Education presenta una piattaforma web dedicata alla formazione nel mondo del business dello sport.", claimIds: []}
     - id: scene-04
       seconds: 8
       status: missing
-      technique: remotion-claims-placeholder
-      presentation: {kind: metrics, title: "Un percorso strutturato", content: ["12 aree", "400+ video brevi", "1200+ quiz"], voiceOver: "All’interno, gli utenti trovano un percorso strutturato su 12 aree chiave dello sport business, con oltre 400 video brevi in lingua inglese e più di 1200 quiz per misurare ciò che hanno imparato.", claimIds: [claim-12-areas, claim-400-videos, claim-1200-quizzes]}
+      technique: remotion-content-overview
+      presentation: {kind: metrics, title: "Un percorso strutturato", content: ["Business dello sport", "Video", "Test", "Quiz"], voiceOver: "All’interno, gli utenti trovano un percorso strutturato dedicato al business dello sport, con video, test e quiz per mettere alla prova ciò che hanno imparato.", claimIds: []}
     - id: scene-05
       seconds: 6
       status: missing
       technique: remotion-ui-placeholder
-      presentation: {kind: devices, title: "Veloce e accessibile", content: ["Desktop", "Tablet", "Mobile", "Passo dopo passo"], voiceOver: "Il formato è veloce e accessibile, con contenuti brevi e un’esperienza che accompagna l’utente passo dopo passo.", claimIds: []}
+      presentation: {kind: devices, title: "Passo dopo passo", content: ["Desktop", "Tablet", "Mobile", "Percorso guidato"], voiceOver: "Il percorso propone contenuti e attività che accompagnano l’utente passo dopo passo.", claimIds: []}
     - id: scene-06
       seconds: 8
       status: missing
       technique: remotion-assets-placeholder
-      presentation: {kind: gamification, title: "Impara. Avanza. Sfida.", content: ["Punti", "Competenze", "Quiz", "Classifica"], voiceOver: "Grazie alla gamification, ogni utente può avanzare nel percorso, accumulare punti, testare le proprie competenze e scalare la classifica.", claimIds: []}
+      presentation: {kind: gamification, title: "Impara. Avanza. Sfida.", content: ["Percorso", "Test", "Quiz", "Classifica"], voiceOver: "Grazie alla gamification, ogni utente può avanzare nel percorso, mettersi alla prova con test e quiz e confrontarsi nella classifica.", claimIds: []}
     - id: scene-07
       seconds: 5
       status: missing
-      technique: remotion-certificate-placeholder
-      presentation: {kind: certificate, title: "Il traguardo", content: ["CERTIFICATO — PLACEHOLDER", "Competenze acquisite"], voiceOver: "Al termine, chi completa con successo le attività riceve un certificato finale che attesta le competenze acquisite.", claimIds: [claim-certificate]}
+      technique: remotion-learning-progress
+      presentation: {kind: learning-progress, title: "Il percorso", content: ["Attività", "Verifiche", "Competenze sviluppate"], voiceOver: "Attività e verifiche accompagnano l’utente lungo il percorso e valorizzano le competenze sviluppate.", claimIds: []}
     - id: scene-08
       seconds: 9
       status: provisional
       technique: remotion-brand-placeholder
-      presentation: {kind: rebranding, title: "La tua identità, in tempo reale", content: ["Logo partner", "Colori", "Branding", "Anteprima live"], voiceOver: "Per il partner, la piattaforma diventa uno spazio completamente personalizzabile, adattabile alla propria identità visiva, integrando logo, colori e branding.", claimIds: []}
+      presentation: {kind: rebranding, title: "La tua identità", content: ["Logo partner", "Colori", "Branding", "Contenuti brandizzati"], voiceOver: "Per il partner, la piattaforma diventa uno spazio personalizzabile, adattabile alla propria identità visiva con logo, colori e contenuti brandizzati.", claimIds: []}
     - id: scene-09
       seconds: 8
       status: missing
       technique: remotion-case-study-placeholder
-      presentation: {kind: case-studies, title: "Know-how che crea valore", content: ["Case study 01", "Case study 02", "Contenuti del partner"], voiceOver: "Il partner può anche inserire contenuti formativi dedicati, come case studies concreti legati alla propria realtà. La piattaforma diventa così un canale per condividere il proprio know-how e valorizzare il proprio ruolo nella sport industry.", claimIds: []}
+      presentation: {kind: case-studies, title: "Esperienza che crea valore", content: ["Caso studio 01", "Caso studio 02", "Contenuti del partner"], voiceOver: "Il partner può integrare contenuti formativi e casi studio legati alla propria realtà, condividendo competenze ed esperienza nel settore dello sport.", claimIds: []}
     - id: scene-10
       seconds: 5
       status: missing
-      technique: remotion-claim-placeholder
-      presentation: {kind: timeline, title: "Un progetto definito", content: ["START", "FINO A 2 MESI", "FINISH"], voiceOver: "La durata del progetto è fino a un massimo di due mesi.", claimIds: [claim-two-months]}
+      technique: remotion-project-roadmap
+      presentation: {kind: timeline, title: "Un progetto su misura", content: ["Obiettivi", "Modalità", "Durata condivisa"], voiceOver: "Durata e modalità del progetto vengono definite insieme al partner, in base ai suoi obiettivi.", claimIds: []}
     - id: scene-11
       seconds: 9
       status: missing
       technique: remotion-rewards-placeholder
-      presentation: {kind: community-rewards, title: "Attiva la community", content: ["Fan", "Studenti", "Stakeholder", "Merchandising", "Esperienze", "Stage"], voiceOver: "Durante questo periodo, il partner può rendere disponibile la piattaforma al proprio target — fan, utenti, community, studenti o stakeholder — attraverso un sistema di licenze e mettere in palio premi per i più meritevoli: merchandising, esperienze e stage.", claimIds: [claim-licences-internships]}
+      presentation: {kind: community-rewards, title: "Attiva la community", content: ["Community", "Partecipazione", "Premi", "Esperienze"], voiceOver: "Il partner può coinvolgere la propria community e valorizzare la partecipazione con premi ed esperienze dedicate.", claimIds: []}
     - id: scene-12
       seconds: 5
       status: missing
-      technique: remotion-ui-placeholder
-      presentation: {kind: live-session, title: "Incontra. Condividi. Interagisci.", content: ["LIVE SESSION — UI PLACEHOLDER", "Q&A", "Community"], voiceOver: "Il partner ha inoltre la possibilità di interagire direttamente con gli utenti tramite sessioni live.", claimIds: [claim-live]}
+      technique: remotion-community-meeting
+      presentation: {kind: community-meeting, title: "Incontra. Condividi. Confrontati.", content: ["Incontri", "Domande", "Community"], voiceOver: "Il progetto può creare occasioni di incontro e confronto dedicate agli utenti.", claimIds: []}
     - id: scene-13
       seconds: 8
       status: missing
       technique: higgsfield-placeholder
-      presentation: {kind: closing-cta, title: "Porta la formazione oltre il campo", content: ["PROTAGONISTA / UFFICIO — PLACEHOLDER FOOTAGE HIGGSFIELD", "CTA PROVVISORIA — DA DEFINIRE"], voiceOver: "CTA da definire.", claimIds: [claim-cta], footagePlaceholder: true}
-claims:
-  - {id: claim-12-areas, status: unverified}
-  - {id: claim-400-videos, status: unverified}
-  - {id: claim-1200-quizzes, status: unverified}
-  - {id: claim-certificate, status: unverified}
-  - {id: claim-two-months, status: unverified}
-  - {id: claim-licences-internships, status: unverified}
-  - {id: claim-live, status: unverified}
-  - {id: claim-cta, status: unverified}
+      presentation: {kind: closing-cta, title: "Porta la formazione nella tua community", content: ["PROTAGONISTA / UFFICIO — PLACEHOLDER FOOTAGE HIGGSFIELD", "Scopri AWE Sport Education"], voiceOver: "Porta la formazione sportiva nella tua community. Scopri AWE Sport Education.", claimIds: [], footagePlaceholder: true}
+claims: []
 generations:
   - sceneId: scene-01
     prompt: "Young professional at a desk in a cinematic modern office, making direct eye contact with camera; a monitor is visible for later compositing of the real platform UI. Natural light, restrained sport-business palette, realistic anatomy, smooth subtle camera movement."

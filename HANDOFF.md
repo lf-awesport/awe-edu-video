@@ -1,5 +1,22 @@
 # Handoff — AWE video-generation pipeline
 
+## Copy lock update — 2026-08-18
+
+The owner approved the safer Italian copy package, CTA 1 and pronunciation
+`AWE → “Aue”` with Italian vowels and final `/e/`. Canonical Storyboard
+`awe-master@1.1.0` compiles to RenderPlan
+`sha256:4c1b775b6f97fa61e41bc478b462760158afbc00d3ad286422a3d196d134fd2d`.
+Unsupported numbers, points, certificate, fixed duration, licensing/internship
+and live-session Claims were removed from the release copy and corresponding
+visuals. The affected scenes passed a 1920×1080 contact-sheet review without
+blocking clipping. See [`docs/video-pipeline/awe-copy-review.md`](docs/video-pipeline/awe-copy-review.md).
+
+The next authorized action is repository/tracker closure only. Paid TTS remains
+separately gated. The preferred cost-limited experiment is one Higgsfield
+Inworld job using `Orietta (it)`, all approved narration in one request, maximum
+2 credits and no automatic retry. Do not submit it until the owner explicitly
+authorizes that exact spend.
+
 ## Visual master update — 2026-08-17
 
 A complete 13-scene visual master now exists in native 1920×1080 resolution. All scenes use the supplied AWE BrandKit, local fonts, logos, UI mockups and subject artwork; generated footage, TTS and paid Higgsfield operations were intentionally excluded.
@@ -47,7 +64,7 @@ Read in this order:
 Latest verification before handoff:
 
 ```text
-npm test                    27 tests passed
+npm test                    29 tests passed
 npm run typecheck           passed
 npm audit --audit-level=high 0 vulnerabilities
 git diff --check            passed
@@ -74,31 +91,22 @@ The render uses quarter-scale internal Remotion rendering followed by determinis
 
 ## Immediate blocker requiring the user
 
-The fresh orb was not authenticated with Higgsfield and had no billing workspace selected. Do not choose a workspace on the user's behalf. The user must run in the orb Terminal:
+Higgsfield authentication and workspace selection are complete. The last observed
+free-plan balance was 9.8 credits; refresh it before relying on that number. The
+live schema exposes Italian Inworld voices `Orietta (it)` and `Gianni (it)`, and
+the complete approved narration was observed at 2 credits in one request.
 
-```bash
-higgsfield auth login
-higgsfield workspace list
-higgsfield workspace set <workspace_id>
-higgsfield workspace status
-```
-
-Do not capture or commit account identity, email, tokens, workspace IDs, or balance.
-
-After the user confirms workspace selection, these operations are safe and non-submitting:
-
-```bash
-npm run video -- provider doctor --provider higgsfield --json
-npm run video -- preflight --scope provider --refresh-quotes --json
-```
-
-The observed Higgsfield `generate cost` payload historically contains only `credits`. The implementation correctly classifies this as non-authorizing PriceObservation because it lacks contractual issue/expiry/quantity binding. Do not introduce submit until a Budget, explicit authorization, Reservation, SubmissionIntent, uncertain-receipt recovery, and a defensible quote-binding policy exist. Never retry a potentially charged submission automatically.
+No paid TTS request has been submitted. Before doing so, obtain explicit owner
+authorization for the exact voice, approved text, maximum 2-credit spend and
+no-retry policy. Never retry a potentially charged submission automatically and
+do not capture or commit account identity, tokens, workspace IDs or billing data.
 
 ## Recommended next tracer
 
 Implement T5 audio/captions before paid footage:
 
-1. Select a TTS approach and obtain a fresh cost preflight; no provider has been approved yet.
+1. After explicit spend authorization, synthesize one Inworld `Orietta (it)`
+   Candidate from the approved narration; normalize only spoken `AWE` to `Aue`.
 2. Model immutable VoiceCandidates separately from Script selection.
 3. Make selected audio the build timing authority; report duration deltas instead of silently mutating the storyboard.
 4. Derive captions from selected audio/alignment and mix voice/music lanes explicitly.
@@ -110,7 +118,8 @@ Then complete Higgsfield T3/T4 and integrate selected 5-second footage only for 
 ## Open production blockers
 
 - Brand, font, logo, subject and UI mockup files are present; their production Rights Grants and current authorized UI captures/screencasts remain missing.
-- Sources/approval for 12 areas, 400+ videos, 1200+ quizzes, certificate, two-month duration, licensing, merchandise/internships, live sessions, CTA and payoff.
+- Removed Claims remain unavailable unless future evidence and scoped Approval
+  support reintroducing them; CTA 1 and the current fallback copy are approved.
 - Rights and consent grants, output/safe-area policy, loudness/true-peak policy, music/SFX rights.
 - Remotion company category/headcount and any required licence approval. Current decision permits evaluation/internal prototype only.
 - Real TTS, audio alignment, captions, music and selected Higgsfield footage.

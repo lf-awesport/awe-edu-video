@@ -50,8 +50,8 @@ export function compileScene(raw: Project, sceneId: string): RenderPlan {
       },
     },
     blockers: [
-      'AWE assets are missing',
-      'claims are unverified',
+      'AWE production inputs are incomplete',
+      ...(scene.presentation.claimIds.length > 0 ? ['claims are unverified'] : []),
       'rights, safe-area and loudness evidence are missing',
       'production use is blocked',
     ],
@@ -76,7 +76,12 @@ export function compileMaster(raw: Project): RenderPlan {
     storyboard:{id:project.storyboard.id,version:project.storyboard.version}, releaseStatus:'internal-preview-only' as const,
     outputProfile:project.outputProfile, totalFrames:cursor, scenes,
     rendererRegistry:{placeholder:{id:'awe-concept-motion-graphics',version:'2.0.1',network:false as const,runtimeWrites:false as const}},
-    blockers:['AWE assets are missing','claims are unverified','rights, safe-area and loudness evidence are missing','production use is blocked'],
+    blockers:[
+      'AWE production inputs are incomplete',
+      ...(scenes.some((scene) => scene.claims.length > 0) ? ['claims are unverified'] : []),
+      'rights, safe-area and loudness evidence are missing',
+      'production use is blocked',
+    ],
     compiler:{id:'awe-plan-compiler',version:'2.0.0'},
   };
   const hash=canonicalHash(body);

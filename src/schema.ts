@@ -81,7 +81,7 @@ export const QuoteFreshnessSchema = z.object({
 });
 
 const versioned = {id: z.string().min(1), version: z.string().min(1)};
-const VisualKindSchema = z.enum(['cinematic-office', 'monitor-push', 'logo-ui', 'metrics', 'devices', 'gamification', 'certificate', 'rebranding', 'case-studies', 'timeline', 'community-rewards', 'live-session', 'closing-cta']);
+const VisualKindSchema = z.enum(['cinematic-office', 'monitor-push', 'logo-ui', 'metrics', 'devices', 'gamification', 'certificate', 'learning-progress', 'rebranding', 'case-studies', 'timeline', 'community-rewards', 'live-session', 'community-meeting', 'closing-cta']);
 const ScenePresentationSchema = z.object({
   kind: VisualKindSchema,
   title: z.string().min(1),

@@ -11,7 +11,7 @@ describe('Storyboard -> RenderPlan public seam', () => {
     expect(a).toEqual(b);
     expect(a.totalFrames).toBe(180);
     expect(a.scenes[0].frameInterval).toEqual({start: 0, end: 180});
-    expect(a.planHash).toBe('sha256:f322acc5cd0924c2c944fe933067b3620d188f2b0c4ba1d7708c78aaa3b6d5ae');
+    expect(a.planHash).toBe('sha256:5abe405ba249a7731b411889b91ccaea8e3f805d299d51f1d22825234dc12626');
     expect(JSON.stringify(a)).not.toContain(process.cwd());
   });
 
@@ -26,8 +26,22 @@ describe('Storyboard -> RenderPlan public seam', () => {
       ['scene-10',{start:1740,end:1890}],['scene-11',{start:1890,end:2160}],['scene-12',{start:2160,end:2310}],
       ['scene-13',{start:2310,end:2550}],
     ]);
-    expect(plan.planHash).toBe('sha256:ac22aa2786de0afc0bdb3bebb8b07f27615517f607f82e33d7c60c7a21b4abf3');
-    expect(plan.scenes.flatMap(scene=>scene.claims).every(claim=>claim.status==='unverified')).toBe(true);
+    expect(plan.planHash).toBe('sha256:4c1b775b6f97fa61e41bc478b462760158afbc00d3ad286422a3d196d134fd2d');
+    expect(plan.scenes.flatMap((scene) => scene.claims)).toEqual([]);
+  });
+
+  it('compiles the owner-approved copy lock without removed Claim dependencies', () => {
+    const input = YAML.parse(readFileSync('examples/awe-project.yaml', 'utf8'));
+    const plan = compileMaster(input);
+    expect(plan.storyboard.version).toBe('1.1.0');
+    expect(plan.scenes.flatMap((scene) => scene.claims)).toEqual([]);
+    expect(plan.blockers).not.toContain('claims are unverified');
+    expect(plan.scenes.find(({id}) => id === 'scene-04')?.presentation.voiceOver).toBe(
+      'All’interno, gli utenti trovano un percorso strutturato dedicato al business dello sport, con video, test e quiz per mettere alla prova ciò che hanno imparato.',
+    );
+    expect(plan.scenes.find(({id}) => id === 'scene-13')?.presentation.voiceOver).toBe(
+      'Porta la formazione sportiva nella tua community. Scopri AWE Sport Education.',
+    );
   });
 
   it('rejects missing or reordered authored scenes', () => {
