@@ -58,6 +58,7 @@ export async function computeRenderIdentity(plan: RenderPlan, compositionId: 'Sc
     'src/remotion-entry.tsx',
     'src/remotion-brand.ts',
     'src/remotion-scene-03.tsx',
+    'src/remotion-motion.tsx',
     'src/remotion-scenes.tsx',
     'assets/brand/backgrounds/runtime/magma-gradient.png',
     'assets/brand/fonts/libre-franklin/LibreFranklin-Variable.ttf',
@@ -77,6 +78,12 @@ export async function computeRenderIdentity(plan: RenderPlan, compositionId: 'Sc
     const path = `assets/${asset.path}`;
     const actualHash = sha256Bytes(await readFile(join(projectRoot, path)));
     if (actualHash !== asset.sha256) throw new Error(`Runtime-selected media hash does not match RenderPlan: ${path}`);
+    sourceHashes[path] = actualHash;
+  }
+  for (const asset of plan.audio ? [plan.audio.music, ...Object.values(plan.audio.sfx)] : []) {
+    const path = `assets/${asset.path}`;
+    const actualHash = sha256Bytes(await readFile(join(projectRoot, path)));
+    if (actualHash !== asset.sha256) throw new Error(`Runtime-selected audio hash does not match RenderPlan: ${path}`);
     sourceHashes[path] = actualHash;
   }
   return renderIdentityFromInputs({

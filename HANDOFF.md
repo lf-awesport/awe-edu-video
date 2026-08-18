@@ -1,5 +1,36 @@
 # Handoff — AWE video-generation pipeline
 
+## Current continuity and selected-audio master — 2026-08-18
+
+The owner explicitly deferred Storyboard revision #13 and authorized the full
+continuity, pacing and audio pass against the unchanged `awe-master@1.3.0`
+structure. The result has 12 distinct Transition Beats on an independent visual
+layer, non-overlapping voice/caption intervals, meaningful scene motion through
+active narration, selected **Uplifting Bass** at the owner-approved discreet
+level, 2 dB voice ducking and four sparse SFX cues. No ambience or heartbeat
+impact was used.
+
+```text
+RenderPlan       sha256:a547a699b454b8c6ba39a6c458daabf7fabedd0e02e4955d7d91236b07b16f06
+Render identity  sha256:f79682443cc10e98f616ab021b2764bf9129a10a412087a6624bb0c3ae523bf1
+Master MP4       sha256:3dbc88bf81afc8bab381c63f82ffe2a5f9d57cd2f07ac88f923811d1d2b7ac7d
+Media            H.264 1920×1080, 30 fps, 3048 frames, 101.610667 s; AAC 48 kHz stereo
+Audio             -15.6 LUFS integrated, -3.6 dBTP (internal review; not release policy)
+Path              .video/renders/sha256-f79682443cc10e98f616ab021b2764bf9129a10a412087a6624bb0c3ae523bf1/awe-master.mp4
+```
+
+The immutable verifier and full decode pass. Full-proxy and 12-edge audiovisual
+reviews pass all requested continuity checks with no blocking defects. Retained
+101.6-second FLAC voice, music pre-duck and SFX stems are under
+`.video/stems/sha256-f79682443cc10e98f616ab021b2764bf9129a10a412087a6624bb0c3ae523bf1/`.
+The exact cue sheet, hashes and review findings are in
+[`docs/video-pipeline/awe-continuity-mix-evidence-2026-08-18.md`](docs/video-pipeline/awe-continuity-mix-evidence-2026-08-18.md).
+
+Future #13 scene/order/timing changes invalidate affected Transition Beats and
+audio cues. The master remains `internal-preview-only`: pre-existing placeholder
+labels/footage, word-level caption alignment, explicit release loudness policy,
+Rights Grants and human release authority remain open.
+
 ## Continuity and sound-design grill — 2026-08-18
 
 The owner reports that most scene boundaries remain too hard, principal scene

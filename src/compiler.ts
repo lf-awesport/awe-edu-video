@@ -85,6 +85,7 @@ export function compileMaster(raw: Project): RenderPlan {
       id:project.timingSelection.id,version:project.timingSelection.version,voiceTempo:project.timingSelection.voiceTempo,
       authoredTotalFrames:project.timingSelection.authoredTotalFrames,resolvedTotalFrames:project.timingSelection.resolvedTotalFrames,
     },
+    audio: project.selectedAudio,
     scenes,
     rendererRegistry:{placeholder:{id:'awe-concept-motion-graphics',version:'2.0.1',network:false as const,runtimeWrites:false as const}},
     blockers:[

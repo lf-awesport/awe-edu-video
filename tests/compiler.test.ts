@@ -26,7 +26,7 @@ describe('Storyboard -> RenderPlan public seam', () => {
       ['scene-10',{start:2130,end:2349}],['scene-11',{start:2349,end:2619}],['scene-12',{start:2619,end:2808}],
       ['scene-13',{start:2808,end:3048}],
     ]);
-    expect(plan.planHash).toBe('sha256:180e381b71f66625cc1c0e4e9e5c2d141177fc638266b414b7a734a441f6627a');
+    expect(plan.planHash).toBe('sha256:a547a699b454b8c6ba39a6c458daabf7fabedd0e02e4955d7d91236b07b16f06');
     expect(plan.scenes.flatMap((scene) => scene.claims)).toEqual([]);
   });
 
@@ -121,6 +121,46 @@ describe('Storyboard -> RenderPlan public seam', () => {
         sha256: 'sha256:116dfb5099d4f2d9869d5952d24e0e8e5c5bf2a3dfe07eea6078ede5beb0fcd4',
       },
     });
+  });
+
+  it('binds the owner-selected music and sparse SFX mix without changing scene timing', () => {
+    const input = YAML.parse(readFileSync('examples/awe-project.yaml', 'utf8'));
+    const plan = compileMaster(input);
+
+    expect((plan as any).audio).toEqual({
+      id: 'awe-selected-mix',
+      version: '1.0.0',
+      music: {
+        path: 'runtime-selected/music/uplifting-bass.mp3',
+        sha256: 'sha256:6cdd3514fb6ce919f7b9e8984d9c11c3e2a7de9b39ec0e2658be0c64e69fd5e0',
+        durationSeconds: 95.999975,
+        playbackRate: 0.9448816,
+        gainDb: -24.2,
+        referenceLufs: -36,
+      },
+      sfx: {
+        whoosh: {
+          path: 'runtime-selected/sfx/cinematic-whoosh-fast-transition.wav',
+          sha256: 'sha256:02b8cd40b3761288d54f4d6706983a2f8c110182b669ae2cdf9aab02935a4e7a',
+          durationSeconds: 1.334127,
+        },
+        uiSelect: {
+          path: 'runtime-selected/sfx/modern-technology-select.wav',
+          sha256: 'sha256:00270a1847195cddb82d1b10c9407880ce311f522284afaefdc218fbba70d3ed',
+          durationSeconds: 0.5,
+        },
+      },
+      cues: [
+        {id: 'product-relay', asset: 'whoosh', frame: 1021, gainDb: -22},
+        {id: 'partner-relay', asset: 'whoosh', frame: 1825, gainDb: -24},
+        {id: 'ranking-select', asset: 'uiSelect', frame: 1260, gainDb: -12},
+        {id: 'roadmap-select', asset: 'uiSelect', frame: 2310, gainDb: -14},
+      ],
+      ducking: {voiceGainDb: 0, musicUnderVoiceDb: -2, attackFrames: 6, releaseFrames: 12},
+      ambience: null,
+      releasePolicy: null,
+    });
+    expect(plan.totalFrames).toBe(3048);
   });
 
   it('rejects missing or reordered authored scenes', () => {

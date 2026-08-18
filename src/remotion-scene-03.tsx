@@ -10,11 +10,12 @@ const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 export const Scene03BrandReveal = ({scene}: {scene: PlannedScene}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
+  const duration = scene.frameInterval.end - scene.frameInterval.start;
   const logoMove = interpolate(frame, [0.45 * fps, 1.7 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
   const copyIn = spring({frame: frame - 1.45 * fps, fps, durationInFrames: 0.8 * fps, config: {damping: 200}});
   const browserIn = spring({frame: frame - 1.6 * fps, fps, durationInFrames: 1 * fps, config: {damping: 200}});
   const detailIn = spring({frame: frame - 2.8 * fps, fps, durationInFrames: 0.7 * fps, config: {damping: 200}});
-  const ambientShift = interpolate(frame, [0, 6 * fps], [0, -42], {...clamp, easing: Easing.inOut(Easing.sin)});
+  const ambientShift = interpolate(frame, [0, duration - 18], [0, -58], {...clamp, easing: Easing.inOut(Easing.sin)});
   const logoX = interpolate(logoMove, [0, 1], [680, brand.safeArea + 24]);
   const logoY = interpolate(logoMove, [0, 1], [430, 68]);
   const logoScale = interpolate(logoMove, [0, 1], [1, 0.59]);
@@ -52,7 +53,7 @@ export const Scene03BrandReveal = ({scene}: {scene: PlannedScene}) => {
             <div style={{marginLeft: 20, height: 28, flex: 1, maxWidth: 470, borderRadius: 9, background: '#FFFFFF', color: '#55709C', fontFamily: brand.fonts.body, fontSize: 15, display: 'grid', placeItems: 'center'}}>awesporteducation.org</div>
           </div>
           <div style={{position: 'absolute', left: 0, right: 0, top: 54, bottom: 0, overflow: 'hidden', background: '#fff'}}>
-            <Img src={brandAsset('ui/runtime/app-main-awe-edu.png')} style={{width: '100%', height: 'auto', display: 'block', transform: `translateY(${interpolate(frame, [2.4 * fps, 6 * fps], [-2, -64], clamp)}px)`}} />
+            <Img src={brandAsset('ui/runtime/app-main-awe-edu.png')} style={{width: '100%', height: 'auto', display: 'block', transform: `translateY(${interpolate(frame, [2.4 * fps, duration - 18], [-2, -94], {...clamp, easing:Easing.inOut(Easing.cubic)})}px)`}} />
           </div>
         </div>
 

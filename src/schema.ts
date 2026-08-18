@@ -87,6 +87,37 @@ const RuntimeMediaAssetSchema = z.object({
   sha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
   durationSeconds: z.number().positive(),
 });
+const RuntimeAudioAssetSchema = z.object({
+  path: z.string().regex(/^runtime-selected\/(music|sfx)\/[a-z0-9-]+\.(mp3|wav)$/),
+  sha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+  durationSeconds: z.number().positive(),
+});
+const SelectedAudioSchema = z.object({
+  ...versioned,
+  music: RuntimeAudioAssetSchema.extend({
+    playbackRate: z.number().positive(),
+    gainDb: z.number().nonpositive(),
+    referenceLufs: z.number(),
+  }),
+  sfx: z.object({
+    whoosh: RuntimeAudioAssetSchema,
+    uiSelect: RuntimeAudioAssetSchema,
+  }),
+  cues: z.array(z.object({
+    id: z.string().min(1),
+    asset: z.enum(['whoosh', 'uiSelect']),
+    frame: z.number().int().nonnegative(),
+    gainDb: z.number().nonpositive(),
+  })),
+  ducking: z.object({
+    voiceGainDb: z.literal(0),
+    musicUnderVoiceDb: z.number().nonpositive(),
+    attackFrames: z.number().int().positive(),
+    releaseFrames: z.number().int().positive(),
+  }),
+  ambience: z.null(),
+  releasePolicy: z.null(),
+});
 const VisualKindSchema = z.enum(['cinematic-office', 'phone-push', 'logo-ui', 'metrics', 'devices', 'gamification', 'certificate', 'learning-progress', 'rebranding', 'case-studies', 'timeline', 'community-rewards', 'live-session', 'community-meeting', 'closing-cta']);
 const ScenePresentationSchema = z.object({
   kind: VisualKindSchema,
@@ -135,6 +166,7 @@ export const ProjectSchema = z.object({
     voices: z.record(SceneIdSchema, RuntimeMediaAssetSchema),
     footage: z.record(SceneIdSchema, RuntimeMediaAssetSchema),
   }),
+  selectedAudio: SelectedAudioSchema,
 }).superRefine((p, ctx) => {
   const expected = Array.from({length: 13}, (_, index) => `scene-${String(index + 1).padStart(2, '0')}`);
   if (p.storyboard.scenes.some((scene, index) => scene.id !== expected[index])) ctx.addIssue({code: 'custom', message: 'scenes must be ordered scene-01 through scene-13'});
@@ -152,6 +184,7 @@ export const ProjectSchema = z.object({
   if (Object.values(p.timingSelection.sceneFrames).reduce((total, frames) => total + frames, 0) !== p.timingSelection.resolvedTotalFrames) ctx.addIssue({code: 'custom', message: 'approved scene timing must equal resolved total frames'});
   if (expected.some((id) => !(id in p.selectedMedia.voices))) ctx.addIssue({code: 'custom', message: 'selected voice media must cover all scenes'});
   if (!p.selectedMedia.footage['scene-01'] || !p.selectedMedia.footage['scene-13']) ctx.addIssue({code: 'custom', message: 'selected opening and closing footage are required'});
+  if (p.selectedAudio.cues.some((cue) => cue.frame >= p.timingSelection.resolvedTotalFrames)) ctx.addIssue({code: 'custom', message: 'selected audio cues must be inside resolved timing'});
   const claimIds = new Set(p.claims.map((claim) => claim.id));
   if (p.claims.some((claim) => claim.id.length === 0)) ctx.addIssue({code: 'custom', message: 'claim IDs must be nonempty'});
   if (claimIds.size !== p.claims.length) ctx.addIssue({code: 'custom', message: 'claim IDs must be unique'});
@@ -180,6 +213,7 @@ export const RenderPlanSchema = z.object({
     authoredTotalFrames: z.literal(2550),
     resolvedTotalFrames: z.literal(3048),
   }).optional(),
+  audio: SelectedAudioSchema.optional(),
   scenes: z.array(
     z.object({
       id: z.string(),
