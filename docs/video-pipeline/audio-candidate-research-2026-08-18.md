@@ -49,6 +49,7 @@ claimed.
 | A | `.video/reviews/audio-auditions-1.0.0/a-digital-clouds.mp4` | `0f81803d65417a8fc7f9a9fe6228c1d1fe3c2e7a4372d3d935bf921b2fd17819` |
 | B | `.video/reviews/audio-auditions-1.0.0/b-uplifting-bass.mp4` | `d4851d9bb13276a380f6539a25862e6b3bb6d6634119588af088fd03d117b977` |
 | B low v2 | `.video/reviews/audio-auditions-1.0.0/b-uplifting-bass-low-v2.mp4` | `f74f52d72d6e7f7ddeb732adbb73fb4b5c756dbe8b0fc0af264e97084bb5e389` |
+| B low v3 — owner-approved balance | `.video/reviews/audio-auditions-1.0.0/b-uplifting-bass-low-v3.mp4` | `622132afba4f3a1bd63c8d07dba5041772f3de1dff24ec9acfda4d970388edc6` |
 | C | `.video/reviews/audio-auditions-1.0.0/c-new-bass-01.mp4` | `8c4ea5207665c8f58695d6548203c255c51a5bb397cf5cc3e753444bc88ab3b7` |
 
 Source loudness measurements were -13.1 LUFS / +0.7 dBTP for A, -11.8 LUFS /
@@ -56,11 +57,13 @@ Source loudness measurements were -13.1 LUFS / +0.7 dBTP for A, -11.8 LUFS /
 review proxy measured -15.6 LUFS / -3.5 dBTP. These measurements explain why
 source gain cannot be used directly; they are not final targets.
 
-After owner feedback that the first B audition was too loud, B low v2 moved the
-music target from approximately -25 to -30 LUFS while leaving voice gain
-unchanged. The resulting combined proxy measures -15.1 LUFS integrated and
--2.2 dBTP. It fully decoded and passed an intelligibility review with no
-observed speech masking. Final ducking and release targets remain owned by #6.
+After owner feedback that the first two B auditions were too loud, B low v3
+moved the music target from approximately -25 to -36 LUFS while leaving voice
+gain unchanged. The resulting combined proxy measures -15.2 LUFS integrated
+and -2.8 dBTP. It fully decoded, passed an intelligibility review with no
+observed speech masking, and the owner approved this balance on 2026-08-18.
+This is the mix-direction reference; final automation and release targets remain
+owned by #6.
 
 ## Minimal SFX Candidate palette
 
@@ -110,7 +113,7 @@ Primary sources reviewed on 2026-08-18:
 
 ## Open decisions
 
-- Owner approval of the quieter B mix balance and three-section edit direction.
+- Owner approval of the three-section edit direction.
 - Whether the optional soft impact survives a real Transition Beat audition.
 - Whether opening office ambience is needed after music and transitions are in
   place; no ambience Candidate is justified yet.
