@@ -2,6 +2,28 @@
 
 **Observed 2026-08-11; decision scope:** the 13-scene, Italian, `internal-preview-only` fixture. This is implementation research, not a quote or legal opinion. Only provider-operated documentation, pricing and terms were used. Voice cloning, voice design and uploaded reference voices are out of scope.
 
+## Fresh cost-only preflight — 2026-08-18
+
+Authenticated CLI `1.1.20` discovery still exposes `text2speech_v2`,
+`qwen_audio_tts`, `inworld_text_to_speech`, the preset voice `Livia`, and the
+Italian Inworld voices `Orietta (it)` and `Gianni (it)`. Cost-only calls for the
+current scene 1–3 scripts returned the following non-authorizing observations;
+no job was submitted and no credit was consumed:
+
+| Candidate | Scene 1 | Scene 2 | Scene 3 | Total |
+|---|---:|---:|---:|---:|
+| Seed Speech + Livia | 0.20 | 0.10 | 0.30 | **0.60 credits** |
+| Qwen Audio + Livia | 0.04 | 0.02 | 0.05 | **0.11 credits** |
+| Inworld + Orietta or Gianni | 2.00 | 2.00 | 2.00 | **6.00 credits** |
+
+Qwen remains cost-observable but not operationally selected: the earlier live
+attempts using catalog presets were rejected before job creation, and the voice
+catalog does not declare model compatibility. Inworld is explicit about Italian
+voices but costs ten times the already-proven Seed Speech path for these scenes.
+The internal-preview recommendation therefore remains Seed Speech + Livia. The
+0.60-credit observation is not a Quote, Budget, Reservation, or permission to
+submit.
+
 ## Decision
 
 **Internal-preview default — Higgsfield `text2speech_v2`, `seed_speech`, preset voice.** Live CLI discovery and an authorized smoke on 2026-08-11 proved that the `Livia` preset supports Seed Speech and produces intelligible standard Italian. Fresh, non-authorizing observations total **4.00 credits** for one Candidate per Scene and **5.90 credits** under the current balanced assumption; the Scene 1 smoke consumed 0.20 credits. Its 6.648 s result exceeded the authored 5 s by 1.648 s and is therefore materialized but blocked pending a timing proposal, caption alignment and rights evidence. Higgsfield also exposes `qwen_audio_tts` with `language=it` and a much lower observed cost, but two reasoned attempts using catalog presets were rejected before job creation as unavailable for Qwen Audio; the CLI does not expose the required compatibility mapping, so Qwen is not currently an operable pipeline choice. The CLI returns completed media through `result_url`, but no word/character alignment or safe materialization command; T5 therefore needs controlled URL download and validated local alignment.[^hf-cli]
