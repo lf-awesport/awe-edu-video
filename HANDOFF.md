@@ -1,9 +1,72 @@
 # Handoff — AWE video-generation pipeline
 
-## Voice-over standby — 2026-08-18
+## Balanced audiovisual master — 2026-08-18
 
-The owner has paused all voice-over work. Do not submit, retry, or otherwise
-spend credits on TTS until the owner explicitly resumes this lane. The preserved
+The owner approved the balanced timing selection. The unchanged authored
+Storyboard remains `awe-master@1.2.0` (85 requested seconds), while
+`awe-livia-balanced@1.0.0` explicitly resolves it to 3048 frames / 101.6 video
+seconds. All 13 selected Livia voice assets are locally materialized as mono
+48 kHz PCM, sped up at most 1.2×, and hash-bound into the RenderPlan. Italian
+captions use the approved scene copy. Selected opening and closing footage is
+also local, hash-bound and rendered without reading provider runtime state.
+
+```text
+RenderPlan       sha256:54cf44400f27009235e143c2d534dd4aa7b13f374e7e6ffd7224539d67d0709d
+Render identity  sha256:6608e64c1f41a545d36804e7c14f717ea21391b7de54737291d2602a8cace9fc
+Master MP4       sha256:c69d7c15270f20c69c1741024c39c915c8e350ac5b36299319d502ef0c4bc087
+Media            H.264 1920×1080, 30 fps, 3048 frames; AAC 48 kHz stereo
+Video duration   101.600 seconds (container 101.610667 s; AAC packet padding)
+Path             .video/renders/sha256-6608e64c1f41a545d36804e7c14f717ea21391b7de54737291d2602a8cace9fc/awe-master.mp4
+```
+
+The immutable verifier checked both streams and fully decoded the output. A
+13-frame contact sheet and full audiovisual proxy review found every scene
+populated, continuous Italian narration, matching captions, clean opening
+person/phone → AWE UI and closing footage → Remotion CTA transitions, and no
+black frames, clipped speech or blocking media defects. Review artifacts are in
+`.video/reviews/awe-livia-balanced-1.0.0/` and remain intentionally untracked.
+
+This is still `internal-preview-only`. It is not a production or publication
+master: authorized desktop captures, partner/certificate assets, second-half
+designer review, rights/consent, loudness and mix policy, music/SFX rights,
+Remotion licensing classification and release approval remain open. No further
+Higgsfield submission is needed for this preview. Last observed team balance
+was 3960 credits after 24 credits of the approved 31.20-credit ceiling were
+spent; do not treat that observation as a fresh quote or authorization.
+
+## Opening visual tracer — 2026-08-18
+
+Designer feedback is reconciled in
+[`docs/video-pipeline/designer-feedback-2026-08-18.md`](docs/video-pipeline/designer-feedback-2026-08-18.md).
+The owner approved the revised opening direction and `awe-master@1.2.0` now
+encodes person/phone intent for scene 1, a Remotion-owned push through the phone
+in scene 2, and an AWE EDU magma splash whose logo moves top-left as scene 3
+content enters. Copy and the 85-second timing are unchanged. Missing generated
+footage and the desktop capture remain visible fallback markers; the output is
+still `internal-preview-only`.
+
+```text
+RenderPlan       sha256:bd4c54e39f4670a81b5772fbff37dc8a0903faa261b6936b5dfce7505f5af325
+Render identity  sha256:3a105a507c105a74af7cd60787d47604d7d2ffa0352e320dfc3c184b54d31d2c
+Master MP4       sha256:5151f953af4a02700cce4f68ef6e09ac15836fb6eac156d27873843a7104447b
+Opening clip     sha256:7399790a7ed3b79a2b8bb8c50d6eabaa860f43ef16b6043794fe9d8217cb60f1
+Media            H.264, 1920×1080, 30 fps; master 85 s, opening review 14 s
+Opening path     .video/reviews/opening-1.2.0/opening-scenes-01-03.mp4
+```
+
+The master and opening clip passed full decode. Motion review found continuous
+scene 1→2→3 boundaries, no black flash or framing jump, clean logo splash and
+top-left transition, no blocking clipping, and no decorative circles. The
+fallback source's own preview label and `UI demo · desktop in attesa` remain
+intentional non-blocking markers. Issue #10 owns this completed local tracer;
+issue #5 remains open for generated-footage replacement after web-plan access
+and a fresh authorized preflight.
+
+## Historical voice-over standby — superseded 2026-08-18
+
+This earlier standby was superseded by the approved balanced master above; it
+is retained as decision history. Do not submit, retry, or otherwise spend more
+credits on TTS without a new explicit authorization. The preserved
 creative direction is Higgsfield ElevenLabs preset `Livia` with
 `[confident] [upbeat]`: the voice and tone are approved, but the required
 cohesive Italian pronunciation `AWE → “Aue”` is not. The latest pronunciation
@@ -34,16 +97,15 @@ decision record.
 ## Copy lock update — 2026-08-18
 
 The owner approved the safer Italian copy package, CTA 1 and pronunciation
-`AWE → “Aue”` with Italian vowels and final `/e/`. Canonical Storyboard
-`awe-master@1.1.0` compiles to RenderPlan
-`sha256:4c1b775b6f97fa61e41bc478b462760158afbc00d3ad286422a3d196d134fd2d`.
+`AWE → “Aue”` with Italian vowels and final `/e/`. That copy approval was bound
+to `awe-master@1.1.0`; current Storyboard `awe-master@1.2.0` changes only the
+opening visual intent and preserves the approved copy verbatim.
 Unsupported numbers, points, certificate, fixed duration, licensing/internship
 and live-session Claims were removed from the release copy and corresponding
 visuals. The affected scenes passed a 1920×1080 contact-sheet review without
 blocking clipping. See [`docs/video-pipeline/awe-copy-review.md`](docs/video-pipeline/awe-copy-review.md).
 
-Copy and CTA are no longer blockers for TTS, but voice-over is voluntarily on
-standby under the stricter gate above.
+Copy and CTA are no longer blockers for the selected internal-preview voice.
 
 ## Visual master update — 2026-08-17
 
@@ -65,7 +127,7 @@ The next production tracer remains audio when the owner resumes that lane: resol
 
 ## Resume here
 
-Continue on branch `main`. The repository now contains the reviewed bilingual specification, decision history, the full local Matt Pocock skill package, and an executable TypeScript/Remotion prototype. Generated media and runtime state are intentionally excluded from Git.
+Continue on branch `main`. The repository now contains the reviewed bilingual specification, decision history, the full local Matt Pocock skill package, an executable TypeScript/Remotion prototype, and the hash-bound selected preview media under `assets/runtime-selected/`. Provider runtime state and rendered outputs under `.video/` remain intentionally excluded from Git.
 
 GitHub Issues is the canonical active tracker. Start from [Completare e rendere rilasciabile il master audiovisivo AWE](https://github.com/lf-awesport/awe-edu-video/issues/1), then follow the dependency graph linked there. The 17 local tickets under `.scratch/video-generation-pipeline/issues/` are reconciled decision history, not open implementation tasks; see [`docs/agents/ticket-reconciliation.md`](docs/agents/ticket-reconciliation.md). `AGENTS.md` makes the Matt Pocock workflow mandatory for non-trivial work.
 
@@ -82,7 +144,7 @@ Read in this order:
 ## Implemented and verified
 
 - G0/T1 foundation: pinned Remotion `4.0.507`, Zod `4.4.3`, compilable runtime schemas, canonical JSON/hash, deterministic Storyboard → RenderPlan compiler, Scene 3 render.
-- Full AWE internal preview: 13 ordered scenes, requested duration 85 seconds, 2550 frames at 30 fps, deterministic Remotion composition, visible placeholder/unverified markers and `Concept demo — internal preview` watermark.
+- Full AWE internal preview: 13 ordered scenes, authored duration 85 seconds, approved resolved duration 3048 frames / 101.6 seconds at 30 fps, deterministic Remotion composition, selected voice/footage, Italian captions and `Concept demo — internal preview` watermark.
 - T2 local state: project-scoped append-only hash chain, head as commit boundary, recoverable uncommitted suffixes, disposable snapshots, exclusive writer lock, atomic immutable plan materialization, crash tests.
 - Render evidence: identity binds plan, composition, Remotion source hashes/version and encoding settings; immutable manifest binds MP4 SHA-256; strict ffprobe and `ffmpeg -xerror` full decode; verified cache hits; orphan preservation.
 - T3 safe subset: Higgsfield CLI adapter supports only doctor/model discovery and explicit cost observation. Capabilities are derived from the real model schema. Cost-only results are persisted as non-authorizing `PriceObservation`; `quoteBindings` stays empty. There is no `generate create`, upload, submit, poll, or paid code path.
@@ -92,7 +154,7 @@ Read in this order:
 Latest verification before handoff:
 
 ```text
-npm test                    29 tests passed
+npm test                    33 tests passed
 npm run typecheck           passed
 npm audit --audit-level=high 0 vulnerabilities
 git diff --check            passed
@@ -115,34 +177,26 @@ npm run video -- render --to preview --project examples/awe-project.yaml --json
 npm run video -- verify --to preview --project examples/awe-project.yaml --json
 ```
 
-The render uses quarter-scale internal Remotion rendering followed by deterministic 1920×1080 upscaling. It is suitable for internal concept review, not a quality master.
+The current balanced render is native 1920×1080 with one worker. It is suitable
+for internal concept review, not a production-quality master.
 
-## Immediate blocker requiring the user
+## Immediate blockers requiring humans
 
-Voice-over is paused by owner decision. Resumption requires explicit owner
-authorization, restored Higgsfield access, reconciliation of the 403 attempt and
-balance, and one approved way to pronounce `AWE` cohesively as Italian “Aue”
-with Livia. No new spend is authorized. Never retry a potentially charged
-submission automatically, and do not capture or commit account identity,
-tokens, workspace IDs or billing data.
+The balanced internal preview is complete. Production progress now requires the
+designer's remaining captures/assets and review, plus rights/consent, audio mix
+policy, licensing classification and human release authority. No new provider
+spend is authorized. Never retry a potentially charged submission automatically,
+and do not capture or commit account identity, tokens, workspace IDs or billing
+data.
 
 ## Recommended next tracer
 
-While voice-over is paused, choose an independent open lane from the canonical
-issue map and run it through the mandatory Matt Pocock workflow. When the owner
-resumes T5 audio/captions:
-
-1. Reconcile Higgsfield authentication, jobs and balance without submitting a
-   generation.
-2. Run only an explicitly authorized, capped Livia pronunciation experiment;
-   do not regenerate the full script until cohesive “Aue” is approved.
-3. Model immutable VoiceCandidates separately from Script selection.
-4. Make selected audio the build timing authority; report duration deltas instead of silently mutating the storyboard.
-5. Derive captions from selected audio/alignment and mix voice/music lanes explicitly.
-6. Bind audio/caption hashes into RenderPlan and render identity.
-7. Produce a new internal master and verify audio stream, duration, caption timing and full decode.
-
-Then complete Higgsfield T3/T4 and integrate selected 5-second footage only for scenes 1 and 13 after the user approves a displayed fresh preflight. The current balanced declaration requests two candidates per scene, but no credits have been spent.
+Reconcile the designer's slide-by-slide feedback against the current reviewed
+master, then implement one approved vertical change at a time through the
+mandatory Matt Pocock workflow. Prioritize the authorized desktop capture and
+remaining designer-owned assets before visual polish. Treat music/mix and
+release authority as separate gated tracers. The selected footage and Livia
+voice do not need regeneration for this internal preview.
 
 ## Open production blockers
 
@@ -151,7 +205,7 @@ Then complete Higgsfield T3/T4 and integrate selected 5-second footage only for 
   support reintroducing them; CTA 1 and the current fallback copy are approved.
 - Rights and consent grants, output/safe-area policy, loudness/true-peak policy, music/SFX rights.
 - Remotion company category/headcount and any required licence approval. Current decision permits evaluation/internal prototype only.
-- Real TTS, audio alignment, captions, music and selected Higgsfield footage.
+- Word-level caption alignment, music/SFX and an approved loudness/true-peak mix.
 - Production release/quality/approval manifests and T8–T10 work.
 
 Do not present the current output as production-ready, a final commercial, or proof that unsupported AWE claims are true.

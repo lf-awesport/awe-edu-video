@@ -249,6 +249,7 @@ try {
           .replace('$INPUT', remotionOutput)
           .replace('$WIDTH', String(plan.outputProfile.width))
           .replace('$HEIGHT', String(plan.outputProfile.height))
+          .replace('$DURATION', String(plan.totalFrames / plan.outputProfile.fps))
           .replace('$OUTPUT', deliveryOutput)));
       } finally {
         await rm(remotionOutput, {force: true});

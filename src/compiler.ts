@@ -66,15 +66,26 @@ export function compileMaster(raw: Project): RenderPlan {
   const project = ProjectSchema.parse(raw);
   let cursor = 0;
   const scenes = project.storyboard.scenes.map((scene) => {
-    const frames = scene.seconds * project.outputProfile.fps;
-    if (!Number.isInteger(frames)) throw new Error(`Scene duration is not frame-exact: ${scene.id}`);
+    const frames = project.timingSelection.sceneFrames[scene.id];
+    if (!frames) throw new Error(`Approved timing is missing: ${scene.id}`);
     const start = cursor; cursor += frames;
-    return {id:scene.id, requestedDurationSeconds:scene.seconds, status:scene.status, renderer:'placeholder', presentation:scene.presentation, claims:project.claims.filter((claim) => scene.presentation.claimIds.includes(claim.id)), frameInterval:{start,end:cursor}};
+    return {
+      id:scene.id, requestedDurationSeconds:scene.seconds, status:scene.status, renderer:'placeholder',
+      presentation:scene.presentation,
+      claims:project.claims.filter((claim) => scene.presentation.claimIds.includes(claim.id)),
+      frameInterval:{start,end:cursor},
+      media:{voice:project.selectedMedia.voices[scene.id]!,footage:project.selectedMedia.footage[scene.id]},
+    };
   });
   const body = {
     schemaVersion:'1.0.0' as const, projectId:project.projectId,
     storyboard:{id:project.storyboard.id,version:project.storyboard.version}, releaseStatus:'internal-preview-only' as const,
-    outputProfile:project.outputProfile, totalFrames:cursor, scenes,
+    outputProfile:project.outputProfile, totalFrames:cursor,
+    timing:{
+      id:project.timingSelection.id,version:project.timingSelection.version,voiceTempo:project.timingSelection.voiceTempo,
+      authoredTotalFrames:project.timingSelection.authoredTotalFrames,resolvedTotalFrames:project.timingSelection.resolvedTotalFrames,
+    },
+    scenes,
     rendererRegistry:{placeholder:{id:'awe-concept-motion-graphics',version:'2.0.1',network:false as const,runtimeWrites:false as const}},
     blockers:[
       'AWE production inputs are incomplete',

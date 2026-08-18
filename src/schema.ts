@@ -81,7 +81,13 @@ export const QuoteFreshnessSchema = z.object({
 });
 
 const versioned = {id: z.string().min(1), version: z.string().min(1)};
-const VisualKindSchema = z.enum(['cinematic-office', 'monitor-push', 'logo-ui', 'metrics', 'devices', 'gamification', 'certificate', 'learning-progress', 'rebranding', 'case-studies', 'timeline', 'community-rewards', 'live-session', 'community-meeting', 'closing-cta']);
+const SceneIdSchema = z.string().regex(/^scene-\d{2}$/);
+const RuntimeMediaAssetSchema = z.object({
+  path: z.string().regex(/^runtime-selected\/(voice|footage)\/scene-\d{2}\.(wav|mp4)$/),
+  sha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+  durationSeconds: z.number().positive(),
+});
+const VisualKindSchema = z.enum(['cinematic-office', 'phone-push', 'logo-ui', 'metrics', 'devices', 'gamification', 'certificate', 'learning-progress', 'rebranding', 'case-studies', 'timeline', 'community-rewards', 'live-session', 'community-meeting', 'closing-cta']);
 const ScenePresentationSchema = z.object({
   kind: VisualKindSchema,
   title: z.string().min(1),
@@ -118,6 +124,17 @@ export const ProjectSchema = z.object({
   claims: z.array(z.object({id: z.string(), status: z.literal('unverified')})),
   productionProfile: z.literal('balanced'),
   generations: z.array(GenerationDeclarationSchema).length(2),
+  timingSelection: z.object({
+    ...versioned,
+    voiceTempo: z.literal(1.2),
+    authoredTotalFrames: z.literal(2550),
+    resolvedTotalFrames: z.literal(3048),
+    sceneFrames: z.record(SceneIdSchema, z.number().int().positive()),
+  }),
+  selectedMedia: z.object({
+    voices: z.record(SceneIdSchema, RuntimeMediaAssetSchema),
+    footage: z.record(SceneIdSchema, RuntimeMediaAssetSchema),
+  }),
 }).superRefine((p, ctx) => {
   const expected = Array.from({length: 13}, (_, index) => `scene-${String(index + 1).padStart(2, '0')}`);
   if (p.storyboard.scenes.some((scene, index) => scene.id !== expected[index])) ctx.addIssue({code: 'custom', message: 'scenes must be ordered scene-01 through scene-13'});
@@ -131,6 +148,10 @@ export const ProjectSchema = z.object({
     ctx.addIssue({code: 'custom', message: `${scene.id} duration must resolve to an integer frame count`});
   }
   if (new Set(p.generations.map((g) => g.sceneId)).size !== 2) ctx.addIssue({code: 'custom', message: 'scene-01 and scene-13 generation declarations are required'});
+  if (expected.some((id) => !(id in p.timingSelection.sceneFrames))) ctx.addIssue({code: 'custom', message: 'approved timing must cover all scenes'});
+  if (Object.values(p.timingSelection.sceneFrames).reduce((total, frames) => total + frames, 0) !== p.timingSelection.resolvedTotalFrames) ctx.addIssue({code: 'custom', message: 'approved scene timing must equal resolved total frames'});
+  if (expected.some((id) => !(id in p.selectedMedia.voices))) ctx.addIssue({code: 'custom', message: 'selected voice media must cover all scenes'});
+  if (!p.selectedMedia.footage['scene-01'] || !p.selectedMedia.footage['scene-13']) ctx.addIssue({code: 'custom', message: 'selected opening and closing footage are required'});
   const claimIds = new Set(p.claims.map((claim) => claim.id));
   if (p.claims.some((claim) => claim.id.length === 0)) ctx.addIssue({code: 'custom', message: 'claim IDs must be nonempty'});
   if (claimIds.size !== p.claims.length) ctx.addIssue({code: 'custom', message: 'claim IDs must be unique'});
@@ -153,6 +174,12 @@ export const RenderPlanSchema = z.object({
     codec: z.string(),
   }),
   totalFrames: z.number().int().positive(),
+  timing: z.object({
+    ...versioned,
+    voiceTempo: z.literal(1.2),
+    authoredTotalFrames: z.literal(2550),
+    resolvedTotalFrames: z.literal(3048),
+  }).optional(),
   scenes: z.array(
     z.object({
       id: z.string(),
@@ -162,6 +189,10 @@ export const RenderPlanSchema = z.object({
       presentation: ScenePresentationSchema,
       claims: z.array(z.object({id: z.string(), status: z.literal('unverified')})),
       frameInterval: z.object({start: z.number().int(), end: z.number().int()}),
+      media: z.object({
+        voice: RuntimeMediaAssetSchema,
+        footage: RuntimeMediaAssetSchema.optional(),
+      }).optional(),
     }),
   ),
   rendererRegistry: z.object({

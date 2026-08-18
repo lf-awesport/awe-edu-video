@@ -5,6 +5,11 @@ The owner approved the recommended fallback package, CTA 1 and the Italian
 pronunciation “Aue” on 2026-08-18. The approved copy is locked in canonical
 Storyboard `awe-master@1.1.0`; its compiled RenderPlan hash is
 `sha256:4c1b775b6f97fa61e41bc478b462760158afbc00d3ad286422a3d196d134fd2d`.
+Current Storyboard `awe-master@1.2.0` is a visual-only opening revision and
+preserves this approved copy verbatim. The separately approved balanced timing
+and selected audiovisual media compile to RenderPlan
+`sha256:54cf44400f27009235e143c2d534dd4aa7b13f374e7e6ffd7224539d67d0709d`
+(3048 frames / 101.6 seconds); they do not revise the copy authority.
 This Approval covers editorial wording and pronunciation only. It does not make
 the current internal preview releasable or authorize paid TTS synthesis.
 

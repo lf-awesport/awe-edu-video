@@ -4,6 +4,12 @@
 
 Common gates / Gate comuni: all scenes MUST use selected, materialized, hash-bound Assets and selected VoiceCandidate build timing; Claims, UI and branding MUST use captured Source References, never generated footage as authority. The authored scene durations total a requested 85 s; resolved duration MAY differ only through an explicit timing proposal/change report and approved Output Profile policy. Every scene remains internal-preview-only until its blockers close. Cost `unknown` MUST NOT become zero. Higgsfield MUST be used only for exactly 5 s footage in S1 and S13; S13's final 3 s MUST be Remotion. / Durate authored = 85 s richiesti; durata risolta può cambiare solo con proposta/change report e policy approvata.
 
+**Current internal-preview selection (2026-08-18):** `awe-livia-balanced@1.0.0`
+resolves the unchanged 85-second authored storyboard to 3048 frames / 101.6
+seconds. It binds one local 48 kHz PCM Livia voice asset per scene and selected
+footage for S1/S13 by SHA-256. This is review evidence, not production authority;
+rights, approved captures, loudness/mix and release approval remain open.
+
 ## Stable Claim registry / Registro Claim stabile
 
 These IDs are normative dependencies for the scene bindings below. `supported` describes current discovery evidence, not release approval: every supporting source still requires an authorized immutable capture/hash and freshness review. `partial` and `unverified` block the unsupported portion from production use. / Questi ID sono dipendenze normative. `supported` non equivale a release approval; `partial` e `unverified` bloccano la parte non supportata.
@@ -31,8 +37,8 @@ Each Scene references one initial Utterance ID owned by its LocalizedScript. Sem
 
 | Scene | Utterance ID | Ordered semantic cues, structural boundaries/segments and normative layer binding / Cue semantici ordinati, boundary/segment strutturali e binding layer | Claim dependencies |
 |---:|---|---|---|
-| 1 | `utt-s01-01` | `cue-s01-hook` → protagonist/office emphasis; `cue-s01-industry` → monitor UI emphasis. `boundary-s01-end` is the exclusive compiler-resolved scene end; `continuity-asset-s01-last-frame` captures frame `boundary-s01-end - 1` for S2. Footage/UI/audio/caption cover full scene. | none |
-| 2 | `utt-s02-01` | `cue-s02-show` → push-in emphasis. Transition, audio and caption cover the full `[scene-start,boundary-s02-end)` segment; exclusive `boundary-s02-end` equals S3 start, and its prior displayed frame is the approved continuity frame. | none |
+| 1 | `utt-s01-01` | `cue-s01-hook` → protagonist/office emphasis; `cue-s01-industry` → phone presentation emphasis. `boundary-s01-end` is the exclusive compiler-resolved scene end; `continuity-asset-s01-last-frame` captures the centered phone at frame `boundary-s01-end - 1` for S2. Footage/UI/audio/caption cover full scene. | none |
+| 2 | `utt-s02-01` | `cue-s02-show` → push through the centered phone into the AWE EDU splash. Transition, audio and caption cover the full `[scene-start,boundary-s02-end)` segment; exclusive `boundary-s02-end` equals S3 start, and its prior displayed frame is the approved continuity frame. Remotion, not generated footage, owns the real logo/UI transition. | none |
 | 3 | `utt-s03-01` | `cue-s03-brand` → logo enters; `cue-s03-platform` → UI shell begins; `cue-s03-sport-business` → panels complete. Base UI spans full scene. | `claim-platform-web-sport-business` |
 | 4 | `utt-s04-01` | `cue-s04-areas` → 12-area card; `cue-s04-videos` → 400+ card; `cue-s04-quizzes` → 1200+ card. Base UI spans full scene; each Claim layer enters at its cue. | `claim-12-areas`, `claim-400-videos`, `claim-1200-quizzes` |
 | 5 | `utt-s05-01` | `cue-s05-fast` → desktop state; `cue-s05-short` → video/quiz state; `cue-s05-step` → mobile/swipe state. Device/UI layers switch only at resolved cues. | `claim-fast-accessible-short-format` |

@@ -4,8 +4,8 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {describe, expect, it} from 'vitest';
 import YAML from 'yaml';
-import {compileScene} from '../src/compiler.js';
-import {computeRenderIdentity, prepareRenderEvidence, publishRenderEvidence, renderEvidencePaths, renderIdentityFromInputs, verifyRenderEvidence} from '../src/render-evidence.js';
+import {compileMaster, compileScene} from '../src/compiler.js';
+import {computeRenderIdentity, FFMPEG_TRANSFORM, prepareRenderEvidence, publishRenderEvidence, renderEvidencePaths, renderIdentityFromInputs, verifyRenderEvidence} from '../src/render-evidence.js';
 
 const sourceHashes = {'src/remotion.tsx': `sha256:${'1'.repeat(64)}`, 'src/remotion-entry.tsx': `sha256:${'2'.repeat(64)}`} as const;
 const input = {renderPlanHash:`sha256:${'3'.repeat(64)}`,compositionId:'Scene03' as const,sourceHashes,remotionVersion:'4.0.507',delivery:{width:1920,height:1080,fps:30,totalFrames:180}};
@@ -16,6 +16,20 @@ describe('immutable render evidence seam', () => {
     expect(renderIdentityFromInputs(input)).toEqual(first);
     expect(renderIdentityFromInputs({...input, sourceHashes:{...sourceHashes,'src/remotion.tsx':`sha256:${'4'.repeat(64)}`}}).renderIdentityHash).not.toBe(first.renderIdentityHash);
     expect(renderIdentityFromInputs({...input, delivery:{...input.delivery,fps:24}}).renderIdentityHash).not.toBe(first.renderIdentityHash);
+  });
+
+  it('preserves the rendered audio stream in the immutable delivery transform', () => {
+    expect(FFMPEG_TRANSFORM.arguments).toContain('0:a:0?');
+    expect(FFMPEG_TRANSFORM.arguments).not.toContain('-an');
+    expect(FFMPEG_TRANSFORM.arguments).toContain('$DURATION');
+  });
+
+  it('fails closed when runtime-selected media bytes differ from the hash-bound plan', async () => {
+    const project = YAML.parse(readFileSync('examples/awe-project.yaml','utf8'));
+    const plan = compileMaster(project);
+    const changed = structuredClone(plan);
+    changed.scenes[0]!.media!.voice.sha256 = `sha256:${'0'.repeat(64)}`;
+    await expect(computeRenderIdentity(changed, 'AweMaster')).rejects.toThrow(/media hash/);
   });
 
   it('rejects a same-profile replacement by hash before technical verification', async () => {

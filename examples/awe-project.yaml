@@ -3,25 +3,50 @@ projectId: awe-pilot-example
 status: internal-preview-only
 productionProfile: balanced
 outputProfile: {id: awe-hd, version: 1.0.0, width: 1920, height: 1080, fps: 30, codec: h264}
+timingSelection:
+  id: awe-livia-balanced
+  version: 1.0.0
+  voiceTempo: 1.2
+  authoredTotalFrames: 2550
+  resolvedTotalFrames: 3048
+  sceneFrames: {scene-01: 170, scene-02: 90, scene-03: 238, scene-04: 343, scene-05: 180, scene-06: 287, scene-07: 196, scene-08: 321, scene-09: 305, scene-10: 219, scene-11: 270, scene-12: 189, scene-13: 240}
+selectedMedia:
+  voices:
+    scene-01: {path: runtime-selected/voice/scene-01.wav, sha256: "sha256:fbe1d513c27aebf43241e32bd19583b4018696f9f5d552e8e55d086b388b46d0", durationSeconds: 5.608208}
+    scene-02: {path: runtime-selected/voice/scene-02.wav, sha256: "sha256:52f7bd1fbd4ce962e28de630b37218e2699cc103cd9b7899c9b69a9617baf635", durationSeconds: 1.9405}
+    scene-03: {path: runtime-selected/voice/scene-03.wav, sha256: "sha256:411629d9bdb9d55bb1cd2b6068854cf16ea357b684da4b7db8761c9e607fb025", durationSeconds: 7.874271}
+    scene-04: {path: runtime-selected/voice/scene-04.wav, sha256: "sha256:33f6c4724328a5d5e4e4530536a8d08c31b3d92505a8e4472e73d46d8f6984b4", durationSeconds: 11.411083}
+    scene-05: {path: runtime-selected/voice/scene-05.wav, sha256: "sha256:4799a3668072df37275b1ca4f942535dc4da2dacc27480cfa842295f9998312a", durationSeconds: 5.141583}
+    scene-06: {path: runtime-selected/voice/scene-06.wav, sha256: "sha256:bf1f5919af29a50b1a424305bca9aad52e17e20c518947cd257308cba15cfc57", durationSeconds: 9.542521}
+    scene-07: {path: runtime-selected/voice/scene-07.wav, sha256: "sha256:81a846725d7139b4f31f1dbe9bb19590111d81dca691c5e84129803271ec1e02", durationSeconds: 6.473188}
+    scene-08: {path: runtime-selected/voice/scene-08.wav, sha256: "sha256:faa5f25eb7e5d96072e96df6ae2d555f082f58fc9efa19943e4d72c96b58f8f6", durationSeconds: 10.673271}
+    scene-09: {path: runtime-selected/voice/scene-09.wav, sha256: "sha256:1ef6ac96b1c4e908e566374f8207e6f45765f863aa7b2ac99c6a0ed9efb00bd2", durationSeconds: 10.136646}
+    scene-10: {path: runtime-selected/voice/scene-10.wav, sha256: "sha256:ed4b729b7e12c9f5bc412e83fa0fc42a39a9b9d513cfddeedc72d44a89961e85", durationSeconds: 7.263521}
+    scene-11: {path: runtime-selected/voice/scene-11.wav, sha256: "sha256:a6f55924495cf7af4b61f813bc7adce1a93b984cefcf8155b710fc6d85c31e47", durationSeconds: 7.874542}
+    scene-12: {path: runtime-selected/voice/scene-12.wav, sha256: "sha256:fcd5bcc6463aeb0ccec1897087b9bf40a93dd1a8a75f0646cbb1a78085715db6", durationSeconds: 6.270438}
+    scene-13: {path: runtime-selected/voice/scene-13.wav, sha256: "sha256:cdfb3f968c28a2dde0bd23435212789b73491e3019a229056cc575d1490d4e1f", durationSeconds: 6.069854}
+  footage:
+    scene-01: {path: runtime-selected/footage/scene-01.mp4, sha256: "sha256:e455ecec73107b6a6ea1f9867791da016d6536d24d1167bd6dc77829b5da009b", durationSeconds: 5.875}
+    scene-13: {path: runtime-selected/footage/scene-13.mp4, sha256: "sha256:116dfb5099d4f2d9869d5952d24e0e8e5c5bf2a3dfe07eea6078ede5beb0fcd4", durationSeconds: 5}
 storyboard:
   id: awe-master
-  version: 1.1.0
+  version: 1.2.0
   scenes:
     - id: scene-01
       seconds: 5
       status: missing
       technique: higgsfield-placeholder
-      presentation: {kind: cinematic-office, title: "Dietro lo sport", content: ["PROTAGONISTA / UFFICIO — PLACEHOLDER FOOTAGE HIGGSFIELD"], voiceOver: "Ti piace lo sport? Bene. Ma sai come funziona davvero l’industria che c’è dietro?", claimIds: [], footagePlaceholder: true}
+      presentation: {kind: cinematic-office, title: "Dietro lo sport", content: ["PERSONA / UFFICIO — FALLBACK CONCEPT", "TELEFONO VERSO CAMERA", "FOOTAGE CANDIDATE MANCANTE"], voiceOver: "Ti piace lo sport? Bene. Ma sai come funziona davvero l’industria che c’è dietro?", claimIds: [], footagePlaceholder: true}
     - id: scene-02
       seconds: 3
       status: provisional
       technique: remotion-transition
-      presentation: {kind: monitor-push, title: "Entra nell’esperienza", content: ["PUSH NEL MONITOR", "Interfaccia dimostrativa"], voiceOver: "Lascia che ti faccia vedere.", claimIds: []}
+      presentation: {kind: phone-push, title: "Entra nell’esperienza", content: ["TELEFONO CENTRATO", "INGRESSO NELLO SCHERMO", "UI AWE REALE"], voiceOver: "Lascia che ti faccia vedere.", claimIds: []}
     - id: scene-03
       seconds: 6
       status: provisional
       technique: remotion-placeholder
-      presentation: {kind: logo-ui, title: "AWE Sport Education", content: ["Piattaforma web", "Business dello sport", "UI dimostrativa"], voiceOver: "AWE Sport Education presenta una piattaforma web dedicata alla formazione nel mondo del business dello sport.", claimIds: []}
+      presentation: {kind: logo-ui, title: "AWE Sport Education", content: ["LANDING AWE EDU", "LOGO IN ALTO A SINISTRA", "UI DIMOSTRATIVA"], voiceOver: "AWE Sport Education presenta una piattaforma web dedicata alla formazione nel mondo del business dello sport.", claimIds: []}
     - id: scene-04
       seconds: 8
       status: missing
@@ -75,7 +100,7 @@ storyboard:
 claims: []
 generations:
   - sceneId: scene-01
-    prompt: "Young professional at a desk in a cinematic modern office, making direct eye contact with camera; a monitor is visible for later compositing of the real platform UI. Natural light, restrained sport-business palette, realistic anatomy, smooth subtle camera movement."
+    prompt: "Photorealistic young professional in a cinematic modern office, speaking naturally to camera, then raising a smartphone and bringing it toward the lens; end with the phone screen centered, flat, unobstructed and large in frame for later compositing of the real platform UI. Natural light, restrained sport-business palette, realistic face and hands, smooth stable camera movement, no logos or readable text."
     model: seedance_2_0_mini
     durationSeconds: 5
     resolution: 720p

@@ -8,9 +8,10 @@ import type {RenderPlan} from './schema.js';
 export const RENDER_MANIFEST_SCHEMA_VERSION = '1.0.0';
 export const INTERNAL_SCALE = 1;
 export const DELIVERY_CODEC = 'h264';
+const AUDIO_PACKET_TOLERANCE_SECONDS = 0.022;
 export const FFMPEG_TRANSFORM = {
   executable: 'ffmpeg',
-  arguments: ['-v', 'error', '-xerror', '-y', '-i', '$INPUT', '-map', '0:v:0', '-c:v', 'copy', '-an', '$OUTPUT'],
+  arguments: ['-v', 'error', '-xerror', '-y', '-i', '$INPUT', '-map', '0:v:0', '-map', '0:a:0?', '-c', 'copy', '-t', '$DURATION', '$OUTPUT'],
 } as const;
 
 const sha256Bytes = (bytes: Uint8Array) => `sha256:${createHash('sha256').update(bytes).digest('hex')}`;
@@ -28,7 +29,7 @@ export interface RenderIdentityBody {
 }
 
 export interface TechnicalProbe {
-  codec: string; width: number; height: number; fps: string; frameCount: number; durationSeconds: number;
+  codec: string; width: number; height: number; fps: string; frameCount: number; durationSeconds: number; audioCodec: string | null;
 }
 
 export interface RenderManifest {
@@ -72,6 +73,12 @@ export async function computeRenderIdentity(plan: RenderPlan, compositionId: 'Sc
     ...['fan-experience', 'sports-marketing', 'sports-sponsorship', 'media', 'sports-finance', 'sports-law', 'sports-governance', 'sports-tourism', 'sports-equipment', 'event-management', 'esports', 'sport-for-good'].map((subject) => `assets/subjects/runtime/${subject}.png`),
   ];
   const sourceHashes = Object.fromEntries(await Promise.all(renderInputs.map(async (path) => [path, sha256Bytes(await readFile(join(projectRoot, path)))])));
+  for (const asset of plan.scenes.flatMap((scene) => scene.media ? [scene.media.voice, ...(scene.media.footage ? [scene.media.footage] : [])] : [])) {
+    const path = `assets/${asset.path}`;
+    const actualHash = sha256Bytes(await readFile(join(projectRoot, path)));
+    if (actualHash !== asset.sha256) throw new Error(`Runtime-selected media hash does not match RenderPlan: ${path}`);
+    sourceHashes[path] = actualHash;
+  }
   return renderIdentityFromInputs({
     renderPlanHash: plan.planHash, compositionId,
     sourceHashes,
@@ -92,11 +99,13 @@ const run = (executable: string, args: string[]) => {
 };
 
 export const probeAndDecode = (path: string, plan: RenderPlan): TechnicalProbe => {
-  const raw = JSON.parse(run('ffprobe', ['-v','error','-select_streams','v:0','-count_frames','-show_entries','stream=codec_name,width,height,r_frame_rate,nb_read_frames:format=duration','-of','json',path])) as {streams: Array<{codec_name:string;width:number;height:number;r_frame_rate:string;nb_read_frames:string}>;format:{duration:string}};
-  const video = raw.streams[0];
-  const probe = video && {codec: video.codec_name, width: video.width, height: video.height, fps: video.r_frame_rate, frameCount: Number(video.nb_read_frames), durationSeconds: Number(raw.format.duration)};
-  if (!probe || probe.codec !== DELIVERY_CODEC || probe.width !== plan.outputProfile.width || probe.height !== plan.outputProfile.height || probe.fps !== `${plan.outputProfile.fps}/1` || probe.frameCount !== plan.totalFrames || Math.abs(probe.durationSeconds - plan.totalFrames / plan.outputProfile.fps) > 0.01) throw new Error(`Rendered media does not match RenderPlan: ${JSON.stringify(raw)}`);
-  run('ffmpeg', ['-v','error','-xerror','-i',path,'-map','0:v:0','-f','null','-']);
+  const raw = JSON.parse(run('ffprobe', ['-v','error','-count_frames','-show_entries','stream=codec_type,codec_name,width,height,r_frame_rate,nb_read_frames:format=duration','-of','json',path])) as {streams: Array<{codec_type:string;codec_name:string;width?:number;height?:number;r_frame_rate?:string;nb_read_frames?:string}>;format:{duration:string}};
+  const video = raw.streams.find((stream) => stream.codec_type === 'video');
+  const audio = raw.streams.find((stream) => stream.codec_type === 'audio');
+  const probe = video && {codec: video.codec_name, width: video.width!, height: video.height!, fps: video.r_frame_rate!, frameCount: Number(video.nb_read_frames), durationSeconds: Number(raw.format.duration), audioCodec: audio?.codec_name ?? null};
+  const expectsAudio = plan.scenes.some((scene) => Boolean(scene.media?.voice));
+  if (!probe || probe.codec !== DELIVERY_CODEC || probe.width !== plan.outputProfile.width || probe.height !== plan.outputProfile.height || probe.fps !== `${plan.outputProfile.fps}/1` || probe.frameCount !== plan.totalFrames || Math.abs(probe.durationSeconds - plan.totalFrames / plan.outputProfile.fps) > AUDIO_PACKET_TOLERANCE_SECONDS || (expectsAudio && !probe.audioCodec)) throw new Error(`Rendered media does not match RenderPlan: ${JSON.stringify(raw)}`);
+  run('ffmpeg', ['-v','error','-xerror','-i',path,'-map','0','-f','null','-']);
   return probe;
 };
 

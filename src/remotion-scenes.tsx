@@ -1,5 +1,5 @@
 import React, {type CSSProperties, type ReactNode} from 'react';
-import {AbsoluteFill, Easing, Img, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Easing, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig, Video} from 'remotion';
 import type {RenderPlan} from './schema.js';
 import {brand, brandAsset} from './remotion-brand.ts';
 
@@ -13,11 +13,13 @@ const subjectColors = ['#EC264F', '#A2CD4B', '#43A7DE', '#9E55A0', '#FFC757', '#
 
 const reveal = (frame: number, fps: number, delay = 0) => spring({frame: frame - delay * fps, fps, durationInFrames: 0.8 * fps, config: {damping: 200}});
 
-const SceneShell = ({scene, children, accent = brand.colors.cyan, light = false}: SceneProps & {children: ReactNode; accent?: string; light?: boolean}) => {
+const SceneShell = ({scene, children, accent = brand.colors.cyan, light = false, fadeIn = true, fadeOut = true}: SceneProps & {children: ReactNode; accent?: string; light?: boolean; fadeIn?: boolean; fadeOut?: boolean}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const duration = scene.requestedDurationSeconds * fps;
-  const opacity = interpolate(frame, [0, 0.35 * fps, duration - 0.35 * fps, duration], [0, 1, 1, 0], clamp);
+  const duration = scene.frameInterval.end - scene.frameInterval.start;
+  const entryOpacity = fadeIn ? interpolate(frame, [0, 0.35 * fps], [0, 1], clamp) : 1;
+  const exitOpacity = fadeOut ? interpolate(frame, [duration - 0.35 * fps, duration], [1, 0], clamp) : 1;
+  const opacity = entryOpacity * exitOpacity;
   return <AbsoluteFill style={{background: light ? brand.colors.mist : `linear-gradient(135deg, ${brand.colors.ink}, ${brand.colors.blue})`, color: light ? brand.colors.ink : brand.colors.white, fontFamily: brand.fonts.display, overflow: 'hidden', opacity}}>
     <div style={{position: 'absolute', width: 680, height: 680, right: -310, top: -330, borderRadius: '50%', border: `2px solid ${accent}55`}} />
     <div style={{position: 'absolute', width: 360, height: 360, left: -210, bottom: -230, borderRadius: '50%', background: `${accent}22`}} />
@@ -39,20 +41,43 @@ const Browser = ({asset, style, scroll = 0}: {asset: string; style: CSSPropertie
   <div style={{position: 'absolute', left: 0, right: 0, top: 46, bottom: 0, overflow: 'hidden'}}><Img src={brandAsset(asset)} style={{width: '100%', height: 'auto', transform: `translateY(${scroll}px)`}} /></div>
 </div>;
 
+const PHONE_WIDTH = 430;
+const PHONE_HEIGHT = 860;
+const Phone = ({style}: {style?: CSSProperties}) => <div style={{position: 'absolute', left: '50%', top: '50%', width: PHONE_WIDTH, height: PHONE_HEIGHT, padding: 16, borderRadius: 68, background: '#07152F', boxShadow: '0 42px 110px rgba(0,8,35,.52)', transformOrigin: 'center', ...style}}>
+  <div style={{position: 'relative', width: '100%', height: '100%', overflow: 'hidden', borderRadius: 53, background: brand.colors.blue}}>
+    <Img src={brandAsset('brand/backgrounds/runtime/magma-gradient.png')} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover'}} />
+    <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(145deg,rgba(0,27,88,.82),rgba(0,51,154,.24))'}} />
+    <div style={{position: 'absolute', inset: 0, display: 'grid', placeItems: 'center'}}><Logo width={285} /></div>
+    <div style={{position: 'absolute', left: '50%', top: 12, width: 118, height: 28, borderRadius: 18, background: '#07152F', transform: 'translateX(-50%)'}} />
+  </div>
+</div>;
+
 const Scene01 = ({scene}: SceneProps) => {
   const frame = useCurrentFrame(); const {fps} = useVideoConfig();
-  const intro = reveal(frame, fps, 0.15); const imageScale = interpolate(frame, [0, 5 * fps], [1.08, 1], clamp);
-  return <SceneShell scene={scene} accent="#EC264F">
-    <Img src={brandAsset('subjects/runtime/fan-experience.png')} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${imageScale})`}} />
-    <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(4,16,49,.95) 0%, rgba(4,25,72,.72) 48%, rgba(4,25,72,.12) 78%)'}} />
-    <div style={{position: 'absolute', left: 92, top: 72}}><Logo width={280} /></div>
-    <div style={{position: 'absolute', left: 96, top: 338, width: 790, opacity: intro, transform: `translateY(${(1 - intro) * 55}px)`}}><Eyebrow color="#FF7592">Oltre il campo</Eyebrow><Title style={{fontSize: 88, marginTop: 27}}>Sai come funziona<br />davvero lo sport?</Title><div style={{marginTop: 30, fontFamily: brand.fonts.body, fontSize: 30, lineHeight: 1.25}}>Scopri l’industria, le competenze<br />e le persone che ci sono dietro.</div></div>
+  const intro = reveal(frame, fps, 0.15);
+  const phoneIn = interpolate(frame, [2.25 * fps, 4.65 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const imageScale = interpolate(frame, [0, 5 * fps], [1.08, 1.02], clamp);
+  const copyOut = interpolate(frame, [2.1 * fps, 3.35 * fps], [1, 0], clamp);
+  return <SceneShell scene={scene} accent={brand.colors.cyan} fadeOut={false}>
+    {scene.media?.footage
+      ? <Video src={staticFile(scene.media.footage.path)} muted style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',transform:`scale(${imageScale})`}}/>
+      : <Img src={brandAsset('subjects/runtime/sports-marketing.png')} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', transform: `scale(${imageScale})`}} />}
+    <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(4,16,49,.96) 0%, rgba(4,25,72,.72) 48%, rgba(4,25,72,.28) 100%)'}} />
+    <div style={{position: 'absolute', left: 0, bottom: 0, width: 1040, height: 270, background: 'linear-gradient(0deg,rgba(4,16,49,1),rgba(4,16,49,.96) 58%,rgba(4,16,49,0))'}} />
+    <div style={{position: 'absolute', left: 92, top: 72, opacity: copyOut}}><Logo width={280} /></div>
+    <div style={{position: 'absolute', left: 96, top: 338, width: 790, opacity: intro * copyOut, transform: `translateY(${(1 - intro) * 55}px)`}}><Eyebrow color={brand.colors.cyan}>Oltre il campo</Eyebrow><Title style={{fontSize: 88, marginTop: 27}}>Sai come funziona<br />davvero lo sport?</Title><div style={{marginTop: 30, fontFamily: brand.fonts.body, fontSize: 30, lineHeight: 1.25}}>Scopri l’industria, le competenze<br />e le persone che ci sono dietro.</div></div>
+    <Phone style={{opacity: phoneIn, transform: `translate(-50%, -50%) translateX(${(1 - phoneIn) * 520}px) scale(${0.58 + phoneIn * 0.42})`}} />
   </SceneShell>;
 };
 
 const Scene02 = ({scene}: SceneProps) => {
-  const frame = useCurrentFrame(); const {fps} = useVideoConfig(); const p = interpolate(frame, [0, 3 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
-  return <SceneShell scene={scene}><div style={{position: 'absolute', inset: 0, background: `radial-gradient(circle at 50% 50%, ${brand.colors.cyan}44, transparent 42%)`}} /><Browser asset="ui/runtime/app-main-awe-edu.png" scroll={-25 * p} style={{left: 280 - p * 250, top: 145 - p * 125, width: 1360 + p * 700, height: 790 + p * 420, transform: `scale(${0.76 + p * 0.48})`, transformOrigin: 'center'}} /><div style={{position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', opacity: interpolate(p, [0, .35, .72], [1, 1, 0], clamp)}}><div style={{padding: '24px 34px', borderRadius: 18, background: brand.colors.cyan, color: brand.colors.ink, fontSize: 38, fontWeight: 900}}>Lascia che ti faccia vedere.</div></div></SceneShell>;
+  const frame = useCurrentFrame(); const {fps} = useVideoConfig();
+  const p = interpolate(frame, [0, 2.8 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  return <SceneShell scene={scene} accent={brand.colors.cyan} fadeIn={false} fadeOut={false}>
+    <Img src={brandAsset('brand/backgrounds/runtime/magma-gradient.png')} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: .62}} />
+    <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(135deg,rgba(0,27,88,.92),rgba(0,51,154,.38))'}} />
+    <Phone style={{transform: `translate(-50%, -50%) scale(${1 + p * 4.25})`}} />
+  </SceneShell>;
 };
 
 const Scene04 = ({scene}: SceneProps) => {
@@ -113,8 +138,13 @@ const Scene12 = ({scene}: SceneProps) => {
 };
 
 const Scene13 = ({scene}: SceneProps) => {
-  const frame=useCurrentFrame(); const {fps}=useVideoConfig(); const logo=reveal(frame,fps,.35); const cta=reveal(frame,fps,1.2); const glow=interpolate(frame,[0,8*fps],[.65,1],clamp);
-  return <SceneShell scene={scene} accent={brand.colors.cyan}><Img src={brandAsset('brand/backgrounds/runtime/magma-gradient.png')} style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',opacity:.42,transform:`scale(${glow})`}}/><div style={{position:'absolute',inset:0,background:'linear-gradient(135deg,rgba(0,27,88,.94),rgba(0,51,154,.65))'}}/><div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center'}}><div style={{opacity:logo,transform:`translateY(${(1-logo)*-35}px)`}}><Logo width={520}/></div><div style={{marginTop:62,fontSize:72,lineHeight:1.02,fontWeight:900,letterSpacing:-3,opacity:cta,transform:`translateY(${(1-cta)*45}px)`}}>Porta la formazione sportiva<br/><span style={{color:brand.colors.cyan}}>nella tua community.</span></div><div style={{marginTop:45,padding:'18px 30px',border:`2px solid ${brand.colors.cyan}`,borderRadius:16,color:brand.colors.cyan,fontSize:20,fontWeight:800,letterSpacing:2,opacity:cta}}>SCOPRI AWE SPORT EDUCATION</div></div></SceneShell>;
+  const frame=useCurrentFrame(); const {fps}=useVideoConfig(); const ctaStart=4.4*fps; const logo=reveal(frame,fps,4.55); const cta=reveal(frame,fps,5.15); const glow=interpolate(frame,[ctaStart,8*fps],[.65,1],clamp); const footageOpacity=interpolate(frame,[4*fps,ctaStart],[1,0],clamp);
+  return <SceneShell scene={scene} accent={brand.colors.cyan}>
+    {scene.media?.footage && <Video src={staticFile(scene.media.footage.path)} muted style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',opacity:footageOpacity}}/>}
+    <Img src={brandAsset('brand/backgrounds/runtime/magma-gradient.png')} style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',opacity:interpolate(frame,[4*fps,ctaStart],[0,.42],clamp),transform:`scale(${glow})`}}/>
+    <div style={{position:'absolute',inset:0,background:'linear-gradient(135deg,rgba(0,27,88,.94),rgba(0,51,154,.65))',opacity:interpolate(frame,[4*fps,ctaStart],[0,1],clamp)}}/>
+    <div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center'}}><div style={{opacity:logo,transform:`translateY(${(1-logo)*-35}px)`}}><Logo width={520}/></div><div style={{marginTop:62,fontSize:72,lineHeight:1.02,fontWeight:900,letterSpacing:-3,opacity:cta,transform:`translateY(${(1-cta)*45}px)`}}>Porta la formazione sportiva<br/><span style={{color:brand.colors.cyan}}>nella tua community.</span></div><div style={{marginTop:45,padding:'18px 30px',border:`2px solid ${brand.colors.cyan}`,borderRadius:16,color:brand.colors.cyan,fontSize:20,fontWeight:800,letterSpacing:2,opacity:cta}}>SCOPRI AWE SPORT EDUCATION</div></div>
+  </SceneShell>;
 };
 
 export const BrandedScene = ({scene}: SceneProps) => {
