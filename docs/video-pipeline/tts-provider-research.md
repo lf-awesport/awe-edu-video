@@ -16,17 +16,22 @@ no job was submitted and no credit was consumed:
 | Qwen Audio + Livia | 0.04 | 0.02 | 0.05 | **0.11 credits** |
 | Inworld + Orietta or Gianni | 2.00 | 2.00 | 2.00 | **6.00 credits** |
 
-Qwen remains cost-observable but not operationally selected: the earlier live
-attempts using catalog presets were rejected before job creation, and the voice
-catalog does not declare model compatibility. Inworld is explicit about Italian
-voices but costs ten times the already-proven Seed Speech path for these scenes.
-The internal-preview recommendation therefore remains Seed Speech + Livia. The
-0.60-credit observation is not a Quote, Budget, Reservation, or permission to
-submit.
+Qwen is cost-observable but confirmed unavailable with the current preset
+catalog. One explicitly authorized scene 1 smoke used `language=it`, the actual
+Livia UUID and a one-attempt/no-retry policy; Higgsfield rejected it before job
+creation with `Voice preset is not available for Qwen Audio`. Reconciliation
+found no new audio job or credit transaction. The catalog does not publish any
+Qwen-compatible voice, so further blind preset attempts are ruled out. Inworld
+is explicit about Italian voices but costs ten times the Seed Speech path for
+these scenes and cannot cover the 13-scene master with the available free-plan
+budget. Because the user rejected Livia's perceived English accent, neither
+Qwen nor Seed Speech + Livia remains an acceptable Voice Profile. The next
+recommended path is a direct provider with an explicitly reviewed Italian stock
+voice, starting with the ElevenLabs production-oriented option below.
 
 ## Decision
 
-**Internal-preview default — Higgsfield `text2speech_v2`, `seed_speech`, preset voice.** Live CLI discovery and an authorized smoke on 2026-08-11 proved that the `Livia` preset supports Seed Speech and produces intelligible standard Italian. Fresh, non-authorizing observations total **4.00 credits** for one Candidate per Scene and **5.90 credits** under the current balanced assumption; the Scene 1 smoke consumed 0.20 credits. Its 6.648 s result exceeded the authored 5 s by 1.648 s and is therefore materialized but blocked pending a timing proposal, caption alignment and rights evidence. Higgsfield also exposes `qwen_audio_tts` with `language=it` and a much lower observed cost, but two reasoned attempts using catalog presets were rejected before job creation as unavailable for Qwen Audio; the CLI does not expose the required compatibility mapping, so Qwen is not currently an operable pipeline choice. The CLI returns completed media through `result_url`, but no word/character alignment or safe materialization command; T5 therefore needs controlled URL download and validated local alignment.[^hf-cli]
+**Rejected internal-preview candidate — Higgsfield `text2speech_v2`, `seed_speech`, preset voice.** Live CLI discovery and an authorized smoke on 2026-08-11 proved that the `Livia` preset supports Seed Speech and produces intelligible Italian text, but user review rejected its perceived English accent. Fresh, non-authorizing observations total **4.00 credits** for one Candidate per Scene and **5.90 credits** under the current balanced assumption; the Scene 1 smoke consumed 0.20 credits. Its 6.648 s result exceeded the authored 5 s by 1.648 s and is therefore materialized but blocked pending a timing proposal, caption alignment and rights evidence. Higgsfield also exposes `qwen_audio_tts` with `language=it` and a much lower observed cost, but three reasoned attempts using catalog presets were rejected before job creation as unavailable for Qwen Audio; the CLI does not expose the required compatibility mapping, so Qwen is not an operable pipeline choice. The CLI returns completed media through `result_url`, but no word/character alignment or safe materialization command.[^hf-cli]
 
 **Production-oriented default — ElevenLabs direct API, paid Starter (or higher), stock voice, `eleven_multilingual_v2`.** The direct API remains preferable when provider timing should be authoritative because its timestamp endpoint returns audio and alignment together. Higgsfield's current terms do not restrict commercial use of Outputs, including on the free plan, but its service may use retained content to improve models; account deletion starts a 30-day deletion process and cannot remove content already incorporated into model improvement.[^hf-terms] Privacy approval therefore remains required for either Higgsfield or ElevenLabs.
 
