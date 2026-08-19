@@ -25,11 +25,6 @@ const SceneShell = ({scene, children, accent = brand.colors.cyan, light = false,
     <div style={{position: 'absolute', width: 680, height: 680, right: -310, top: -330, borderRadius: '50%', border: `2px solid ${accent}55`, transform:`translate(${ambient*24}px,${ambient*18}px) scale(${1+ambient*.035})`}} />
     <div style={{position: 'absolute', width: 360, height: 360, left: -210, bottom: -230, borderRadius: '50%', background: `${accent}22`, transform:`translate(${ambient*32}px,${-ambient*16}px)`}} />
     {children}
-    <div style={{position: 'absolute', left: 76, bottom: 35, fontFamily: brand.fonts.body, fontSize: 16, opacity: 0.58}}>Concept demo · internal preview</div>
-    <div style={{position: 'absolute', right: 52, bottom: 34, display: 'flex', alignItems: 'center', gap: 18, fontSize: 16, fontWeight: 800, letterSpacing: 2, opacity: 0.66}}>
-      {scene.claims.length > 0 && <span style={{color: light ? '#A04325' : '#FFD178'}}>CLAIM DA VERIFICARE</span>}
-      {scene.id.toUpperCase()}
-    </div>
   </AbsoluteFill>;
 };
 

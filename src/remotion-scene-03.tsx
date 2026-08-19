@@ -62,8 +62,6 @@ export const Scene03BrandReveal = ({scene}: {scene: PlannedScene}) => {
         </div>
       </div>
 
-      <div style={{position: 'absolute', left: brand.safeArea + 24, bottom: 52, fontFamily: brand.fonts.body, fontSize: 17, opacity: 0.62}}>Concept demo · UI e copy da approvare</div>
-      <div style={{position: 'absolute', right: 56, bottom: 43, fontFamily: brand.fonts.display, fontSize: 18, fontWeight: 800, letterSpacing: 2, opacity: 0.72}}>{scene.id.toUpperCase()}</div>
     </AbsoluteFill>
   );
 };
