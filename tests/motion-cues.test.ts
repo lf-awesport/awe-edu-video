@@ -2,7 +2,7 @@ import {readFileSync} from 'node:fs';
 import {describe, expect, it} from 'vitest';
 import YAML from 'yaml';
 import {compileMaster} from '../src/compiler.js';
-import {motionCueSheetForPlan} from '../src/remotion-motion.js';
+import {beatSheenStyle, beatSurfaceMotifs, beatSurfaceStyle, motionCueSheetForPlan} from '../src/remotion-motion.js';
 
 describe('AWE Motion Cue Sheet public seam', () => {
   it('binds one named Transition Beat to every exact master boundary', () => {
@@ -39,5 +39,29 @@ describe('AWE Motion Cue Sheet public seam', () => {
       ['scene-10', 201, false], ['scene-11', 244, true], ['scene-12', 173, false],
       ['scene-13', 218, true],
     ]);
+  });
+});
+
+describe('AWE Transition Beat surface', () => {
+  it('paints every covering motif as a lit brand surface instead of a flat fill', () => {
+    expect(beatSurfaceMotifs).toEqual([
+      'cyan-focus-line', 'card-to-device', 'device-depth-push', 'ranking-gold-band',
+      'gold-brand-iris', 'identity-color-strips', 'case-roadmap-line',
+      'roadmap-community-node', 'community-live-orbit', 'live-panel-cinematic-return',
+    ]);
+
+    for (const motif of beatSurfaceMotifs) {
+      const surface = beatSurfaceStyle(motif, 0.5);
+      expect(surface.backgroundColor, motif).toBeTruthy();
+      expect(surface.backgroundImage, motif).toContain('radial-gradient');
+      expect(surface.backgroundImage, motif).toContain('linear-gradient');
+    }
+  });
+
+  it('moves the beat sheen across the beat so fully covered frames still travel', () => {
+    const [motif] = beatSurfaceMotifs;
+    const offsets = [0, 0.5, 1].map((progress) => beatSheenStyle(motif!, progress).transform);
+
+    expect(new Set(offsets).size).toBe(3);
   });
 });

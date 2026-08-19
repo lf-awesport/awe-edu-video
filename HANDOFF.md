@@ -1,5 +1,61 @@
 # Handoff — AWE video-generation pipeline
 
+## Visual direction pass — 2026-08-19
+
+A visual-direction-only pass against the unchanged `awe-master@1.3.0`. Copy,
+timing, voice-over, scene order, selected audio and release status are all
+untouched, and the RenderPlan hash is unchanged at
+`sha256:a547a699b454b8c6ba39a6c458daabf7fabedd0e02e4955d7d91236b07b16f06`,
+which is the proof of that: those contracts are all compiled into it.
+
+Four measured defects were fixed. Ten of the twelve Transition Beats reduced the
+frame to a flat colour slab at their peak — frame 1504 was solid `#FFC757` with
+no trace of either scene — so every covering motif now paints a lit brand
+surface with a sheen that travels with the beat's own progress. Measured
+dominant-colour coverage at the boundary frames fell from 80–100% to under 19%.
+Scene 08's third device card no longer runs under the caption plate, scene 11's
+`COMMUNITY` node no longer overlaps the `PARTNER` hub, and the scene 04 and 10
+chips are no longer `#E6F8FD` on a `#EAF8FD` background.
+
+Motif names, boundary frames, durations and voice policy are byte-identical, so
+the Motion Cue Sheet contract from #14 still holds. `beatSurfaceStyle` and
+`beatSheenStyle` in `src/remotion-motion.tsx` are the new public seam, and
+`tests/motion-cues.test.ts` fails if any covering motif regresses to a flat fill.
+
+```text
+npm test           39 tests passed
+npm run typecheck  passed
+Review proxy       .video/reviews/awe-visual-direction-proxy.mp4
+                   H.264 960x540 half scale, 30 fps, 3048 frames, 101.653333 s
+                   AAC 48 kHz stereo; ffmpeg -xerror full decode passed
+Contact sheet      .video/reviews/contact-sheet-13-scenes.png
+```
+
+**The canonical render did not run in this container.** Remotion downloads its
+browser from `remotion.media`, which the environment's network policy blocks
+with HTTP 403, so `npm run video -- render` fails before rendering and there is
+no hash-bound master, render identity or immutable-verifier evidence for this
+pass. The proxy above was rendered through the preinstalled Chromium headless
+shell, which has no H.264 decoder, so the two footage clips were transcoded to
+VP9 into an untracked review-only public directory. It is half scale and its
+hash means nothing for the master: it proves the composition renders end to end,
+not that anything is releasable. Re-run `render` and `verify` on a machine with
+the Remotion browser, or allowlist `remotion.media`.
+
+Four proposals that touch copy, assets or structure are held for owner approval
+and are **not** implemented; the worst is the burnt-in title text on the subject
+images colliding with the overlay labels in scenes 04 and 12. They are written
+up, together with the full measurements, in
+[`docs/video-pipeline/visual-direction-2026-08-19.md`](docs/video-pipeline/visual-direction-2026-08-19.md).
+
+That document also carries the pre-implementation ownership declaration for #13.
+It could not be posted to the tracker: the GitHub integration for this session
+(`met-no-code`) has no issue-write permission and returns
+`403 Resource not accessible by integration`. Someone with write access should
+post it, so #13 records who owned which scenes and files.
+
+The artifact remains `internal-preview-only`.
+
 ## Current continuity and selected-audio master — 2026-08-18
 
 The owner explicitly deferred Storyboard revision #13 and authorized the full
