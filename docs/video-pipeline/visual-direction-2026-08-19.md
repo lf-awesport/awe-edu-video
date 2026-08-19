@@ -146,3 +146,58 @@ Filling it needs new copy or a new asset.
 
 **P4 — Scene 13 caption is redundant.** The caption repeats the on-screen CTA
 verbatim. Changing it is copy/VO.
+
+## Verification
+
+```text
+npm test                    39 tests passed (37 baseline + 2 beat-surface)
+npm run typecheck           passed
+git diff --check            passed
+RenderPlan after change     sha256:a547a699b454b8c6ba39a6c458daabf7fabedd0e02e4955d7d91236b07b16f06
+```
+
+The plan hash is unchanged, which is the intended non-regression result: copy,
+scene order, resolved intervals, the selected Livia voice and the selected audio
+mix are all compiled into that hash. The release status stays
+`internal-preview-only`.
+
+### The canonical render could not run in this container
+
+`npm run video -- render` fails before rendering. Remotion fetches its own
+browser from `remotion.media`, which this environment's network policy blocks:
+
+```text
+Error: Received a status code of 403 while downloading file
+https://remotion.media/chromium-headless-shell-linux-x64-149.0.7790.0.zip
+Host not in allowlist: remotion.media.
+```
+
+So no hash-bound master, render identity or immutable-verifier evidence exists
+for this pass. Producing it needs either `remotion.media` added to the egress
+allowlist or a run on a machine that already has the Remotion browser.
+
+### Review proxy used instead
+
+To still verify the composition end to end, the change was rendered through the
+Chromium headless shell already present at
+`/opt/pw-browsers/chromium_headless_shell-1194`. That shell has no H.264
+decoder, so the two footage clips were transcoded to VP9 into a review-only
+public directory under `.video/review-public/`. No hash-bound asset, the project
+fixture and the RenderPlan were left untouched.
+
+```text
+Path      .video/reviews/awe-visual-direction-proxy.mp4
+Media     H.264 960x540 (half scale), 30 fps, 3048 frames, 101.653333 s
+Audio     AAC 48 kHz stereo, 4765 packets
+Decode    ffmpeg -xerror full decode passed
+Sheet     .video/reviews/contact-sheet-13-scenes.png
+```
+
+The 13-scene contact sheet shows all scenes present and in order, continuous
+Italian captions, no black or blank frames, no missing media. Scene 08's cards
+clear the caption band, scene 11's ring clears the hub, and the scene 04 and 10
+chips are legible.
+
+**This proxy is not release evidence.** It is half scale, its footage is a
+transcode, and its hash carries no meaning for the master. It demonstrates only
+that the composition renders end to end with the intended structure.
