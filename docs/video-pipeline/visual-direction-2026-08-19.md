@@ -122,7 +122,7 @@ is unchanged.
 
 These touch copy, assets or structure, so they stay proposals.
 
-**P1 — Baked-in card text collides with overlay labels (scenes 04, 09, 12).**
+**P1 — Baked-in card text collides with overlay labels (scenes 04 and 12).**
 The images in `assets/subjects/runtime/` carry their title burnt into the file
 (`FAN EXPERIENCE - PREVIEW`, `di Team AWE Sport Education`). The renderer draws
 its own label (`Fan experience`) into the same band, so the two texts overlap and
@@ -131,6 +131,10 @@ this pass's scope: (a) crop the image past the burnt-in band — an asset decisi
 that removes words currently on screen; (b) drop the overlay label — on-screen
 copy; (c) request clean subject exports from the designer — a new asset.
 Recommendation: (c), with (a) as a declared fallback.
+
+Scene 09 uses the same source images but is *not* affected: it places its overlay
+copy in a clean white band below the image instead of over the burnt-in band.
+That layout is the working reference if the owner chooses a renderer-side remedy.
 
 **P2 — Duplicate `PARTNER` label in scene 11.** `PARTNER` appears both as a ring
 node and as the centre. The geometry is fixed by this pass, but removing or
