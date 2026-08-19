@@ -71,7 +71,25 @@ fault rather than an intended handoff.
 The fix keeps every motif's identity, `frame`, `durationInFrames` and
 `voicePolicy` byte-identical and changes only how the beat surface is painted:
 a lit brand surface (directional gradient plus a sheen that travels with the
-beat's own progress) instead of a flat fill.
+beat's own progress) instead of a flat fill. The surface is exposed as a public
+seam, `beatSurfaceStyle` and `beatSheenStyle` in `src/remotion-motion.tsx`, and
+`tests/motion-cues.test.ts` now fails if any covering motif regresses to a flat
+fill or if the sheen stops travelling.
+
+Re-measured on the same boundary frames after the change:
+
+| Boundary | Before | After |
+|---|---|---|
+| 498 | 100.0% | 24.4% |
+| 841 | 100.0% | 18.1% |
+| 1021 | 100.0% | 10.2% |
+| 1308 | 81.2% | 7.1% |
+| 1504 | 100.0% | 13.4% |
+| 1825 | 19.8% | 1.8% |
+| 2130 | 100.0% | 5.6% |
+| 2349 | 80.7% | 8.3% |
+| 2619 | 95.2% | 11.0% |
+| 2808 | 82.7% | 6.7% |
 
 ## Finding 2 — Scene 08 collides with the caption band
 
@@ -79,17 +97,26 @@ The three device cards are 750 px tall, centred in a container inset 100/95, and
 carry a `translateY` swell plus a rotation. The third card reaches y≈955. A
 two-line caption plate starts at y≈924, so the card runs under the caption.
 
+Fixed by pulling the block into the caption-free band (container inset 96/186)
+and shortening the cards to 672 px. No card now crosses the lower safe area.
+
 ## Finding 3 — Scene 11 orbit node overlaps the centre
 
 The ring nodes and the centre circle are positioned in two independent coordinate
 systems. The `COMMUNITY` node's left edge lands at x≈556 while the centre circle
 reaches x≈590, a ~34 px overlap that puts the pill on top of the `PARTNER` label.
 
+Fixed by restating the ring as one centre `(470, 610)` with an explicit hub
+diameter of 200 px and ring radii of 300×190 px. The tightest case, a node on the
+horizontal axis, leaves 300 − 85 = 215 px between hub centre and node edge
+against a 100 px hub radius, so every node clears the hub with margin.
+
 ## Finding 4 — Invisible chips in scenes 04 and 10
 
 The `VIDEO · TEST · QUIZ` and `PROGETTO SU MISURA` chips use `#E6F8FD` on the
 `mist` `#EAF8FD` scene background. The chip shape is effectively invisible; only
-its text reads.
+its text reads. Both now use a solid brand-blue chip with white text. The wording
+is unchanged.
 
 ## Proposals held for owner approval — not implemented
 
