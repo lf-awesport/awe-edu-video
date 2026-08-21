@@ -8,7 +8,6 @@ type SceneProps = {scene: PlannedScene};
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const subjects = ['fan-experience', 'sports-marketing', 'sports-sponsorship', 'media', 'sports-finance', 'sports-law', 'sports-governance', 'sports-tourism', 'sports-equipment', 'event-management', 'esports', 'sport-for-good'];
-const subjectNames = ['Fan experience', 'Sports marketing', 'Sponsorship', 'Media', 'Finance', 'Sports law', 'Governance', 'Tourism', 'Equipment', 'Events', 'Esports', 'Sport for good'];
 const subjectColors = ['#EC264F', '#A2CD4B', '#43A7DE', '#9E55A0', '#FFC757', '#F06059', '#243E8F', '#F181A8', '#009F97', '#EF8621', '#AF9FCB', '#71CCDA'];
 
 const reveal = (frame: number, fps: number, delay = 0) => spring({frame: frame - delay * fps, fps, durationInFrames: 0.8 * fps, config: {damping: 200}});
@@ -77,10 +76,10 @@ const Scene04 = ({scene}: SceneProps) => {
   const deckOpacity = interpolate(frame, [.35 * fps, .9 * fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
   const focus = interpolate(frame, [5.1 * fps, 10.6 * fps], [0, 11], {...clamp, easing: Easing.inOut(Easing.cubic)});
   return <SceneShell scene={scene} accent="#FFC757" fadeIn={false} fadeOut={false}><div style={{position: 'absolute', left: 90, top: 68, opacity: head, transform: `translateY(${(1-head)*24}px)`}}><Eyebrow color="#FFC757">Un percorso strutturato</Eyebrow><Title style={{fontSize: 58, marginTop: 15}}>Esplora il <span style={{color: "#FFC757"}}>business dello sport</span></Title></div>
-    <div style={{position: 'absolute', left: 92, right: 92, top: 250, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, perspective: 1400}}>{subjects.map((subject, i) => {
+    <div style={{position: 'absolute', left: 226, right: 226, top: 250, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, perspective: 1400}}>{subjects.map((subject, i) => {
       const column = i % 4;
       const row = Math.floor(i / 4);
-      const finalCenterX = 303 + column * 438;
+      const finalCenterX = 403 + column * 371;
       const finalCenterY = 350 + row * 216;
       const fanX = 960 + (i - 5.5) * 68;
       const fanY = 510 + Math.abs(i - 5.5) * 8;
@@ -89,7 +88,7 @@ const Scene04 = ({scene}: SceneProps) => {
       const rotation = interpolate(frame, [.45 * fps, 1.35 * fps, 3.15 * fps, 4.75 * fps], [(i-5.5)*.35, (i-5.5)*3.2, (i-5.5)*3.2, 0], {...clamp, easing: Easing.inOut(Easing.cubic)});
       const scale = interpolate(frame, [.45 * fps, 1.35 * fps, 3.15 * fps, 4.75 * fps], [.88, .9, .9, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
       const emphasis = Math.max(0, 1 - Math.abs(focus - i));
-      return <div key={subject} style={{height: 200, borderRadius: 18, overflow: 'hidden', position: 'relative', boxShadow: `0 ${10+emphasis*18}px ${28+emphasis*32}px rgba(11,42,91,${.16+emphasis*.2})`, opacity: deckOpacity*(.78+emphasis*.22), zIndex: 20-Math.abs(i-5.5), outline:`${emphasis*6}px solid ${subjectColors[i]}`, transform: `translate3d(${x}px,${y-emphasis*18}px,${-Math.abs(i-5.5)*7}px) rotateZ(${rotation}deg) scale(${scale+emphasis*.075})`, transformOrigin: 'center'}}><Img src={brandAsset(`subjects/runtime/${subject}.png`)} style={{width: '100%', height: '100%', objectFit: 'cover',filter:`saturate(${.82+emphasis*.38}) brightness(${.9+emphasis*.1})`}} /><div style={{position: 'absolute', left: 0, right: 0, bottom: 0, padding: '36px 17px 13px', background: 'linear-gradient(transparent,rgba(2,12,40,.9))', color: '#fff', fontSize: 18, fontWeight: 800}}>{subjectNames[i]}</div><div style={{position: 'absolute', left: 13, top: 13, width: 10, height: 35, borderRadius: 8, background: subjectColors[i]}} /></div>})}</div>
+      return <div key={subject} style={{height: 200, borderRadius: 18, overflow: 'hidden', position: 'relative', boxShadow: `0 ${10+emphasis*18}px ${28+emphasis*32}px rgba(11,42,91,${.16+emphasis*.2})`, opacity: deckOpacity*(.78+emphasis*.22), zIndex: 20-Math.abs(i-5.5), outline:`${emphasis*6}px solid ${subjectColors[i]}`, transform: `translate3d(${x}px,${y-emphasis*18}px,${-Math.abs(i-5.5)*7}px) rotateZ(${rotation}deg) scale(${scale+emphasis*.075})`, transformOrigin: 'center'}}><Img src={brandAsset(`subjects/runtime/${subject}.png`)} style={{width: '100%', height: '100%', objectFit: 'cover',filter:`saturate(${.82+emphasis*.38}) brightness(${.9+emphasis*.1})`}} /><div style={{position: 'absolute', left: 13, top: 13, width: 10, height: 35, borderRadius: 8, background: subjectColors[i]}} /></div>})}</div>
     <div style={{position: 'absolute', right: 88, top: 175, padding: '11px 18px', borderRadius: 12, background: brand.colors.blue, color: brand.colors.white, fontSize: 16, fontWeight: 800, letterSpacing: 1.4}}>VIDEO · TEST · QUIZ</div></SceneShell>;
 };
 
