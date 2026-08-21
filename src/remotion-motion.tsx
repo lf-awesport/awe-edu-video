@@ -121,7 +121,7 @@ const TransitionBeat = ({motif, progress}: {motif: TransitionMotif; progress: nu
   if (motif === 'roadmap-community-node') return <AbsoluteFill><div style={{position:'absolute',left:'76%',top:'43%',width:2300,height:2300,borderRadius:'50%',...surface,border:`${18*(1-envelope)}px solid #E7F4C8`,transform:`translate(-50%,-50%) scale(${envelope})`}}>{sheen}</div></AbsoluteFill>;
   if (motif === 'live-panel-cinematic-return') return <AbsoluteFill><div style={{position:'absolute',left:'42%',top:'58%',width:1920,height:1080,borderRadius:`${interpolate(envelope,[0,1],[34,0])}px`,...surface,border:`${interpolate(envelope,[0,1],[7,0])}px solid #FF7592`,boxShadow:'0 30px 110px rgba(0,10,50,.45)',transform:`translate(-50%,-50%) scale(${envelope})`,transformOrigin:'35% 55%'}}>{sheen}</div></AbsoluteFill>;
   if (motif === 'identity-color-strips') {
-    const colors = [brand.colors.blue, brand.colors.cyan, '#EC264F', '#009F97', '#FFC757'];
+    const colors = [brand.colors.blue, brand.colors.cyan, '#EC264F', '#009F97', '#43A7DE'];
     return <AbsoluteFill>{colors.map((color, index) => <div key={color} style={{position: 'absolute', left: `${index * 20}%`, width: '20.2%', top: 0, bottom: 0, overflow: 'hidden', backgroundColor: color, backgroundImage: `linear-gradient(${index % 2 ? 200 : 20}deg, rgba(255,255,255,.20), rgba(6,27,71,.30))`, transform: `scaleY(${Math.min(1, envelope * 1.18)})`, transformOrigin: index % 2 ? 'bottom' : 'top'}}>{sheen}</div>)}</AbsoluteFill>;
   }
   if (motif === 'community-live-orbit') {

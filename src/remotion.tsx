@@ -1,7 +1,6 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Composition, getInputProps, interpolate, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Composition, getInputProps, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import type {RenderPlan} from './schema.js';
-import {brand} from './remotion-brand.ts';
 import {brandFontFaces} from './remotion-brand.ts';
 import {Scene03BrandReveal} from './remotion-scene-03.tsx';
 import {TransitionLayer} from './remotion-motion.tsx';
@@ -11,18 +10,9 @@ type PlannedScene = RenderPlan['scenes'][number];
 
 const SceneVisual=({scene}: {scene:PlannedScene}) => scene.id === 'scene-03' ? <Scene03BrandReveal scene={scene}/> : <BrandedScene scene={scene}/>;
 
-const SceneVoice=({scene}: {scene:PlannedScene})=>{
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const duration = scene.frameInterval.end - scene.frameInterval.start;
-  const captionOpacity = interpolate(frame, [0, 6, duration - 6, duration], [0, 1, 1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-  return <AbsoluteFill>
-    {scene.media?.voice && <Audio src={staticFile(scene.media.voice.path)}/>}
-    {scene.media?.voice && <div style={{position:'absolute',left:260,right:260,bottom:66,display:'flex',justifyContent:'center',pointerEvents:'none'}}>
-      <div style={{maxWidth:1400,padding:'13px 24px 15px',borderRadius:14,background:'rgba(3,12,38,.86)',boxShadow:'0 8px 28px rgba(0,0,0,.25)',color:'#fff',fontFamily:brand.fonts.body,fontSize:25,lineHeight:1.25,fontWeight:700,textAlign:'center',opacity:captionOpacity}}>{scene.presentation.voiceOver}</div>
-    </div>}
-  </AbsoluteFill>;
-};
+const SceneVoice=({scene}: {scene:PlannedScene})=><AbsoluteFill>
+  {scene.media?.voice && <Audio src={staticFile(scene.media.voice.path)}/>}
+</AbsoluteFill>;
 
 const dbVolume = (db: number) => 10 ** (db / 20);
 
