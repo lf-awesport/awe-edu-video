@@ -10,22 +10,40 @@ const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const subjects = ['fan-experience', 'sports-marketing', 'sports-sponsorship', 'media', 'sports-finance', 'sports-law', 'sports-governance', 'sports-tourism', 'sports-equipment', 'event-management', 'esports', 'sport-for-good'];
 const subjectColors = ['#EC264F', '#A2CD4B', '#43A7DE', '#9E55A0', '#FFC757', '#F06059', '#243E8F', '#F181A8', '#009F97', '#EF8621', '#AF9FCB', '#71CCDA'];
 
-const reveal = (frame: number, fps: number, delay = 0) => spring({frame: frame - delay * fps, fps, durationInFrames: 0.8 * fps, config: {damping: 200}});
+// House motion standard. Every entrance, exit and stagger in the film reads
+// from here rather than carrying its own numbers.
+const MOTION = {enterFrames: 18, exitFrames: 12, staggerFrames: 4, overshoot: .04, blur: 8} as const;
+
+const reveal = (frame: number, fps: number, delay = 0) =>
+  interpolate(frame, [delay * fps, delay * fps + MOTION.enterFrames], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+
+// An element arriving: from nothing, blurred and displaced, overshooting its
+// resting place by a few percent before settling on it.
+const entrance = (frame: number, index = 0, shift = 30, delayFrames = 0): CSSProperties => {
+  const start = delayFrames + index * MOTION.staggerFrames;
+  const progress = interpolate(frame, [start, start + MOTION.enterFrames], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+  const offset = interpolate(progress, [0, .72, 1], [shift, -shift * MOTION.overshoot, 0]);
+  return {
+    opacity: progress,
+    filter: `blur(${((1 - progress) * MOTION.blur).toFixed(2)}px)`,
+    transform: `translateY(${offset.toFixed(2)}px)`,
+  };
+};
 
 // With no beat covering the cuts, every scene owns its own exit. Copy fades
 // out as one block; graphics are given movement instead.
-const sceneOut = (frame: number, fps: number, scene: PlannedScene, hold = .6) => {
+const sceneOut = (frame: number, fps: number, scene: PlannedScene, hold: number = MOTION.exitFrames) => {
   const duration = scene.frameInterval.end - scene.frameInterval.start;
-  return interpolate(frame, [duration - hold * fps, duration], [0, 1], {...clamp, easing: Easing.in(Easing.cubic)});
+  // inOut, not in: an ease-in packs the whole move into the last few frames
+  // and reads as a snap, an ease-out empties the frame long before the cut
+  return interpolate(frame, [duration - hold, duration], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
 };
 
 // Copy arrives a line at a time and leaves all at once.
-const Copy = ({frame, fps, out, delay = .2, step = .22, style, children}: {frame: number; fps: number; out: number; delay?: number; step?: number; style: CSSProperties; children: ReactNode}) =>
+const Copy = ({frame, fps, out, delay = .2, style, children}: {frame: number; fps: number; out: number; delay?: number; style: CSSProperties; children: ReactNode}) =>
   <div style={{position: 'absolute', opacity: 1 - out, ...style}}>
-    {React.Children.toArray(children).map((line, i) => {
-      const entry = reveal(frame, fps, delay + i * step);
-      return <div key={i} style={{opacity: entry, transform: `translateY(${(1 - entry) * 30}px)`}}>{line}</div>;
-    })}
+    {React.Children.toArray(children).map((line, i) =>
+      <div key={i} style={entrance(frame, i, 30, delay * 30)}>{line}</div>)}
   </div>;
 
 // The white arrives as one wipe cut from the AWE mark: the logotype is used
@@ -88,7 +106,7 @@ const Scene02 = ({scene}: SceneProps) => {
   const frame = useCurrentFrame(); const {fps} = useVideoConfig();
   const logoIn = interpolate(frame, [0, .65 * fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
   const drift = interpolate(frame, [.4 * fps, 3 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
-  const out = sceneOut(frame, fps, scene, .5);
+  const out = sceneOut(frame, fps, scene);
   return <SceneShell scene={scene} fadeIn={false} fadeOut={false}>
     <div style={{position:'absolute',inset:0,display:'grid',placeItems:'center'}}><div style={{opacity:logoIn*(1-out),transform:`translateY(${(1-logoIn)*40-drift*14-out*90}px) scale(${.92+logoIn*.08+drift*.02})`,transformOrigin:'center'}}><Logo width={560}/></div></div>
   </SceneShell>;
@@ -168,7 +186,7 @@ const Scene06 = ({scene}: SceneProps) => {
       <Eyebrow color={brand.colors.white}>Gamification · concept UI</Eyebrow>
       <Title style={{marginTop: 22}}>Impara. Avanza. <span style={{color: brand.colors.white}}>Sfida.</span></Title>
     </Copy>
-    <div style={{position: 'absolute', left: 95, top: 300, width: 700, color: brand.colors.white, opacity: progressIn*(1-depth*.32), transform: `perspective(1400px) translateX(${(1-depth)*280}px) translateZ(${-depth*180}px) rotateY(${depth*5}deg) scale(${1.04-depth*.06})`, transformOrigin: 'center'}}>
+    <div style={{position: 'absolute', left: 95, top: 300, width: 700, color: brand.colors.white, opacity: progressIn*(1-depth*.32)*(1-out), transform: `perspective(1400px) translateX(${(1-depth)*280-out*260}px) translateZ(${-depth*180}px) rotateY(${depth*5}deg) scale(${1.04-depth*.06})`, transformOrigin: 'center'}}>
       <div style={{fontSize: 24, fontWeight: 800, letterSpacing: 2, color: brand.colors.white}}>CORSI COMPLETATI</div>
       <div style={{display: 'flex', alignItems: 'center', gap: 46, marginTop: 38}}>
         <div style={{position: 'relative', width: 392, height: 392, flexShrink: 0}}>
@@ -198,7 +216,7 @@ const Scene06 = ({scene}: SceneProps) => {
       </div>
     </div>
 
-    <div style={{position: 'absolute', left: 720, right: 95, top: 310, height: 535, borderRadius: 30, background: '#082358', padding: 42, opacity: rankingIn, transform: `perspective(1400px) translateX(${(1-rankingIn)*180}px) translateZ(${(1-rankingIn)*-220}px) scale(${.94+rankingIn*.06})`}}><div style={{fontSize: 23, fontWeight: 800, color: brand.colors.cyan}}>CLASSIFICA · ESEMPIO</div><div style={{position:'relative',marginTop:24,height:384}}>{ranks.map((rank)=>{const leader=rank.to===0;const travel=leader?climb:reorder;const position=interpolate(travel,[0,1],[rank.from,rank.to]);const place=Math.round(position)+1;return <div key={rank.name} style={{position:'absolute',left:0,right:0,top:position*64,height:56,borderRadius:14,display:'grid',gridTemplateColumns:'62px 1fr 150px',alignItems:'center',padding:'0 22px',background:leader?`rgba(51,197,243,${.16+climb*.84})`:'#ffffff10',color:leader&&climb>.55?brand.colors.ink:'#fff',transform:`scale(${1+(leader?climb*.03:0)})`,boxShadow:leader?`0 ${Math.round(climb*16)}px ${Math.round(climb*40)}px rgba(0,12,50,.3)`:'none'}}><span style={{fontSize:22,fontWeight:900}}>{String(place).padStart(2,'0')}</span><span style={{fontSize:22,fontWeight:800}}>{rank.name}</span><span style={{fontSize:16,fontWeight:900,textAlign:'right'}}>{rank.status}</span></div>})}</div></div>
+    <div style={{position: 'absolute', left: 720, right: 95, top: 310, height: 535, borderRadius: 30, background: '#082358', padding: 42, opacity: rankingIn*(1-out), transform: `perspective(1400px) translateX(${(1-rankingIn)*180+out*300}px) translateZ(${(1-rankingIn)*-220}px) scale(${.94+rankingIn*.06})`}}><div style={{fontSize: 23, fontWeight: 800, color: brand.colors.cyan}}>CLASSIFICA · ESEMPIO</div><div style={{position:'relative',marginTop:24,height:384}}>{ranks.map((rank)=>{const leader=rank.to===0;const travel=leader?climb:reorder;const position=interpolate(travel,[0,1],[rank.from,rank.to]);const place=Math.round(position)+1;return <div key={rank.name} style={{position:'absolute',left:0,right:0,top:position*64,height:56,borderRadius:14,display:'grid',gridTemplateColumns:'62px 1fr 150px',alignItems:'center',padding:'0 22px',background:leader?`rgba(51,197,243,${.16+climb*.84})`:'#ffffff10',color:leader&&climb>.55?brand.colors.ink:'#fff',transform:`scale(${1+(leader?climb*.03:0)})`,boxShadow:leader?`0 ${Math.round(climb*16)}px ${Math.round(climb*40)}px rgba(0,12,50,.3)`:'none'}}><span style={{fontSize:22,fontWeight:900}}>{String(place).padStart(2,'0')}</span><span style={{fontSize:22,fontWeight:800}}>{rank.name}</span><span style={{fontSize:16,fontWeight:900,textAlign:'right'}}>{rank.status}</span></div>})}</div></div>
   </SceneShell>;
 };
 
@@ -244,7 +262,7 @@ const Scene10 = ({scene}: SceneProps) => {
       <Eyebrow color={brand.colors.blue}>Una roadmap condivisa</Eyebrow>
       <Title style={{marginTop:24,color:brand.colors.ink}}>Obiettivi e modalità</Title>
       <Title style={{color:brand.colors.cyan}}>costruiti insieme.</Title>
-    </Copy><div style={{position:'absolute',left:300,right:300,top:470,height:18,borderRadius:12,background:'#D6DFEA',opacity:1-out,transform:`translateX(${-out*300}px)`}}><div style={{height:'100%',width:`${p*100}%`,borderRadius:12,background:'linear-gradient(90deg,#EF8621,#FFC757)'}}/>{[0,.25,.5,.75,1].map((v,i)=><div key={v} style={{position:'absolute',left:`${v*100}%`,top:-18,width:54,height:54,borderRadius:'50%',background:p>=v?'#EF8621':'#fff',border:'6px solid #D6DFEA',boxShadow:'0 5px 20px rgba(0,30,80,.2)',transform:'translateX(-50%)'}}><div style={{position:'absolute',top:70,left:'50%',transform:'translateX(-50%)',width:170,textAlign:'center',fontSize:19,fontWeight:800,color:brand.colors.ink}}>STEP {i+1}</div></div>)}</div><Arrow name="arrow-07" draw={stroke(frame, fps, 3)} from="left" style={{left: 1540, top: 606, width: 190, opacity: 1 - out, filter: 'brightness(0)', transform: `rotate(-9deg) translateX(${out * 220}px)`}} /><div style={{position:'absolute',left:300,width:1320,top:700,textAlign:'center',opacity:1-out,fontFamily:brand.fonts.body,fontSize:28,color:brand.colors.ink}}>Durata e milestone definite con il partner.</div><div style={{position:'absolute',right:120,top:110,padding:'18px 24px',borderRadius:16,background:brand.colors.blue,color:brand.colors.white,fontWeight:900,letterSpacing:1.4}}>PROGETTO SU MISURA</div></SceneShell>;
+    </Copy><div style={{position:'absolute',left:300,right:300,top:470,height:18,borderRadius:12,background:'#D6DFEA',opacity:1-out,transform:`translateX(${-out*300}px)`}}><div style={{height:'100%',width:`${p*100}%`,borderRadius:12,background:'linear-gradient(90deg,#EF8621,#FFC757)'}}/>{[0,.25,.5,.75,1].map((v,i)=><div key={v} style={{position:'absolute',left:`${v*100}%`,top:-18,width:54,height:54,borderRadius:'50%',background:p>=v?'#EF8621':'#fff',border:'6px solid #D6DFEA',boxShadow:'0 5px 20px rgba(0,30,80,.2)',transform:'translateX(-50%)'}}><div style={{position:'absolute',top:70,left:'50%',transform:'translateX(-50%)',width:170,textAlign:'center',fontSize:19,fontWeight:800,color:brand.colors.ink}}>STEP {i+1}</div></div>)}</div><Arrow name="arrow-07" draw={stroke(frame, fps, 3)} from="left" style={{left: 1540, top: 606, width: 190, opacity: 1 - out, filter: 'brightness(0)', transform: `rotate(-9deg) translateX(${out * 220}px)`}} /><div style={{position:'absolute',left:300,width:1320,top:700,textAlign:'center',opacity:1-out,fontFamily:brand.fonts.body,fontSize:28,color:brand.colors.ink}}>Durata e milestone definite con il partner.</div><div style={{position:'absolute',right:120,top:110,padding:'18px 24px',borderRadius:16,background:brand.colors.blue,color:brand.colors.white,fontWeight:900,letterSpacing:1.4,opacity:1-out,transform:`translateX(${out*180}px)`}}>PROGETTO SU MISURA</div></SceneShell>;
 };
 
 const Scene11 = ({scene}: SceneProps) => {
@@ -260,7 +278,7 @@ const Scene11 = ({scene}: SceneProps) => {
         <div style={{position:'absolute',left:centre.x-hub/2,top:centre.y-hub/2,width:hub,height:hub,borderRadius:'50%',background:'#A2CD4B',color:brand.colors.ink,display:'grid',placeItems:'center',fontSize:30,fontWeight:900,transform:`scale(${1+Math.sin(orbit*Math.PI)*.04})`}}>PARTNER</div>
         {groups.map((g,i)=>{const angle=i*Math.PI/2+.35+orbit*.42;const r=reveal(frame,fps,.6+i*.2);return <div key={g} style={{position:'absolute',left:centre.x+Math.cos(angle)*radius.x,top:centre.y+Math.sin(angle)*radius.y,width:node.width,height:node.height,borderRadius:18,background:'#fff',border:'1px solid rgba(10,36,88,.14)',boxShadow:'0 10px 26px rgba(10,36,88,.10)',color:brand.colors.ink,display:'grid',placeItems:'center',fontSize:18,fontWeight:900,opacity:r,transform:`translate(-50%,-50%) scale(${r})`}}>{g}</div>})}
       </>;
-    })()}</div><div style={{position:'absolute',right:95,top:350,width:760}}>{rewards.map((reward,i)=>{const r=reveal(frame,fps,1+i*.3);const active=Math.max(0,1-Math.abs(rewardFocus-i));return <div key={reward} style={{height:125,marginBottom:18,borderRadius:24,background:i===0?'#A2CD4B':'#F1F5FA',color:brand.colors.ink,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 36px',opacity:r,outline:`${active*3}px solid #A2CD4B`,transform:`translateX(${(1-r)*65-active*18}px) scale(${1+active*.025})`}}><span style={{fontSize:27,fontWeight:900}}>{reward}</span><span style={{fontFamily:brand.fonts.body,fontSize:19}}>Esempio da validare →</span></div>})}</div></SceneShell>;
+    })()}</div><div style={{position:'absolute',right:95,top:350,width:760,opacity:1-out,transform:`translateX(${out*280}px)`}}>{rewards.map((reward,i)=>{const r=reveal(frame,fps,1+i*.3);const active=Math.max(0,1-Math.abs(rewardFocus-i));return <div key={reward} style={{height:125,marginBottom:18,borderRadius:24,background:i===0?'#A2CD4B':'#F1F5FA',color:brand.colors.ink,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 36px',opacity:r,outline:`${active*3}px solid #A2CD4B`,transform:`translateX(${(1-r)*65-active*18}px) scale(${1+active*.025})`}}><span style={{fontSize:27,fontWeight:900}}>{reward}</span><span style={{fontFamily:brand.fonts.body,fontSize:19}}>Esempio da validare →</span></div>})}</div></SceneShell>;
 };
 
 const Scene12 = ({scene}: SceneProps) => {
@@ -269,7 +287,7 @@ const Scene12 = ({scene}: SceneProps) => {
       <Eyebrow color={brand.colors.blue}>Incontro · concept</Eyebrow>
       <Title style={{fontSize:62,marginTop:18,color:brand.colors.ink}}>Incontra. Condividi.</Title>
       <Title style={{fontSize:62,color:brand.colors.cyan}}>Confrontati.</Title>
-    </Copy><div style={{position:'absolute',left:92,top:350,width:1050,height:540,borderRadius:28,overflow:'hidden',background:'#122D61',border:'1px solid #ffffff20',opacity:r*(1-out),transform:`translateX(${-out*280}px)`}}><Img src={brandAsset('subjects/runtime/media.png')} style={{width:'100%',height:'100%',objectFit:'cover',opacity:.75,transform:`scale(${zoom})`}}/><div style={{position:'absolute',inset:0,background:'linear-gradient(transparent 45%,rgba(3,12,38,.86))'}}/><div style={{position:'absolute',left:28,top:26,padding:'12px 18px',borderRadius:12,background:'#EC264F',fontWeight:900,letterSpacing:2}}>INCONTRO · DEMO</div><div style={{position:'absolute',left:35,bottom:32,fontSize:30,fontWeight:900}}>Sport Industry Q&amp;A</div></div><div style={{position:'absolute',right:92,top:350,width:610,height:540,borderRadius:28,background:'#fff',border:'1px solid rgba(10,36,88,.12)',boxShadow:'0 16px 40px rgba(10,36,88,.12)',color:brand.colors.ink,padding:32,opacity:reveal(frame,fps,.8)}}><div style={{fontSize:22,fontWeight:900,color:brand.colors.blue}}>DOMANDE · UI DIMOSTRATIVA</div>{messages.map((m,i)=>{const messageIn=reveal(frame,fps,delays[i]);return <div key={m} style={{marginTop:28,padding:'20px 22px',borderRadius:18,background:i===2?'#E6F8FD':'#EEF2F8',fontFamily:brand.fonts.body,fontSize:21,opacity:messageIn,transform:`translateX(${(1-messageIn)*38}px)`}}>{m}</div>})}</div></SceneShell>;
+    </Copy><div style={{position:'absolute',left:92,top:350,width:1050,height:540,borderRadius:28,overflow:'hidden',background:'#122D61',border:'1px solid #ffffff20',opacity:r*(1-out),transform:`translateX(${-out*280}px)`}}><Img src={brandAsset('subjects/runtime/media.png')} style={{width:'100%',height:'100%',objectFit:'cover',opacity:.75,transform:`scale(${zoom})`}}/><div style={{position:'absolute',inset:0,background:'linear-gradient(transparent 45%,rgba(3,12,38,.86))'}}/><div style={{position:'absolute',left:28,top:26,padding:'12px 18px',borderRadius:12,background:'#EC264F',fontWeight:900,letterSpacing:2}}>INCONTRO · DEMO</div><div style={{position:'absolute',left:35,bottom:32,fontSize:30,fontWeight:900}}>Sport Industry Q&amp;A</div></div><div style={{position:'absolute',right:92,top:350,width:610,height:540,borderRadius:28,background:'#fff',border:'1px solid rgba(10,36,88,.12)',boxShadow:'0 16px 40px rgba(10,36,88,.12)',color:brand.colors.ink,padding:32,opacity:reveal(frame,fps,.8)*(1-out),transform:`translateX(${out*300}px)`}}><div style={{fontSize:22,fontWeight:900,color:brand.colors.blue}}>DOMANDE · UI DIMOSTRATIVA</div>{messages.map((m,i)=>{const messageIn=reveal(frame,fps,delays[i]);return <div key={m} style={{marginTop:28,padding:'20px 22px',borderRadius:18,background:i===2?'#E6F8FD':'#EEF2F8',fontFamily:brand.fonts.body,fontSize:21,opacity:messageIn,transform:`translateX(${(1-messageIn)*38}px)`}}>{m}</div>})}</div></SceneShell>;
 };
 
 const Scene13 = ({scene}: SceneProps) => {
