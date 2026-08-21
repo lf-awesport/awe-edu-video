@@ -37,11 +37,6 @@ const Eyebrow = ({children, color = brand.colors.cyan}: {children: ReactNode; co
 const Title = ({children, style}: {children: ReactNode; style?: CSSProperties}) => <div style={{fontSize: 70, lineHeight: 0.99, letterSpacing: -3, fontWeight: 900, ...style}}>{children}</div>;
 const Logo = ({color = false, width = 300}: {color?: boolean; width?: number}) => <Img src={brandAsset(`brand/logos/awe-sport-education-horizontal-${color ? 'color' : 'white'}.svg`)} style={{width, height: 'auto'}} />;
 
-const Browser = ({asset, style, scroll = 0}: {asset: string; style: CSSProperties; scroll?: number}) => <div style={{position: 'absolute', borderRadius: 28, background: '#fff', boxShadow: '0 35px 90px rgba(0,15,60,.34)', overflow: 'hidden', border: '1px solid rgba(255,255,255,.8)', ...style}}>
-  <div style={{height: 46, display: 'flex', alignItems: 'center', gap: 9, padding: '0 20px', background: '#E9EFF7'}}>{['#FF6B68', '#FFC45A', '#42CC75'].map(color => <span key={color} style={{width: 11, height: 11, borderRadius: '50%', background: color}} />)}<div style={{width: 360, height: 25, marginLeft: 16, borderRadius: 8, background: '#fff', color: '#6680A5', fontFamily: brand.fonts.body, fontSize: 13, display: 'grid', placeItems: 'center'}}>awesporteducation.org</div></div>
-  <div style={{position: 'absolute', left: 0, right: 0, top: 46, bottom: 0, overflow: 'hidden'}}><Img src={brandAsset(asset)} style={{width: '100%', height: 'auto', transform: `translateY(${scroll}px)`}} /></div>
-</div>;
-
 const Scene01 = ({scene}: SceneProps) => {
   const frame = useCurrentFrame(); const {fps} = useVideoConfig();
   const intro = reveal(frame, fps, 0.15);
@@ -113,10 +108,23 @@ const Scene04 = ({scene}: SceneProps) => {
 };
 
 const Scene05 = ({scene}: SceneProps) => {
-  const frame = useCurrentFrame(); const {fps} = useVideoConfig(); const left = reveal(frame, fps, .2); const right = reveal(frame, fps, 1.1); const relay=interpolate(frame,[2.1*fps,5.45*fps],[0,1],{...clamp,easing:Easing.inOut(Easing.cubic)});
-  return <SceneShell scene={scene}><div style={{position: 'absolute', left: 95, top: 80, width: 630, opacity: left}}><Eyebrow color="#43A7DE">Un’esperienza fluida</Eyebrow><Title style={{marginTop: 24}}>Impara.<br /><span style={{color: '#43A7DE'}}>Passo dopo passo.</span></Title><div style={{marginTop: 30, fontFamily: brand.fonts.body, fontSize: 30, lineHeight: 1.3}}>Contenuti e lezioni progettati per accompagnare l’utente su ogni dispositivo.</div></div>
-    <Browser asset="ui/runtime/app-lesson.png" scroll={-120-relay*115} style={{left: 800-relay*55, top: 112, width: 790, height: 820, opacity: left, transform: `translateY(${(1-left)*70}px) rotate(${-2+relay}deg) scale(${1-relay*.035})`}} />
-    <div style={{position: 'absolute', right: 95+relay*80, top: 300-relay*28, width: 295, height: 625, borderRadius: 42, padding: 12, background: '#071E4F', boxShadow: '0 32px 70px rgba(0,30,100,.35)', opacity: right, transform: `translateX(${(1-right)*80}px) rotate(${4-relay*4}deg) scale(${1+relay*.045})`}}><div style={{width: '100%', height: '100%', borderRadius: 32, overflow: 'hidden', position: 'relative', background: '#fff'}}><Img src={brandAsset('ui/runtime/app-main-awe-edu.png')} style={{width: '100%', height: 'auto', transform: `translateY(${-5-relay*65}px)`}} /></div></div>
+  const frame = useCurrentFrame(); const {fps} = useVideoConfig();
+  const left = reveal(frame, fps, .2);
+  const phoneIn = reveal(frame, fps, .45);
+  // browse the catalogue, then push into a lesson the way the app itself would
+  const browse = interpolate(frame, [.9 * fps, 3.4 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const enter = interpolate(frame, [3.6 * fps, 4.4 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const study = interpolate(frame, [4.5 * fps, 6 * fps], [0, 1], clamp);
+  return <SceneShell scene={scene}>
+    <div style={{position: 'absolute', left: 95, top: 300, width: 630, opacity: left}}><Eyebrow color={brand.colors.cyan}>Un’esperienza fluida</Eyebrow><Title style={{marginTop: 24}}>Impara.<br /><span style={{color: brand.colors.white}}>Passo dopo passo.</span></Title><div style={{marginTop: 30, fontFamily: brand.fonts.body, fontSize: 30, lineHeight: 1.3}}>Contenuti e lezioni progettati per accompagnare l’utente su ogni dispositivo.</div></div>
+    <div style={{position: 'absolute', left: 1240, top: 158, width: 760, height: 1360, borderRadius: 62, padding: 14, background: '#071E4F', boxShadow: '0 44px 120px rgba(0,20,80,.45)', opacity: phoneIn, transform: `translateY(${(1 - phoneIn) * 90}px) rotate(${-3 + enter * 1.4}deg) scale(${1 + enter * .03})`, transformOrigin: '40% 28%'}}>
+      <div style={{position: 'absolute', inset: 14, borderRadius: 48, overflow: 'hidden', background: '#fff'}}>
+        <Img src={brandAsset('ui/runtime/platform-mobile.png')} style={{position: 'absolute', left: 0, top: 0, width: '100%', height: 'auto', transform: `translateY(${-browse * 905}px)`}} />
+        <div style={{position: 'absolute', inset: 0, overflow: 'hidden', background: '#fff', transform: `translateX(${(1 - enter) * 100}%)`, boxShadow: '-34px 0 70px rgba(0,15,60,.4)'}}>
+          <Img src={brandAsset('ui/runtime/app-lesson.png')} style={{position: 'absolute', left: 0, top: 0, width: '100%', height: 'auto', transform: `translateY(${-study * 320}px)`}} />
+        </div>
+      </div>
+    </div>
   </SceneShell>;
 };
 

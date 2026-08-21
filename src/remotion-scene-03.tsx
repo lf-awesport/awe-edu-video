@@ -53,12 +53,14 @@ export const Scene03BrandReveal = ({scene}: {scene: PlannedScene}) => {
             <div style={{marginLeft: 20, height: 28, flex: 1, maxWidth: 470, borderRadius: 9, background: '#FFFFFF', color: '#55709C', fontFamily: brand.fonts.body, fontSize: 15, display: 'grid', placeItems: 'center'}}>awesporteducation.org</div>
           </div>
           <div style={{position: 'absolute', left: 0, right: 0, top: 54, bottom: 0, overflow: 'hidden', background: '#fff'}}>
-            <Img src={brandAsset('ui/runtime/app-main-awe-edu.png')} style={{width: '100%', height: 'auto', display: 'block', transform: `translateY(${interpolate(frame, [2.4 * fps, duration - 18], [-2, -94], {...clamp, easing:Easing.inOut(Easing.cubic)})}px)`}} />
+            <Img src={brandAsset('ui/runtime/platform-desktop.png')} style={{width: '100%', height: 'auto', display: 'block', transform: `scale(${interpolate(frame, [2.4 * fps, duration - 18], [1, 1.045], {...clamp, easing: Easing.inOut(Easing.cubic)})})`, transformOrigin: 'top center'}} />
           </div>
         </div>
 
-        <div style={{position: 'absolute', right: 18, bottom: -28, padding: '17px 24px', borderRadius: 17, background: brand.colors.cyan, color: brand.colors.ink, fontFamily: brand.fonts.display, fontWeight: 800, fontSize: 21, letterSpacing: 0.2, opacity: detailIn, transform: `translateY(${(1 - detailIn) * 25}px)`, boxShadow: '0 18px 50px rgba(0,18,70,.32)'}}>
-          UI demo · desktop in attesa
+        <div style={{position: 'absolute', right: -46, bottom: -250, width: 312, height: 646, borderRadius: 40, padding: 12, background: '#071E4F', boxShadow: '0 34px 80px rgba(0,14,60,.5)', opacity: detailIn, transform: `translateY(${(1 - detailIn) * 44}px) rotate(${3 - detailIn * 1.5}deg)`}}>
+          <div style={{position: 'absolute', inset: 12, borderRadius: 30, overflow: 'hidden', background: '#fff'}}>
+            <Img src={brandAsset('ui/runtime/platform-mobile.png')} style={{position: 'absolute', left: 0, top: 0, width: '100%', height: 'auto', transform: `translateY(${interpolate(frame, [1.6 * fps, duration - 14], [0, -232], {...clamp, easing: Easing.inOut(Easing.cubic)})}px)`}} />
+          </div>
         </div>
       </div>
 
