@@ -73,7 +73,6 @@ const Scene02 = ({scene}: SceneProps) => {
 const Scene04 = ({scene}: SceneProps) => {
   const frame = useCurrentFrame(); const {fps} = useVideoConfig();
   const head = interpolate(frame, [.1 * fps, .75 * fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
-  const deckOpacity = interpolate(frame, [.35 * fps, .9 * fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
   const focus = interpolate(frame, [5.1 * fps, 10.6 * fps], [0, 11], {...clamp, easing: Easing.inOut(Easing.cubic)});
   return <SceneShell scene={scene} accent="#FFC757" fadeIn={false} fadeOut={false}><div style={{position: 'absolute', left: 90, top: 68, opacity: head, transform: `translateY(${(1-head)*24}px)`}}><Eyebrow color="#FFC757">Un percorso strutturato</Eyebrow><Title style={{fontSize: 58, marginTop: 15}}>Esplora il <span style={{color: "#FFC757"}}>business dello sport</span></Title></div>
     <div style={{position: 'absolute', left: 226, right: 226, top: 250, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, perspective: 1400}}>{subjects.map((subject, i) => {
@@ -81,14 +80,29 @@ const Scene04 = ({scene}: SceneProps) => {
       const row = Math.floor(i / 4);
       const finalCenterX = 403 + column * 371;
       const finalCenterY = 350 + row * 216;
-      const fanX = 960 + (i - 5.5) * 68;
-      const fanY = 510 + Math.abs(i - 5.5) * 8;
-      const x = interpolate(frame, [.45 * fps, 1.35 * fps, 3.15 * fps, 4.75 * fps], [960-finalCenterX, fanX-finalCenterX, fanX-finalCenterX, 0], {...clamp, easing: Easing.inOut(Easing.cubic)});
-      const y = interpolate(frame, [.45 * fps, 1.35 * fps, 3.15 * fps, 4.75 * fps], [510-finalCenterY, fanY-finalCenterY, fanY-finalCenterY, 0], {...clamp, easing: Easing.inOut(Easing.cubic)});
-      const rotation = interpolate(frame, [.45 * fps, 1.35 * fps, 3.15 * fps, 4.75 * fps], [(i-5.5)*.35, (i-5.5)*3.2, (i-5.5)*3.2, 0], {...clamp, easing: Easing.inOut(Easing.cubic)});
-      const scale = interpolate(frame, [.45 * fps, 1.35 * fps, 3.15 * fps, 4.75 * fps], [.88, .9, .9, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+      // one staggered stream: each card crosses the frame close to camera,
+      // leaves to the right, then comes back to take its slot in the grid.
+      const lead = i * .055;
+      const t = frame / fps - lead;
+      const returning = t >= 1.7;
+      const settle = {...clamp, easing: Easing.inOut(Easing.cubic)} as const;
+      const screenX = returning
+        ? interpolate(t, [1.7, 3.05], [2480, finalCenterX], settle)
+        : interpolate(t, [.15, 1.7], [-560, 2480], clamp);
+      const screenY = returning
+        ? interpolate(t, [1.7, 3.05], [470, finalCenterY], settle)
+        : 470 + Math.sin(Math.max(0, Math.min(1, (t - .15) / 1.55)) * Math.PI) * 44;
+      const depth = returning
+        ? interpolate(t, [1.7, 3.05], [180, 0], settle)
+        : interpolate(t, [.15, 1.7], [620, 180], clamp);
+      const rotation = returning
+        ? interpolate(t, [1.7, 3.05], [(i - 5.5) * 1.4, 0], settle)
+        : interpolate(t, [.15, 1.7], [-9, 6], clamp);
+      const x = screenX - finalCenterX;
+      const y = screenY - finalCenterY;
+      const onScreen = t > .05 ? 1 : 0;
       const emphasis = Math.max(0, 1 - Math.abs(focus - i));
-      return <div key={subject} style={{height: 200, borderRadius: 18, overflow: 'hidden', position: 'relative', boxShadow: `0 ${10+emphasis*18}px ${28+emphasis*32}px rgba(11,42,91,${.16+emphasis*.2})`, opacity: deckOpacity*(.78+emphasis*.22), zIndex: 20-Math.abs(i-5.5), outline:`${emphasis*6}px solid ${subjectColors[i]}`, transform: `translate3d(${x}px,${y-emphasis*18}px,${-Math.abs(i-5.5)*7}px) rotateZ(${rotation}deg) scale(${scale+emphasis*.075})`, transformOrigin: 'center'}}><Img src={brandAsset(`subjects/runtime/${subject}.png`)} style={{width: '100%', height: '100%', objectFit: 'cover',filter:`saturate(${.82+emphasis*.38}) brightness(${.9+emphasis*.1})`}} /><div style={{position: 'absolute', left: 13, top: 13, width: 10, height: 35, borderRadius: 8, background: subjectColors[i]}} /></div>})}</div>
+      return <div key={subject} style={{height: 200, borderRadius: 18, overflow: 'hidden', position: 'relative', boxShadow: `0 ${10+emphasis*18}px ${28+emphasis*32}px rgba(11,42,91,${.16+emphasis*.2})`, opacity: onScreen*(.78+emphasis*.22), zIndex: returning ? 20-Math.abs(i-5.5) : 40-i, outline:`${emphasis*6}px solid ${subjectColors[i]}`, transform: `translate3d(${x}px,${y-emphasis*18}px,${depth}px) rotateZ(${rotation}deg) scale(${1+emphasis*.075})`, transformOrigin: 'center'}}><Img src={brandAsset(`subjects/runtime/${subject}.png`)} style={{width: '100%', height: '100%', objectFit: 'cover',filter:`saturate(${.82+emphasis*.38}) brightness(${.9+emphasis*.1})`}} /><div style={{position: 'absolute', left: 13, top: 13, width: 10, height: 35, borderRadius: 8, background: subjectColors[i]}} /></div>})}</div>
     <div style={{position: 'absolute', right: 88, top: 175, padding: '11px 18px', borderRadius: 12, background: brand.colors.blue, color: brand.colors.white, fontSize: 16, fontWeight: 800, letterSpacing: 1.4}}>VIDEO · TEST · QUIZ</div></SceneShell>;
 };
 
