@@ -45,7 +45,7 @@ describe('AWE Motion Cue Sheet public seam', () => {
 describe('AWE Transition Beat surface', () => {
   it('paints every covering motif as a lit brand surface instead of a flat fill', () => {
     expect(beatSurfaceMotifs).toEqual([
-      'cyan-focus-line', 'card-to-device', 'device-depth-push', 'ranking-gold-band',
+      'cyan-focus-line', 'card-to-device', 'device-depth-push',
       'gold-brand-iris', 'identity-color-strips', 'case-roadmap-line',
       'roadmap-community-node', 'community-live-orbit', 'live-panel-cinematic-return',
     ]);

@@ -65,8 +65,8 @@ const surfaces: Record<TransitionMotif, {color: string; angle: number} | undefin
   'cyan-focus-line': {color: brand.colors.mist, angle: 118},
   'card-to-device': {color: brand.colors.mist, angle: 142},
   'device-depth-push': {color: brand.colors.blue, angle: 102},
-  'ranking-gold-band': {color: '#FFC757', angle: 156},
-  'gold-brand-iris': {color: '#FFC757', angle: 128},
+  'ranking-gold-band': undefined,
+  'gold-brand-iris': {color: brand.colors.white, angle: 128},
   'identity-color-strips': {color: brand.colors.blue, angle: 134},
   'case-roadmap-line': {color: '#EF8621', angle: 148},
   'roadmap-community-node': {color: '#A2CD4B', angle: 122},
@@ -113,12 +113,11 @@ const FullCover = ({motif, progress, shape = 'band'}: {motif: TransitionMotif; p
 };
 
 const TransitionBeat = ({motif, progress}: {motif: TransitionMotif; progress: number}) => {
-  if (motif === 'phone-blue-takeover' || motif === 'magma-canvas-relay') return null;
+  if (motif === 'phone-blue-takeover' || motif === 'magma-canvas-relay' || motif === 'ranking-gold-band') return null;
   const envelope = Math.sin(progress * Math.PI);
   const surface: CSSProperties = {overflow: 'hidden', ...beatSurfaceStyle(motif, progress)};
   const sheen = <Sheen motif={motif} progress={progress}/>;
   if (motif === 'cyan-focus-line') return <AbsoluteFill><div style={{position:'absolute',left:'50%',top:'50%',width:1920,height:1080,borderRadius:`${interpolate(envelope,[0,1],[48,0])}px`,...surface,border:`${interpolate(envelope,[0,1],[8,0])}px solid ${brand.colors.cyan}`,boxShadow:'0 30px 100px rgba(0,20,70,.35)',transform:`translate(-50%,-50%) scale(${envelope})`,transformOrigin:'72% 48%'}}>{sheen}</div></AbsoluteFill>;
-  if (motif === 'ranking-gold-band') return <AbsoluteFill><div style={{position:'absolute',left:'63%',top:'54%',width:1920,height:1080,borderRadius:`${interpolate(envelope,[0,1],[90,0])}px`,...surface,boxShadow:'0 30px 100px rgba(0,15,60,.38)',transform:`translate(-50%,-50%) scale(${envelope})`,transformOrigin:'70% 60%'}}>{sheen}</div></AbsoluteFill>;
   if (motif === 'roadmap-community-node') return <AbsoluteFill><div style={{position:'absolute',left:'76%',top:'43%',width:2300,height:2300,borderRadius:'50%',...surface,border:`${18*(1-envelope)}px solid #E7F4C8`,transform:`translate(-50%,-50%) scale(${envelope})`}}>{sheen}</div></AbsoluteFill>;
   if (motif === 'live-panel-cinematic-return') return <AbsoluteFill><div style={{position:'absolute',left:'42%',top:'58%',width:1920,height:1080,borderRadius:`${interpolate(envelope,[0,1],[34,0])}px`,...surface,border:`${interpolate(envelope,[0,1],[7,0])}px solid #FF7592`,boxShadow:'0 30px 110px rgba(0,10,50,.45)',transform:`translate(-50%,-50%) scale(${envelope})`,transformOrigin:'35% 55%'}}>{sheen}</div></AbsoluteFill>;
   if (motif === 'identity-color-strips') {
