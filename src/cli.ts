@@ -25,6 +25,17 @@ const sceneId = option('--scene', 'scene-03')!;
 const masterPreview = option('--to') === 'preview' && !args.includes('--scene');
 const runtimeRoot = option('--runtime-root', '.video')!;
 const providerExecutable = option('--provider-executable', 'higgsfield')!;
+// Worker count is a property of the machine, not of the render: frames are
+// independent, so it changes throughput without changing a pixel or the
+// render identity. Default stays 1 for the memory budget documented in
+// HANDOFF.md; a bigger machine raises it explicitly.
+const renderConcurrency = () => {
+  const raw = option('--concurrency') ?? process.env.AWE_RENDER_CONCURRENCY;
+  if (raw === undefined) return 1;
+  const parsed = Number(raw);
+  if (!Number.isInteger(parsed) || parsed < 1) throw new Error(`--concurrency must be a positive integer, received ${raw}`);
+  return parsed;
+};
 
 const respond = (projectId: string, result: unknown, artifacts: unknown[] = []) => {
   console.log(
@@ -243,7 +254,7 @@ try {
           inputProps: {plan},
           overwrite: true,
           timeoutInMilliseconds: 120_000,
-          concurrency: 1,
+          concurrency: renderConcurrency(),
         });
         runChecked('ffmpeg', FFMPEG_TRANSFORM.arguments.map((argument) => argument
           .replace('$INPUT', remotionOutput)
