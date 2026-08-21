@@ -151,10 +151,19 @@ const Scene06 = ({scene}: SceneProps) => {
   const progressIn = interpolate(frame, [.2*fps, 1*fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
   const depth = interpolate(frame, [3.15*fps, 5.35*fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
   const rankingIn = interpolate(frame, [4.35*fps, 6.3*fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
-  const reorder = interpolate(frame, [6.55*fps, 8.87*fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const reorder = interpolate(frame, [6.5*fps, 8.5*fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
   const done = interpolate(frame, [.8*fps, 4.4*fps], [0, 7], {...clamp, easing: Easing.out(Easing.cubic)});
   const out = sceneOut(frame, fps, scene);
-  const ranks = [{name:'Alex R.',status:'Avanzato',from:1,to:0},{name:'Marta B.',status:'In corso',from:0,to:1},{name:'Sam K.',status:'In corso',from:2,to:2}];
+  // Alex starts last and climbs faster than the shuffle around him
+  const ranks = [
+    {name:'Alex R.',status:'Avanzato',from:5,to:0},
+    {name:'Marta B.',status:'In corso',from:0,to:1},
+    {name:'Sam K.',status:'In corso',from:1,to:2},
+    {name:'Giulia P.',status:'In corso',from:3,to:3},
+    {name:'Luca F.',status:'In corso',from:2,to:4},
+    {name:'Nadia R.',status:'In corso',from:4,to:5},
+  ];
+  const climb = interpolate(frame,[6.3*fps,7.55*fps],[0,1],{...clamp,easing:Easing.inOut(Easing.cubic)});
   return <SceneShell scene={scene} fadeIn={false} fadeOut={false}><Copy frame={frame} fps={fps} out={out} style={{left: 94, top: 80}}>
       <Eyebrow color={brand.colors.cyan}>Gamification · concept UI</Eyebrow>
       <Title style={{marginTop: 22}}>Impara. Avanza. <span style={{color: brand.colors.white}}>Sfida.</span></Title>
@@ -189,7 +198,7 @@ const Scene06 = ({scene}: SceneProps) => {
       </div>
     </div>
 
-    <div style={{position: 'absolute', left: 720, right: 95, top: 310, height: 535, borderRadius: 30, background: '#082358', padding: 42, opacity: rankingIn, transform: `perspective(1400px) translateX(${(1-rankingIn)*180}px) translateZ(${(1-rankingIn)*-220}px) scale(${.94+rankingIn*.06})`}}><div style={{fontSize: 23, fontWeight: 800, color: brand.colors.cyan}}>CLASSIFICA · ESEMPIO</div><div style={{position:'relative',marginTop:24,height:384}}>{ranks.map((rank)=>{const position=interpolate(reorder,[0,1],[rank.from,rank.to]);const place=Math.round(interpolate(reorder,[0,1],[rank.from+1,rank.to+1]));const leader=rank.to===0;return <div key={rank.name} style={{position:'absolute',left:0,right:0,top:position*128,height:112,borderRadius:18,display:'grid',gridTemplateColumns:'90px 1fr 170px',alignItems:'center',padding:'0 28px',background:leader?`rgba(51,197,243,${.16+reorder*.84})`:'#ffffff10',color:leader&&reorder>.55?brand.colors.ink:'#fff',transform:`scale(${1+(leader?reorder*.025:0)})`,boxShadow:leader?`0 ${Math.round(reorder*18)}px ${Math.round(reorder*45)}px rgba(0,12,50,.28)`:'none'}}><span style={{fontSize:30,fontWeight:900}}>{String(place).padStart(2,'0')}</span><span style={{fontSize:28,fontWeight:800}}>{rank.name}</span><span style={{fontSize:21,fontWeight:900,textAlign:'right'}}>{rank.status}</span></div>})}</div></div>
+    <div style={{position: 'absolute', left: 720, right: 95, top: 310, height: 535, borderRadius: 30, background: '#082358', padding: 42, opacity: rankingIn, transform: `perspective(1400px) translateX(${(1-rankingIn)*180}px) translateZ(${(1-rankingIn)*-220}px) scale(${.94+rankingIn*.06})`}}><div style={{fontSize: 23, fontWeight: 800, color: brand.colors.cyan}}>CLASSIFICA · ESEMPIO</div><div style={{position:'relative',marginTop:24,height:384}}>{ranks.map((rank)=>{const leader=rank.to===0;const travel=leader?climb:reorder;const position=interpolate(travel,[0,1],[rank.from,rank.to]);const place=Math.round(position)+1;return <div key={rank.name} style={{position:'absolute',left:0,right:0,top:position*64,height:56,borderRadius:14,display:'grid',gridTemplateColumns:'62px 1fr 150px',alignItems:'center',padding:'0 22px',background:leader?`rgba(51,197,243,${.16+climb*.84})`:'#ffffff10',color:leader&&climb>.55?brand.colors.ink:'#fff',transform:`scale(${1+(leader?climb*.03:0)})`,boxShadow:leader?`0 ${Math.round(climb*16)}px ${Math.round(climb*40)}px rgba(0,12,50,.3)`:'none'}}><span style={{fontSize:22,fontWeight:900}}>{String(place).padStart(2,'0')}</span><span style={{fontSize:22,fontWeight:800}}>{rank.name}</span><span style={{fontSize:16,fontWeight:900,textAlign:'right'}}>{rank.status}</span></div>})}</div></div>
   </SceneShell>;
 };
 
