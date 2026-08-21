@@ -80,7 +80,7 @@ const Scene01 = ({scene}: SceneProps) => {
     <div style={{position:'absolute',inset:0,background:'#1479E8',opacity:blueOpacity*(1-magmaOpacity)}}/>
     <div style={{position:'absolute',inset:0,background:'linear-gradient(90deg,rgba(4,16,49,.91) 0%,rgba(4,25,72,.52) 46%,rgba(4,25,72,.08) 78%)',opacity:copyOut}}/>
     <div style={{position:'absolute',left:92,top:72,opacity:copyOut}}><Logo width={280}/></div>
-    <div style={{position: 'absolute', left: 96, top: 338, width: 790, opacity: intro * copyOut, transform: `translateY(${(1 - intro) * 55}px)`}}><Eyebrow color={brand.colors.cyan}>Oltre il campo</Eyebrow><Title style={{fontSize: 88, marginTop: 27}}>Sai come funziona<br />davvero lo sport?</Title><div style={{marginTop: 30, fontFamily: brand.fonts.body, fontSize: 30, lineHeight: 1.25}}>Scopri l’industria, le competenze<br />e le persone che ci sono dietro.</div></div>
+    <div style={{position: 'absolute', left: 96, top: 338, width: 790, opacity: intro * copyOut, transform: `translateY(${(1 - intro) * 55}px)`}}><Eyebrow color={brand.colors.white}>Oltre il campo</Eyebrow><Title style={{fontSize: 88, marginTop: 27}}>Sai come funziona<br />davvero lo sport?</Title><div style={{marginTop: 30, fontFamily: brand.fonts.body, fontSize: 30, lineHeight: 1.25}}>Scopri l’industria, le competenze<br />e le persone che ci sono dietro.</div></div>
   </SceneShell>;
 };
 
@@ -101,8 +101,8 @@ const Scene04 = ({scene}: SceneProps) => {
   const focus = interpolate(frame, [4.2 * fps, 11.2 * fps], [0, 11], {...clamp, easing: Easing.inOut(Easing.sin)});
   return <SceneShell scene={scene} fadeIn={false} fadeOut={false}>
     <Copy frame={frame} fps={fps} out={out} style={{left: 90, top: 68}}>
-      <Eyebrow color="#FFC757">Un percorso strutturato</Eyebrow>
-      <Title style={{fontSize: 58, marginTop: 15}}>Esplora il <span style={{color: "#FFC757"}}>business dello sport</span></Title>
+      <Eyebrow color={brand.colors.white}>Un percorso strutturato</Eyebrow>
+      <Title style={{fontSize: 58, marginTop: 15}}>Esplora il <span style={{color: brand.colors.white}}>business dello sport</span></Title>
     </Copy>
     <div style={{position: 'absolute', left: 226, right: 226, top: 250, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, perspective: 1400}}>{subjects.map((subject, i) => {
       const column = i % 4;
@@ -130,7 +130,7 @@ const Scene05 = ({scene}: SceneProps) => {
   const out = sceneOut(frame, fps, scene);
   return <SceneShell scene={scene}>
     <Copy frame={frame} fps={fps} out={out} style={{left: 95, top: 300, width: 630}}>
-      <Eyebrow color={brand.colors.cyan}>Un’esperienza fluida</Eyebrow>
+      <Eyebrow color={brand.colors.white}>Un’esperienza fluida</Eyebrow>
       <Title style={{marginTop: 24}}>Impara.</Title>
       <Title style={{color: brand.colors.white}}>Passo dopo passo.</Title>
       <div style={{marginTop: 30, fontFamily: brand.fonts.body, fontSize: 30, lineHeight: 1.3}}>Contenuti e lezioni progettati per accompagnare l’utente su ogni dispositivo.</div>
@@ -165,7 +165,7 @@ const Scene06 = ({scene}: SceneProps) => {
   ];
   const climb = interpolate(frame,[6.3*fps,7.55*fps],[0,1],{...clamp,easing:Easing.inOut(Easing.cubic)});
   return <SceneShell scene={scene} fadeIn={false} fadeOut={false}><Copy frame={frame} fps={fps} out={out} style={{left: 94, top: 80}}>
-      <Eyebrow color={brand.colors.cyan}>Gamification · concept UI</Eyebrow>
+      <Eyebrow color={brand.colors.white}>Gamification · concept UI</Eyebrow>
       <Title style={{marginTop: 22}}>Impara. Avanza. <span style={{color: brand.colors.white}}>Sfida.</span></Title>
     </Copy>
     <div style={{position: 'absolute', left: 95, top: 300, width: 700, color: brand.colors.white, opacity: progressIn*(1-depth*.32), transform: `perspective(1400px) translateX(${(1-depth)*280}px) translateZ(${-depth*180}px) rotateY(${depth*5}deg) scale(${1.04-depth*.06})`, transformOrigin: 'center'}}>
@@ -208,13 +208,13 @@ const Scene07 = ({scene}: SceneProps) => {
   const journey=interpolate(frame,[1.4*fps,6*fps],[0,2.99],{...clamp,easing:Easing.inOut(Easing.cubic)});
   const out = sceneOut(frame, fps, scene);
   return <SceneShell scene={scene}><Copy frame={frame} fps={fps} out={out} style={{left:110,top:250,width:660}}>
-      <Eyebrow color="#FFC757">Il percorso</Eyebrow>
+      <Eyebrow color={brand.colors.white}>Il percorso</Eyebrow>
       <Title style={{marginTop:22}}>Costruisci.</Title>
-      <Title style={{color:'#FFC757'}}>Verifica. Valorizza.</Title>
+      <Title style={{color:brand.colors.white}}>Verifica. Valorizza.</Title>
       <div style={{fontFamily:brand.fonts.body,fontSize:28,lineHeight:1.35,marginTop:30}}>Attività e verifiche accompagnano ogni fase dell’apprendimento.</div>
     </Copy>
     <Arrow name="arrow-08" draw={stroke(frame, fps, 5.2)} from="bottom" style={{left: 592, top: 560, width: 150, opacity: 1 - out, transform: `rotate(80deg) translateY(${out * 120}px)`}} />
-    <div style={{position:'absolute',right:150,top:210,width:900,display:'grid',gap:22,transform:`translateX(${out*260}px)`}}>{steps.map(([number,title,description],index)=>{const r=reveal(frame,fps,.35+index*.35);const active=Math.max(0,1-Math.abs(journey-index));const tick=Math.max(0,Math.min(1,(journey-index+.4)/.55));const mark=brand.colors.white;return <div key={number} style={{height:205,borderRadius:26,background:index===2?'#FFC757':'#fff',color:brand.colors.ink,display:'grid',gridTemplateColumns:'120px 1fr',alignItems:'center',padding:'0 42px',boxShadow:`0 ${24+active*10}px ${60+active*20}px rgba(0,0,30,.25)`,opacity:r,outline:`${Math.max(active*4,tick*3)}px solid ${mark}`,transform:`translateX(${(1-r)*80-active*14}px) scale(${1+active*.025})`}}><div style={{position:'relative',width:92,height:92}}><div style={{position:'absolute',inset:0,borderRadius:'50%',border:`4px solid ${mark}`,background:mark,opacity:tick,transform:`scale(${.92+tick*.08})`}}/><div style={{position:'absolute',inset:0,borderRadius:'50%',border:`4px solid ${mark}`,opacity:1-tick}}/><div style={{position:'absolute',inset:0,display:'grid',placeItems:'center',fontSize:40,fontWeight:900,color:brand.colors.blue,opacity:Math.max(0,1-tick*3)}}>{number}</div><svg viewBox="0 0 100 100" style={{position:'absolute',inset:0,width:'100%',height:'100%'}}><path d="M28 52 L44 68 L73 34" fill="none" stroke={brand.colors.ink} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={70} strokeDashoffset={70*(1-tick)}/></svg></div><div><div style={{fontSize:30,fontWeight:900,letterSpacing:2}}>{title}</div><div style={{fontFamily:brand.fonts.body,fontSize:23,marginTop:10,color:'#52637E'}}>{description}</div></div></div>})}</div>
+    <div style={{position:'absolute',right:150,top:210,width:900,display:'grid',gap:22,transform:`translateX(${out*260}px)`}}>{steps.map(([number,title,description],index)=>{const r=reveal(frame,fps,.35+index*.35);const active=Math.max(0,1-Math.abs(journey-index));const tick=Math.max(0,Math.min(1,(journey-index+.4)/.55));const mark=brand.colors.white;return <div key={number} style={{height:205,borderRadius:26,background:index===2?'#FFC757':'#fff',color:brand.colors.ink,display:'grid',gridTemplateColumns:'120px 1fr',alignItems:'center',padding:'0 42px',boxShadow:`0 ${24+active*10}px ${60+active*20}px rgba(0,0,30,.25)`,opacity:r,outline:`${Math.max(active*4,tick*3)}px solid ${mark}`,transform:`translateX(${(1-r)*80-active*14}px) scale(${1+active*.025})`}}><div style={{position:'relative',width:92,height:92}}><div style={{position:'absolute',inset:0,borderRadius:'50%',border:`4px solid ${mark}`,background:mark,opacity:tick,transform:`scale(${.92+tick*.08})`}}/><div style={{position:'absolute',inset:0,borderRadius:'50%',border:`4px solid ${mark}`,opacity:1-tick}}/><div style={{position:'absolute',inset:0,display:'grid',placeItems:'center',fontSize:40,fontWeight:900,color:brand.colors.blue,opacity:Math.max(0,1-tick*3)}}>{number}</div><svg viewBox="0 0 100 100" style={{position:'absolute',inset:0,width:'100%',height:'100%'}}><path d="M28 52 L44 68 L73 34" fill="none" stroke={brand.colors.ink} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={70} strokeDashoffset={70*(1-tick)}/></svg></div><div><div style={{fontSize:30,fontWeight:900,letterSpacing:2}}>{title}</div><div style={{fontFamily:brand.fonts.body,fontSize:23,marginTop:10,color:brand.colors.blue}}>{description}</div></div></div>})}</div>
   </SceneShell>;
 };
 
@@ -223,36 +223,36 @@ const Scene08 = ({scene}: SceneProps) => {
   const wipe = interpolate(frame, [0, .95 * fps], [0, 1], clamp);
   const after = (delay: number) => reveal(frame, fps, .95 + delay);
   return <SceneShell scene={scene}><LogoWipe progress={wipe} /><Copy frame={frame} fps={fps} out={out} delay={1.05} style={{left:90,top:70}}>
-      <Eyebrow color="#EC264F">Brand personalizzabile</Eyebrow>
+      <Eyebrow color={brand.colors.blue}>Brand personalizzabile</Eyebrow>
       <Title style={{fontSize:62,marginTop:18,color:brand.colors.ink}}>Una piattaforma.</Title>
-      <Title style={{fontSize:62,color:'#EC264F'}}>Molte identità.</Title>
+      <Title style={{fontSize:62,color:brand.colors.cyan}}>Molte identità.</Title>
     </Copy><div style={{position:'absolute',left:720,right:85,top:96,bottom:186,display:'flex',gap:24,alignItems:'center',transform:`translateY(${out*220}px)`}}>{cards.map(([asset,label,color],i)=>{const r=after(.35+i*.28);const active=Math.max(0,1-Math.abs(identity-i)); return <div key={asset} style={{position:'relative',width:330,height:672,borderRadius:26,overflow:'hidden',background:'#fff',boxShadow:`0 ${30+active*12}px ${70+active*25}px rgba(10,36,88,.18)`,border:'1px solid rgba(10,36,88,.10)',outline:`${active*5}px solid ${color}`,opacity:r,transform:`translateY(${(1-r)*70 + (i-1)*Math.sin(p*Math.PI)*20-active*18}px) rotate(${(i-1)*(3-active*2)}deg) scale(${1+active*.04})`}}><div style={{height:62,background:color,display:'grid',placeItems:'center',color:'#fff',fontSize:19,fontWeight:900,letterSpacing:2}}>{label}</div><Img src={brandAsset(`ui/runtime/${asset}`)} style={{width:'100%',height:'auto'}}/></div>})}</div><div style={{position:'absolute',left:95,top:460,width:510,color:brand.colors.ink,opacity:after(.5)*(1-out),fontFamily:brand.fonts.body,fontSize:29,lineHeight:1.35}}>Logo, palette e contenuti si adattano all’identità del partner.</div><div style={{position:'absolute',left:95,top:640,display:'flex',gap:14,opacity:after(.7)*(1-out)}}>{['#00339A','#33C5F3','#EC264F','#009F97','#FFC757'].map((c,i)=><div key={c} style={{width:58,height:58,borderRadius:'50%',background:c,transform:`translateY(${Math.sin((p+i*.13)*Math.PI*2)*8}px) scale(${.9+Math.sin((p+i*.08)*Math.PI)*.1})`}}/>)}</div></SceneShell>;
 };
 
 const Scene09 = ({scene}: SceneProps) => {
   const frame=useCurrentFrame(); const {fps}=useVideoConfig(); const focus=interpolate(frame,[1.8*fps,9.45*fps],[0,2.99],{...clamp,easing:Easing.inOut(Easing.cubic)}); const courses=[['sports-marketing','Marketing strategy'],['sports-sponsorship','Sponsorship case'],['event-management','Event activation']]; const out = sceneOut(frame, fps, scene);
   return <SceneShell scene={scene} surface="white"><Copy frame={frame} fps={fps} out={out} style={{left:92,top:72}}>
-      <Eyebrow color="#F181A8">Contenuti del partner</Eyebrow>
+      <Eyebrow color={brand.colors.blue}>Contenuti del partner</Eyebrow>
       <Title style={{fontSize:64,marginTop:18,color:brand.colors.ink}}>Il know-how diventa</Title>
-      <Title style={{fontSize:64,color:'#F181A8'}}>formazione concreta.</Title>
-    </Copy><div style={{position:'absolute',left:92,right:92,top:340,display:'flex',gap:28,transform:`translateY(${out*240}px)`,opacity:1-out*.4}}>{courses.map(([asset,title],i)=>{const r=reveal(frame,fps,.5+i*.32);const active=Math.max(0,1-Math.abs(focus-i));return <div key={asset} style={{width:550,height:470,borderRadius:26,overflow:'hidden',background:'#fff',color:brand.colors.ink,opacity:r,border:'1px solid rgba(10,36,88,.12)',boxShadow:`0 ${14+active*22}px ${34+active*60}px rgba(10,36,88,.16)`,transform:`translateY(${(1-r)*60-active*22}px) scale(${1+active*.035})`}}><Img src={brandAsset(`subjects/runtime/${asset}.png`)} style={{width:'100%',height:310,objectFit:'cover',transform:`scale(${1+active*.06})`}}/><div style={{padding:'24px 28px'}}><div style={{fontSize:16,fontWeight:800,color:'#9E55A0',letterSpacing:2}}>CASE STUDY · ESEMPIO</div><div style={{fontSize:29,fontWeight:900,marginTop:10}}>{title}</div></div></div>})}</div></SceneShell>;
+      <Title style={{fontSize:64,color:brand.colors.cyan}}>formazione concreta.</Title>
+    </Copy><div style={{position:'absolute',left:92,right:92,top:340,display:'flex',gap:28,transform:`translateY(${out*240}px)`,opacity:1-out*.4}}>{courses.map(([asset,title],i)=>{const r=reveal(frame,fps,.5+i*.32);const active=Math.max(0,1-Math.abs(focus-i));return <div key={asset} style={{width:550,height:470,borderRadius:26,overflow:'hidden',background:'#fff',color:brand.colors.ink,opacity:r,border:'1px solid rgba(10,36,88,.12)',boxShadow:`0 ${14+active*22}px ${34+active*60}px rgba(10,36,88,.16)`,transform:`translateY(${(1-r)*60-active*22}px) scale(${1+active*.035})`}}><Img src={brandAsset(`subjects/runtime/${asset}.png`)} style={{width:'100%',height:310,objectFit:'cover',transform:`scale(${1+active*.06})`}}/><div style={{padding:'24px 28px'}}><div style={{fontSize:16,fontWeight:800,color:brand.colors.blue,letterSpacing:2}}>CASE STUDY · ESEMPIO</div><div style={{fontSize:29,fontWeight:900,marginTop:10}}>{title}</div></div></div>})}</div></SceneShell>;
 };
 
 const Scene10 = ({scene}: SceneProps) => {
   const frame=useCurrentFrame(); const {fps}=useVideoConfig(); const p=interpolate(frame,[.6*fps,6.7*fps],[0,1],{...clamp,easing:Easing.inOut(Easing.cubic)}); const out = sceneOut(frame, fps, scene);
   return <SceneShell scene={scene} surface="white"><Copy frame={frame} fps={fps} out={out} style={{left:92,top:90}}>
-      <Eyebrow color="#EF8621">Una roadmap condivisa</Eyebrow>
+      <Eyebrow color={brand.colors.blue}>Una roadmap condivisa</Eyebrow>
       <Title style={{marginTop:24,color:brand.colors.ink}}>Obiettivi e modalità</Title>
-      <Title style={{color:'#EF8621'}}>costruiti insieme.</Title>
+      <Title style={{color:brand.colors.cyan}}>costruiti insieme.</Title>
     </Copy><div style={{position:'absolute',left:300,right:300,top:470,height:18,borderRadius:12,background:'#D6DFEA',opacity:1-out,transform:`translateX(${-out*300}px)`}}><div style={{height:'100%',width:`${p*100}%`,borderRadius:12,background:'linear-gradient(90deg,#EF8621,#FFC757)'}}/>{[0,.25,.5,.75,1].map((v,i)=><div key={v} style={{position:'absolute',left:`${v*100}%`,top:-18,width:54,height:54,borderRadius:'50%',background:p>=v?'#EF8621':'#fff',border:'6px solid #D6DFEA',boxShadow:'0 5px 20px rgba(0,30,80,.2)',transform:'translateX(-50%)'}}><div style={{position:'absolute',top:70,left:'50%',transform:'translateX(-50%)',width:170,textAlign:'center',fontSize:19,fontWeight:800,color:brand.colors.ink}}>STEP {i+1}</div></div>)}</div><Arrow name="arrow-07" draw={stroke(frame, fps, 3)} from="left" style={{left: 1540, top: 606, width: 190, opacity: 1 - out, filter: 'brightness(0)', transform: `rotate(-9deg) translateX(${out * 220}px)`}} /><div style={{position:'absolute',left:300,width:1320,top:700,textAlign:'center',opacity:1-out,fontFamily:brand.fonts.body,fontSize:28,color:brand.colors.ink}}>Durata e milestone definite con il partner.</div><div style={{position:'absolute',right:120,top:110,padding:'18px 24px',borderRadius:16,background:brand.colors.blue,color:brand.colors.white,fontWeight:900,letterSpacing:1.4}}>PROGETTO SU MISURA</div></SceneShell>;
 };
 
 const Scene11 = ({scene}: SceneProps) => {
   const frame=useCurrentFrame(); const {fps}=useVideoConfig(); const orbit=interpolate(frame,[1.2*fps,8.15*fps],[0,1],{...clamp,easing:Easing.inOut(Easing.cubic)}); const rewardFocus=interpolate(frame,[2.4*fps,8.1*fps],[0,2.99],clamp); const groups=['COMMUNITY','PARTECIPANTI','UTENTI','PARTNER']; const rewards=['PREMI','ESPERIENZE','PARTECIPAZIONE']; const out = sceneOut(frame, fps, scene);
   return <SceneShell scene={scene} surface="white"><Copy frame={frame} fps={fps} out={out} style={{left:92,top:75}}>
-      <Eyebrow color="#A2CD4B">Attiva la community</Eyebrow>
+      <Eyebrow color={brand.colors.blue}>Attiva la community</Eyebrow>
       <Title style={{fontSize:63,marginTop:20,color:brand.colors.ink}}>Connetti le persone.</Title>
-      <Title style={{fontSize:63,color:'#A2CD4B'}}>Premia il percorso.</Title>
+      <Title style={{fontSize:63,color:brand.colors.cyan}}>Premia il percorso.</Title>
     </Copy><div style={{position:'absolute',left:0,top:0,right:0,bottom:0,opacity:1-out,transform:`scale(${1-out*.12})`}}>{(() => {
       const centre = {x: 470, y: 610};
       const hub = 200, node = {width: 170, height: 86}, radius = {x: 300, y: 190};
@@ -266,9 +266,9 @@ const Scene11 = ({scene}: SceneProps) => {
 const Scene12 = ({scene}: SceneProps) => {
   const frame=useCurrentFrame(); const {fps}=useVideoConfig(); const r=reveal(frame,fps,.35); const zoom=interpolate(frame,[.4*fps,5.75*fps],[1,1.075],{...clamp,easing:Easing.inOut(Easing.sin)}); const delays=[1.1,2.5,4.55]; const messages=['Ciao a tutta la community!','Qual è la skill più richiesta?','Grazie, domanda interessante.']; const out = sceneOut(frame, fps, scene);
   return <SceneShell scene={scene} surface="white"><Copy frame={frame} fps={fps} out={out} style={{left:92,top:72}}>
-      <Eyebrow color="#FF7592">Incontro · concept</Eyebrow>
+      <Eyebrow color={brand.colors.blue}>Incontro · concept</Eyebrow>
       <Title style={{fontSize:62,marginTop:18,color:brand.colors.ink}}>Incontra. Condividi.</Title>
-      <Title style={{fontSize:62,color:'#FF7592'}}>Confrontati.</Title>
+      <Title style={{fontSize:62,color:brand.colors.cyan}}>Confrontati.</Title>
     </Copy><div style={{position:'absolute',left:92,top:350,width:1050,height:540,borderRadius:28,overflow:'hidden',background:'#122D61',border:'1px solid #ffffff20',opacity:r*(1-out),transform:`translateX(${-out*280}px)`}}><Img src={brandAsset('subjects/runtime/media.png')} style={{width:'100%',height:'100%',objectFit:'cover',opacity:.75,transform:`scale(${zoom})`}}/><div style={{position:'absolute',inset:0,background:'linear-gradient(transparent 45%,rgba(3,12,38,.86))'}}/><div style={{position:'absolute',left:28,top:26,padding:'12px 18px',borderRadius:12,background:'#EC264F',fontWeight:900,letterSpacing:2}}>INCONTRO · DEMO</div><div style={{position:'absolute',left:35,bottom:32,fontSize:30,fontWeight:900}}>Sport Industry Q&amp;A</div></div><div style={{position:'absolute',right:92,top:350,width:610,height:540,borderRadius:28,background:'#fff',border:'1px solid rgba(10,36,88,.12)',boxShadow:'0 16px 40px rgba(10,36,88,.12)',color:brand.colors.ink,padding:32,opacity:reveal(frame,fps,.8)}}><div style={{fontSize:22,fontWeight:900,color:brand.colors.blue}}>DOMANDE · UI DIMOSTRATIVA</div>{messages.map((m,i)=>{const messageIn=reveal(frame,fps,delays[i]);return <div key={m} style={{marginTop:28,padding:'20px 22px',borderRadius:18,background:i===2?'#E6F8FD':'#EEF2F8',fontFamily:brand.fonts.body,fontSize:21,opacity:messageIn,transform:`translateX(${(1-messageIn)*38}px)`}}>{m}</div>})}</div></SceneShell>;
 };
 

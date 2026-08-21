@@ -32,12 +32,12 @@ export const Scene03BrandReveal = ({scene}: {scene: PlannedScene}) => {
 
       <div style={{position: 'absolute', left: brand.safeArea + 24, top: 305, width: 610, opacity: 1 - copyOut}}>
         {[
-          <div key="eyebrow" style={{display: 'flex', alignItems: 'center', gap: 14, marginBottom: 26, fontFamily: brand.fonts.display, fontWeight: 800, fontSize: 22, letterSpacing: 3.5, textTransform: 'uppercase', color: brand.colors.cyan}}>
+          <div key="eyebrow" style={{display: 'flex', alignItems: 'center', gap: 14, marginBottom: 26, fontFamily: brand.fonts.display, fontWeight: 800, fontSize: 22, letterSpacing: 3.5, textTransform: 'uppercase', color: brand.colors.white}}>
             <span style={{width: 42, height: 4, background: brand.colors.cyan, borderRadius: 4}} />
             Formazione digitale
           </div>,
           <div key="line1" style={{fontFamily: brand.fonts.display, fontWeight: 900, fontSize: 76, lineHeight: 0.98, letterSpacing: -3.4}}>Il mondo dello</div>,
-          <div key="line2" style={{fontFamily: brand.fonts.display, fontWeight: 900, fontSize: 76, lineHeight: 0.98, letterSpacing: -3.4, color: brand.colors.cyan}}>sport business.</div>,
+          <div key="line2" style={{fontFamily: brand.fonts.display, fontWeight: 900, fontSize: 76, lineHeight: 0.98, letterSpacing: -3.4, color: brand.colors.white}}>sport business.</div>,
           <div key="body" style={{marginTop: 32, maxWidth: 540, fontFamily: brand.fonts.body, fontWeight: 400, fontSize: 31, lineHeight: 1.25, color: brand.colors.mist}}>
             Una piattaforma web dedicata a chi vuole conoscere lo sport oltre il campo.
           </div>,
