@@ -73,6 +73,7 @@ export async function computeRenderIdentity(plan: RenderPlan, compositionId: 'Sc
     'assets/ui/runtime/app-lesson.png',
     'assets/ui/runtime/platform-mobile.png',
     'assets/ui/runtime/platform-desktop.png',
+    'assets/ui/runtime/certificate.png',
     'assets/ui/runtime/app-main-awe-edu.png',
     'assets/ui/runtime/app-main-color-01.png',
     'assets/ui/runtime/app-main-color-02.png',

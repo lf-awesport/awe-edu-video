@@ -8,6 +8,7 @@ type SceneProps = {scene: PlannedScene};
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const subjects = ['fan-experience', 'sports-marketing', 'sports-sponsorship', 'media', 'sports-finance', 'sports-law', 'sports-governance', 'sports-tourism', 'sports-equipment', 'event-management', 'esports', 'sport-for-good'];
+const subjectLabels = ['Fan experience', 'Sports marketing', 'Sponsorship', 'Media', 'Finance', 'Sports law', 'Governance', 'Tourism', 'Equipment', 'Events', 'Esports', 'Sport for good'];
 const subjectColors = ['#EC264F', '#A2CD4B', '#43A7DE', '#9E55A0', '#FFC757', '#F06059', '#243E8F', '#F181A8', '#009F97', '#EF8621', '#AF9FCB', '#71CCDA'];
 
 // House motion standard. Every entrance, exit and stagger in the film reads
@@ -173,13 +174,15 @@ const Scene05 = ({scene}: SceneProps) => {
 
 const Scene06 = ({scene}: SceneProps) => {
   const frame = useCurrentFrame(); const {fps} = useVideoConfig();
-  const progressIn = interpolate(frame, [.2*fps, 1*fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
-  const depth = interpolate(frame, [3.15*fps, 5.35*fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
-  const rankingIn = interpolate(frame, [4.35*fps, 6.3*fps], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
-  const reorder = interpolate(frame, [6.5*fps, 8.5*fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
-  const done = interpolate(frame, [.8*fps, 4.4*fps], [0, 7], {...clamp, easing: Easing.out(Easing.cubic)});
   const out = sceneOut(frame, fps, scene);
-  // Alex starts last and climbs faster than the shuffle around him
+  // how far each subject is carried: a few finished, the rest part way
+  const completion = [100, 100, 82, 100, 58, 44, 100, 68, 30, 54, 100, 38];
+  const total = Math.round(completion.reduce((a, b) => a + b, 0) / completion.length);
+  // phase one fills the frame; phase two folds it to the left for the board
+  const fold = interpolate(frame, [4.1 * fps, 5.5 * fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const rankingIn = interpolate(frame, [5.2 * fps, 5.2 * fps + 18], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+  const reorder = interpolate(frame, [6.5*fps, 8.5*fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const climb = interpolate(frame, [6.3*fps, 7.55*fps], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
   const ranks = [
     {name:'Alex R.',status:'Avanzato',from:5,to:0},
     {name:'Marta B.',status:'In corso',from:0,to:1},
@@ -188,42 +191,44 @@ const Scene06 = ({scene}: SceneProps) => {
     {name:'Luca F.',status:'In corso',from:2,to:4},
     {name:'Nadia R.',status:'In corso',from:4,to:5},
   ];
-  const climb = interpolate(frame,[6.3*fps,7.55*fps],[0,1],{...clamp,easing:Easing.inOut(Easing.cubic)});
-  return <SceneShell scene={scene} fadeIn={false} fadeOut={false}><Copy frame={frame} fps={fps} out={out} style={{left: 94, top: 80}}>
+  const ring = 2 * Math.PI * 132;
+  const shown = interpolate(frame, [1 * fps, 4 * fps], [0, total], {...clamp, easing: Easing.out(Easing.cubic)});
+  return <SceneShell scene={scene} fadeIn={false} fadeOut={false}>
+    <Copy frame={frame} fps={fps} out={out} style={{left: 94, top: 80}}>
       <Eyebrow color={brand.colors.white}>Gamification · concept UI</Eyebrow>
       <Title style={{marginTop: 22}}>Impara. Avanza. <span style={{color: brand.colors.white}}>Sfida.</span></Title>
     </Copy>
-    <div style={{position: 'absolute', left: 95, top: 300, width: 700, color: brand.colors.white, opacity: progressIn*(1-depth*.32)*(1-out), filter: openBlur(progressIn), transform: `perspective(1400px) translateX(${(1-depth)*280-out*260}px) translateZ(${-depth*180}px) rotateY(${depth*5}deg) scale(${1.04-depth*.06})`, transformOrigin: 'center'}}>
-      <div style={{fontSize: 24, fontWeight: 800, letterSpacing: 2, color: brand.colors.white}}>CORSI COMPLETATI</div>
-      <div style={{display: 'flex', alignItems: 'center', gap: 46, marginTop: 38}}>
-        <div style={{position: 'relative', width: 392, height: 392, flexShrink: 0}}>
-          <svg viewBox="0 0 300 300" style={{position: 'absolute', inset: 0, width: '100%', height: '100%', transform: 'rotate(-90deg)'}}>
-            {subjectColors.map((colour, i) => {
-              const circumference = 2 * Math.PI * 130;
-              const slot = circumference / subjectColors.length;
-              const filled = Math.max(0, Math.min(1, done - i)) * (slot - 11);
-              return <g key={colour}>
-                <circle cx={150} cy={150} r={130} fill="none" stroke="#ffffff" strokeOpacity={.18} strokeWidth={34} strokeDasharray={`${slot - 11} ${circumference - slot + 11}`} strokeDashoffset={-i * slot} strokeLinecap="butt" />
-                <circle cx={150} cy={150} r={130} fill="none" stroke={colour} strokeWidth={34} strokeDasharray={`${filled} ${circumference - filled}`} strokeDashoffset={-i * slot} strokeLinecap="butt" />
-              </g>;
-            })}
-          </svg>
-          <div style={{position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', lineHeight: 1}}>
-            <div style={{textAlign: 'center'}}>
-              <div style={{fontSize: 82, fontWeight: 900}}>{Math.floor(done)}<span style={{fontSize: 42, opacity: .6}}>/{subjectColors.length}</span></div>
-              <div style={{marginTop: 10, fontSize: 19, fontWeight: 800, letterSpacing: 2.4, opacity: .74}}>MATERIE</div>
+
+    <div style={{position: 'absolute', left: 0, right: 0, top: 300, height: 640, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: 74, opacity: 1 - out, transform: `translate(${-fold * 402}px, ${fold * 34}px) scale(${1 - fold * .42})`, transformOrigin: 'center'}}>
+      <div style={{display: 'flex', alignItems: 'flex-end', gap: 22, height: 470}}>
+        {completion.map((value, i) => {
+          const grow = interpolate(frame, [step(fps, .7, i) * fps, step(fps, .7, i) * fps + MOTION.enterFrames], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+          const height = Math.max(6, value * 4.1 * grow);
+          return <div key={subjects[i]} style={{width: 58, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16}}>
+            <div style={{fontSize: 19, fontWeight: 900, opacity: grow}}>{Math.round(value * grow)}%</div>
+            <div style={{width: 58, height, borderRadius: 12, background: subjectColors[i], boxShadow: `0 10px 30px ${subjectColors[i]}44`}} />
+            <div style={{height: 132, width: 58, display: 'flex', justifyContent: 'center'}}>
+              <div style={{fontSize: 17, fontWeight: 800, whiteSpace: 'nowrap', opacity: grow * .88, transform: 'rotate(-58deg)', transformOrigin: 'top center', marginTop: 10}}>{subjectLabels[i]}</div>
             </div>
+          </div>;
+        })}
+      </div>
+
+      <div style={{position: 'relative', width: 330, height: 330, marginBottom: 148}}>
+        <svg viewBox="0 0 330 330" style={{position: 'absolute', inset: 0, width: '100%', height: '100%', transform: 'rotate(-90deg)'}}>
+          <circle cx={165} cy={165} r={132} fill="none" stroke="#ffffff" strokeOpacity={.2} strokeWidth={30} />
+          <circle cx={165} cy={165} r={132} fill="none" stroke={brand.colors.white} strokeWidth={30} strokeLinecap="round" strokeDasharray={`${(ring * shown) / 100} ${ring}`} />
+        </svg>
+        <div style={{position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', textAlign: 'center', lineHeight: 1}}>
+          <div>
+            <div style={{fontSize: 74, fontWeight: 900}}>{Math.round(shown)}%</div>
+            <div style={{marginTop: 12, width: 190, fontSize: 16, fontWeight: 800, letterSpacing: 1.6}}>COMPLETAMENTO TOTALE</div>
           </div>
-        </div>
-        <div>
-          <div style={{fontSize: 20, letterSpacing: 1.6, opacity: .68}}>IN CORSO</div>
-          <div style={{fontSize: 34, fontWeight: 900, marginTop: 10}}>Sports Marketing</div>
-          <div style={{marginTop: 26, fontFamily: brand.fonts.body, fontSize: 22, opacity: .8}}>Ogni materia si sblocca<br />completando la precedente.</div>
         </div>
       </div>
     </div>
 
-    <div style={{position: 'absolute', left: 720, right: 95, top: 310, height: 535, borderRadius: 30, background: '#082358', padding: 42, opacity: rankingIn*(1-out), filter: openBlur(rankingIn), transform: `perspective(1400px) translateX(${settle(rankingIn, 180)+out*300}px) translateZ(${(1-rankingIn)*-220}px) scale(${.94+rankingIn*.06})`}}><div style={{fontSize: 23, fontWeight: 800, color: brand.colors.cyan}}>CLASSIFICA · ESEMPIO</div><div style={{position:'relative',marginTop:24,height:384}}>{ranks.map((rank)=>{const leader=rank.to===0;const travel=leader?climb:reorder;const position=interpolate(travel,[0,1],[rank.from,rank.to]);const place=Math.round(position)+1;return <div key={rank.name} style={{position:'absolute',left:0,right:0,top:position*64,height:56,borderRadius:14,display:'grid',gridTemplateColumns:'62px 1fr 150px',alignItems:'center',padding:'0 22px',background:leader?`rgba(51,197,243,${.16+climb*.84})`:'#ffffff10',color:leader&&climb>.55?brand.colors.ink:'#fff',transform:`scale(${1+(leader?climb*.03:0)})`,boxShadow:leader?`0 ${Math.round(climb*16)}px ${Math.round(climb*40)}px rgba(0,12,50,.3)`:'none'}}><span style={{fontSize:22,fontWeight:900}}>{String(place).padStart(2,'0')}</span><span style={{fontSize:22,fontWeight:800}}>{rank.name}</span><span style={{fontSize:16,fontWeight:900,textAlign:'right'}}>{rank.status}</span></div>})}</div></div>
+    <div style={{position: 'absolute', left: 1180, right: 92, top: 310, height: 535, borderRadius: 30, background: '#082358', padding: 34, opacity: rankingIn*(1-out), filter: openBlur(rankingIn), transform: `translateX(${settle(rankingIn, 180)+out*300}px)`}}><div style={{fontSize: 21, fontWeight: 800, color: brand.colors.white}}>CLASSIFICA · ESEMPIO</div><div style={{position:'relative',marginTop:22,height:384}}>{ranks.map((rank)=>{const leader=rank.to===0;const travel=leader?climb:reorder;const position=interpolate(travel,[0,1],[rank.from,rank.to]);const place=Math.round(position)+1;return <div key={rank.name} style={{position:'absolute',left:0,right:0,top:position*64,height:56,borderRadius:14,display:'grid',gridTemplateColumns:'50px 1fr',alignItems:'center',padding:'0 18px',background:leader?`rgba(51,197,243,${.16+climb*.84})`:'#ffffff10',color:leader&&climb>.55?brand.colors.ink:'#fff',transform:`scale(${1+(leader?climb*.03:0)})`,boxShadow:leader?`0 ${Math.round(climb*16)}px ${Math.round(climb*40)}px rgba(0,12,50,.3)`:'none'}}><span style={{fontSize:21,fontWeight:900}}>{String(place).padStart(2,'0')}</span><span style={{fontSize:21,fontWeight:800}}>{rank.name}</span></div>})}</div></div>
   </SceneShell>;
 };
 
@@ -238,7 +243,12 @@ const Scene07 = ({scene}: SceneProps) => {
       <Title style={{color:brand.colors.white}}>Verifica. Valorizza.</Title>
       <div style={{fontFamily:brand.fonts.body,fontSize:28,lineHeight:1.35,marginTop:30}}>Attività e verifiche accompagnano ogni fase dell’apprendimento.</div>
     </Copy>
-    <Arrow name="arrow-08" draw={stroke(frame, fps, 5.2)} from="bottom" style={{left: 592, top: 560, width: 150, opacity: 1 - out, transform: `rotate(80deg) translateY(${out * 120}px)`}} />
+    {(() => {
+      const certIn = reveal(frame, fps, 4.6);
+      return <div style={{position: 'absolute', left: 110, top: 596, width: 520, borderRadius: 14, overflow: 'hidden', boxShadow: '0 26px 70px rgba(0,12,50,.42)', opacity: certIn * (1 - out), filter: openBlur(certIn), transform: `translateY(${settle(certIn, 46) + out * 90}px) rotate(${-2.5 + certIn * .5}deg)`}}>
+        <Img src={brandAsset('ui/runtime/certificate.png')} style={{width: '100%', height: 'auto', display: 'block'}} />
+      </div>;
+    })()}
     <div style={{position:'absolute',right:150,top:210,width:900,display:'grid',gap:22,transform:`translateX(${out*260}px)`}}>{steps.map(([number,title,description],index)=>{const r=reveal(frame,fps,step(fps,.35,index));const active=Math.max(0,1-Math.abs(journey-index));const tick=Math.max(0,Math.min(1,(journey-index+.4)/.55));const mark=brand.colors.white;return <div key={number} style={{height:205,borderRadius:26,background:index===2?'#FFC757':'#fff',color:brand.colors.ink,display:'grid',gridTemplateColumns:'120px 1fr',alignItems:'center',padding:'0 42px',boxShadow:`0 ${24+active*10}px ${60+active*20}px rgba(0,0,30,.25)`,opacity:r,filter:openBlur(r),outline:`${Math.max(active*4,tick*3)}px solid ${mark}`,transform:`translateX(${settle(r,80)-active*14}px) scale(${1+active*.025})`}}><div style={{position:'relative',width:92,height:92}}><div style={{position:'absolute',inset:0,borderRadius:'50%',border:`4px solid ${mark}`,background:mark,opacity:tick,transform:`scale(${.92+tick*.08})`}}/><div style={{position:'absolute',inset:0,borderRadius:'50%',border:`4px solid ${mark}`,opacity:1-tick}}/><div style={{position:'absolute',inset:0,display:'grid',placeItems:'center',fontSize:40,fontWeight:900,color:brand.colors.blue,opacity:Math.max(0,1-tick*3)}}>{number}</div><svg viewBox="0 0 100 100" style={{position:'absolute',inset:0,width:'100%',height:'100%'}}><path d="M28 52 L44 68 L73 34" fill="none" stroke={brand.colors.ink} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={70} strokeDashoffset={70*(1-tick)}/></svg></div><div><div style={{fontSize:30,fontWeight:900,letterSpacing:2}}>{title}</div><div style={{fontFamily:brand.fonts.body,fontSize:23,marginTop:10,color:brand.colors.blue}}>{description}</div></div></div>})}</div>
   </SceneShell>;
 };
@@ -251,7 +261,7 @@ const Scene08 = ({scene}: SceneProps) => {
       <Eyebrow color={brand.colors.blue}>Brand personalizzabile</Eyebrow>
       <Title style={{fontSize:62,marginTop:18,color:brand.colors.ink}}>Una piattaforma.</Title>
       <Title style={{fontSize:62,color:brand.colors.cyan}}>Molte identità.</Title>
-    </Copy><div style={{position:'absolute',left:720,right:85,top:96,bottom:186,display:'flex',gap:24,alignItems:'center',transform:`translateY(${out*220}px)`}}>{cards.map(([asset,label,color],i)=>{const r=after(step(fps,.35,i));const active=Math.max(0,1-Math.abs(identity-i)); return <div key={asset} style={{position:'relative',width:330,height:672,borderRadius:26,overflow:'hidden',background:'#fff',boxShadow:`0 ${30+active*12}px ${70+active*25}px rgba(10,36,88,.18)`,border:'1px solid rgba(10,36,88,.10)',outline:`${active*5}px solid ${color}`,opacity:r,filter:openBlur(r),transform:`translateY(${settle(r,70) + (i-1)*Math.sin(p*Math.PI)*20-active*18}px) rotate(${(i-1)*(3-active*2)}deg) scale(${1+active*.04})`}}><div style={{height:62,background:color,display:'grid',placeItems:'center',color:'#fff',fontSize:19,fontWeight:900,letterSpacing:2}}>{label}</div><Img src={brandAsset(`ui/runtime/${asset}`)} style={{width:'100%',height:'auto'}}/></div>})}</div><div style={{position:'absolute',left:95,top:460,width:510,color:brand.colors.ink,opacity:after(.5)*(1-out),filter:openBlur(after(.5)),fontFamily:brand.fonts.body,fontSize:29,lineHeight:1.35}}>Logo, palette e contenuti si adattano all’identità del partner.</div><div style={{position:'absolute',left:95,top:640,display:'flex',gap:14,opacity:after(.7)*(1-out),filter:openBlur(after(.7))}}>{['#00339A','#33C5F3','#EC264F','#009F97','#FFC757'].map((c,i)=><div key={c} style={{width:58,height:58,borderRadius:'50%',background:c,transform:`translateY(${Math.sin((p+i*.13)*Math.PI*2)*8}px) scale(${.9+Math.sin((p+i*.08)*Math.PI)*.1})`}}/>)}</div></SceneShell>;
+    </Copy><div style={{position:'absolute',left:700,right:70,top:150,bottom:0,display:'flex',gap:-38,alignItems:'flex-end',transform:`translateY(${out*220}px)`}}>{cards.map(([asset,label,color],i)=>{const r=after(step(fps,.35,i));const active=Math.max(0,1-Math.abs(identity-i)); return <div key={asset} style={{position:'relative',width:378,height:812,flexShrink:0,zIndex:3-i,borderRadius:26,overflow:'hidden',background:'#fff',boxShadow:`0 ${30+active*12}px ${70+active*25}px rgba(10,36,88,.18)`,border:'1px solid rgba(10,36,88,.10)',outline:`${active*5}px solid ${color}`,opacity:r,filter:openBlur(r),transform:`translateY(${settle(r,70) + (i-1)*Math.sin(p*Math.PI)*20-active*18}px) rotate(${(i-1)*(3-active*2)}deg) scale(${1+active*.04})`}}><div style={{height:62,background:color,display:'grid',placeItems:'center',color:'#fff',fontSize:19,fontWeight:900,letterSpacing:2}}>{label}</div><Img src={brandAsset(`ui/runtime/${asset}`)} style={{width:'100%',height:'auto'}}/></div>})}</div><div style={{position:'absolute',left:95,top:460,width:510,color:brand.colors.ink,opacity:after(.5)*(1-out),filter:openBlur(after(.5)),fontFamily:brand.fonts.body,fontSize:29,lineHeight:1.35}}>Logo, palette e contenuti si adattano all’identità del partner.</div><div style={{position:'absolute',left:95,top:640,display:'flex',gap:14,opacity:after(.7)*(1-out),filter:openBlur(after(.7))}}>{['#00339A','#33C5F3','#EC264F','#009F97','#FFC757'].map((c,i)=><div key={c} style={{width:58,height:58,borderRadius:'50%',background:c,transform:`translateY(${Math.sin((p+i*.13)*Math.PI*2)*8}px) scale(${.9+Math.sin((p+i*.08)*Math.PI)*.1})`}}/>)}</div></SceneShell>;
 };
 
 const Scene09 = ({scene}: SceneProps) => {
