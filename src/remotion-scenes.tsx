@@ -87,13 +87,13 @@ const Scene02 = ({scene}: SceneProps) => {
 const Scene04 = ({scene}: SceneProps) => {
   const frame = useCurrentFrame(); const {fps} = useVideoConfig();
   const out = sceneOut(frame, fps, scene);
-  const focus = interpolate(frame, [5.1 * fps, 10.6 * fps], [0, 11], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  // one card at a time, unhurried: the sweep now runs the full remaining scene
+  const focus = interpolate(frame, [4.2 * fps, 11.2 * fps], [0, 11], {...clamp, easing: Easing.inOut(Easing.sin)});
   return <SceneShell scene={scene} fadeIn={false} fadeOut={false}>
     <Copy frame={frame} fps={fps} out={out} style={{left: 90, top: 68}}>
       <Eyebrow color="#FFC757">Un percorso strutturato</Eyebrow>
       <Title style={{fontSize: 58, marginTop: 15}}>Esplora il <span style={{color: "#FFC757"}}>business dello sport</span></Title>
     </Copy>
-    <Arrow name="arrow-01" draw={stroke(frame, fps, 3.6)} from="top" style={{left: 92, top: 286, width: 132, opacity: 1 - out, transform: "rotate(52deg)"}} />
     <div style={{position: 'absolute', left: 226, right: 226, top: 250, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, perspective: 1400}}>{subjects.map((subject, i) => {
       const column = i % 4;
       const row = Math.floor(i / 4);
@@ -106,7 +106,7 @@ const Scene04 = ({scene}: SceneProps) => {
       const depth = (1 - settle) * 430 - out * 260;
       const rotation = (1 - settle) * (i - 5.5) * 1.2 + out * (i - 5.5) * .8;
       return <div key={subject} style={{height: 200, borderRadius: 18, overflow: 'hidden', position: 'relative', boxShadow: `0 ${10+emphasis*18}px ${28+emphasis*32}px rgba(11,42,91,${.16+emphasis*.2})`, opacity: settle * (.78 + emphasis * .22) * (1 - out), zIndex: 20-Math.abs(i-5.5), outline:`${emphasis*6}px solid ${subjectColors[i]}`, transform: `translate3d(${x}px,${y-emphasis*18}px,${depth}px) rotateZ(${rotation}deg) scale(${1+emphasis*.075})`, transformOrigin: 'center'}}><Img src={brandAsset(`subjects/runtime/${subject}.png`)} style={{width: '100%', height: '100%', objectFit: 'cover',filter:`saturate(${.82+emphasis*.38}) brightness(${.9+emphasis*.1})`}} /><div style={{position: 'absolute', left: 13, top: 13, width: 10, height: 35, borderRadius: 8, background: subjectColors[i]}} /></div>})}</div>
-    <div style={{position: 'absolute', right: 88, top: 175, padding: '11px 18px', borderRadius: 12, background: brand.colors.blue, color: brand.colors.white, fontSize: 16, fontWeight: 800, letterSpacing: 1.4, opacity: reveal(frame, fps, .8) * (1 - out), transform: `translateX(${out * 120}px)`}}>VIDEO · TEST · QUIZ</div></SceneShell>;
+</SceneShell>;
 };
 
 const Scene05 = ({scene}: SceneProps) => {
@@ -125,7 +125,7 @@ const Scene05 = ({scene}: SceneProps) => {
       <Title style={{color: brand.colors.white}}>Passo dopo passo.</Title>
       <div style={{marginTop: 30, fontFamily: brand.fonts.body, fontSize: 30, lineHeight: 1.3}}>Contenuti e lezioni progettati per accompagnare l’utente su ogni dispositivo.</div>
     </Copy>
-    <div style={{position: 'absolute', left: 1240, top: 158, width: 760, height: 1360, borderRadius: 62, padding: 14, background: '#071E4F', boxShadow: '0 44px 120px rgba(0,20,80,.45)', opacity: phoneIn, transform: `translate(${out * 320}px, ${(1 - phoneIn) * 90}px) rotate(${-3 + enter * 1.4 + out * 4}deg) scale(${1 + enter * .03})`, transformOrigin: '40% 28%'}}>
+    <div style={{position: 'absolute', left: 1010, top: 158, width: 760, height: 1360, borderRadius: 62, padding: 14, background: '#071E4F', boxShadow: '0 44px 120px rgba(0,20,80,.45)', opacity: phoneIn, transform: `translate(${out * 320}px, ${(1 - phoneIn) * 90}px) rotate(${-3 + enter * 1.4 + out * 4}deg) scale(${1 + enter * .03})`, transformOrigin: '40% 28%'}}>
       <div style={{position: 'absolute', inset: 14, borderRadius: 48, overflow: 'hidden', background: '#fff'}}>
         <Img src={brandAsset('ui/runtime/platform-mobile.png')} style={{position: 'absolute', left: 0, top: 0, width: '100%', height: 'auto', transform: `translateY(${-browse * 905}px)`}} />
         <div style={{position: 'absolute', inset: 0, overflow: 'hidden', background: '#fff', transform: `translateX(${(1 - enter) * 100}%)`, boxShadow: '-34px 0 70px rgba(0,15,60,.4)'}}>
@@ -165,8 +165,8 @@ const Scene07 = ({scene}: SceneProps) => {
       <Title style={{color:'#FFC757'}}>Verifica. Valorizza.</Title>
       <div style={{fontFamily:brand.fonts.body,fontSize:28,lineHeight:1.35,marginTop:30}}>Attività e verifiche accompagnano ogni fase dell’apprendimento.</div>
     </Copy>
-    <Arrow name="arrow-08" draw={stroke(frame, fps, 2.2)} from="bottom" style={{left: 592, top: 560, width: 150, opacity: 1 - out, transform: `rotate(80deg) translateY(${out * 120}px)`}} />
-    <div style={{position:'absolute',right:150,top:210,width:900,display:'grid',gap:22,transform:`translateX(${out*260}px)`}}>{steps.map(([number,title,description],index)=>{const r=reveal(frame,fps,.35+index*.35);const active=Math.max(0,1-Math.abs(journey-index));const tick=Math.max(0,Math.min(1,(journey-index+.4)/.55));const mark=index===2?'#fff':'#FFC757';return <div key={number} style={{height:205,borderRadius:26,background:index===2?'#FFC757':'#fff',color:brand.colors.ink,display:'grid',gridTemplateColumns:'120px 1fr',alignItems:'center',padding:'0 42px',boxShadow:`0 ${24+active*10}px ${60+active*20}px rgba(0,0,30,.25)`,opacity:r,outline:`${Math.max(active*4,tick*3)}px solid ${mark}`,transform:`translateX(${(1-r)*80-active*14}px) scale(${1+active*.025})`}}><div style={{position:'relative',width:92,height:92}}><div style={{position:'absolute',inset:0,borderRadius:'50%',border:`4px solid ${mark}`,background:mark,opacity:tick,transform:`scale(${.92+tick*.08})`}}/><div style={{position:'absolute',inset:0,borderRadius:'50%',border:`4px solid ${mark}`,opacity:1-tick}}/><div style={{position:'absolute',inset:0,display:'grid',placeItems:'center',fontSize:40,fontWeight:900,color:brand.colors.blue,opacity:1-tick}}>{number}</div><svg viewBox="0 0 100 100" style={{position:'absolute',inset:0,width:'100%',height:'100%'}}><path d="M28 52 L44 68 L73 34" fill="none" stroke={brand.colors.ink} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={70} strokeDashoffset={70*(1-tick)}/></svg></div><div><div style={{fontSize:30,fontWeight:900,letterSpacing:2}}>{title}</div><div style={{fontFamily:brand.fonts.body,fontSize:23,marginTop:10,color:'#52637E'}}>{description}</div></div></div>})}</div>
+    <Arrow name="arrow-08" draw={stroke(frame, fps, 5.2)} from="bottom" style={{left: 592, top: 560, width: 150, opacity: 1 - out, transform: `rotate(80deg) translateY(${out * 120}px)`}} />
+    <div style={{position:'absolute',right:150,top:210,width:900,display:'grid',gap:22,transform:`translateX(${out*260}px)`}}>{steps.map(([number,title,description],index)=>{const r=reveal(frame,fps,.35+index*.35);const active=Math.max(0,1-Math.abs(journey-index));const tick=Math.max(0,Math.min(1,(journey-index+.4)/.55));const mark=brand.colors.white;return <div key={number} style={{height:205,borderRadius:26,background:index===2?'#FFC757':'#fff',color:brand.colors.ink,display:'grid',gridTemplateColumns:'120px 1fr',alignItems:'center',padding:'0 42px',boxShadow:`0 ${24+active*10}px ${60+active*20}px rgba(0,0,30,.25)`,opacity:r,outline:`${Math.max(active*4,tick*3)}px solid ${mark}`,transform:`translateX(${(1-r)*80-active*14}px) scale(${1+active*.025})`}}><div style={{position:'relative',width:92,height:92}}><div style={{position:'absolute',inset:0,borderRadius:'50%',border:`4px solid ${mark}`,background:mark,opacity:tick,transform:`scale(${.92+tick*.08})`}}/><div style={{position:'absolute',inset:0,borderRadius:'50%',border:`4px solid ${mark}`,opacity:1-tick}}/><div style={{position:'absolute',inset:0,display:'grid',placeItems:'center',fontSize:40,fontWeight:900,color:brand.colors.blue,opacity:Math.max(0,1-tick*3)}}>{number}</div><svg viewBox="0 0 100 100" style={{position:'absolute',inset:0,width:'100%',height:'100%'}}><path d="M28 52 L44 68 L73 34" fill="none" stroke={brand.colors.ink} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={70} strokeDashoffset={70*(1-tick)}/></svg></div><div><div style={{fontSize:30,fontWeight:900,letterSpacing:2}}>{title}</div><div style={{fontFamily:brand.fonts.body,fontSize:23,marginTop:10,color:'#52637E'}}>{description}</div></div></div>})}</div>
   </SceneShell>;
 };
 

@@ -15,18 +15,16 @@ export const Scene03BrandReveal = ({scene}: {scene: PlannedScene}) => {
   const browserIn = spring({frame: frame - 1.6 * fps, fps, durationInFrames: 1 * fps, config: {damping: 200}});
   const detailIn = spring({frame: frame - 2.8 * fps, fps, durationInFrames: 0.7 * fps, config: {damping: 200}});
   const copyOut = interpolate(frame, [duration - .6 * fps, duration], [0, 1], {...clamp, easing: Easing.in(Easing.cubic)});
-  const ambientShift = interpolate(frame, [0, duration - 18], [0, -58], {...clamp, easing: Easing.inOut(Easing.sin)});
   const logoX = interpolate(logoMove, [0, 1], [680, brand.safeArea + 24]);
   const logoY = interpolate(logoMove, [0, 1], [430, 68]);
   const logoScale = interpolate(logoMove, [0, 1], [1, 0.59]);
 
   return (
-    <AbsoluteFill style={{backgroundColor: brand.colors.blue, color: brand.colors.white, overflow: 'hidden'}}>
+    <AbsoluteFill style={{backgroundColor: brand.colors.ink, color: brand.colors.white, overflow: 'hidden'}}>
       <Img
         src={brandAsset('brand/backgrounds/runtime/magma-gradient.png')}
-        style={{position: 'absolute', inset: -80, width: 2080, height: 1240, objectFit: 'cover', opacity: 0.62, transform: `translateX(${ambientShift}px) scale(1.04)`}}
+        style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover'}}
       />
-      <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,29,99,.96) 0%, rgba(0,40,130,.82) 42%, rgba(0,51,154,.16) 82%)'}} />
 
       <div style={{position: 'absolute', left: 0, top: 0, transform: `translate(${logoX}px, ${logoY}px) scale(${logoScale})`, transformOrigin: 'top left'}}>
         <Img src={brandAsset('brand/logos/awe-sport-education-horizontal-white.svg')} style={{width: 560, height: 'auto'}} />
@@ -56,7 +54,7 @@ export const Scene03BrandReveal = ({scene}: {scene: PlannedScene}) => {
             <div style={{marginLeft: 20, height: 28, flex: 1, maxWidth: 470, borderRadius: 9, background: '#FFFFFF', color: '#55709C', fontFamily: brand.fonts.body, fontSize: 15, display: 'grid', placeItems: 'center'}}>awesporteducation.org</div>
           </div>
           <div style={{position: 'absolute', left: 0, right: 0, top: 54, bottom: 0, overflow: 'hidden', background: '#fff'}}>
-            <Img src={brandAsset('ui/runtime/platform-desktop.png')} style={{width: '100%', height: 'auto', display: 'block', transform: `scale(${interpolate(frame, [2.4 * fps, duration - 18], [1, 1.045], {...clamp, easing: Easing.inOut(Easing.cubic)})})`, transformOrigin: 'top center'}} />
+            <Img src={brandAsset('ui/runtime/platform-desktop.png')} style={{width: '100%', height: 'auto', display: 'block'}} />
           </div>
         </div>
 
